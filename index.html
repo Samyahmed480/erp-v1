@@ -293,10 +293,16 @@
 
         <nav class="flex-1 p-3 space-y-1 overflow-y-auto text-sm">
             <button onclick="showSection('dashboard')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 active-nav"
+                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="dashboard">
                 <i class="fas fa-chart-pie w-8 text-center text-lg"></i> لوحة القيادة
             </button>
+            <button onclick="showSection('pos')"
+                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="pos">
+                <i class="fas fa-calculator w-8 text-center text-lg"></i> نقطة بيع (Kiosk)
+            </button>
+
             <button onclick="showSection('sales')"
                 class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="sales">
@@ -317,6 +323,11 @@
                 data-target="suppliers">
                 <i class="fas fa-truck w-8 text-center text-lg"></i> الموردين
             </button>
+            <button onclick="showSection('hr')"
+                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="hr">
+                <i class="fas fa-user-tie w-8 text-center text-lg"></i> الموارد البشرية
+            </button>
             <button onclick="showSection('inventory')"
                 class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="inventory">
@@ -326,6 +337,16 @@
                 class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="installments">
                 <i class="fas fa-calendar-alt w-8 text-center text-lg"></i> التقسيط
+            </button>
+            <button onclick="showSection('services')"
+                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="services">
+                <i class="fas fa-tools w-8 text-center text-lg"></i> الخدمات
+            </button>
+            <button onclick="showSection('expenses')"
+                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="expenses">
+                <i class="fas fa-money-bill-wave w-8 text-center text-lg"></i> المصروفات
             </button>
             <button onclick="showSection('journal')"
                 class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
@@ -446,6 +467,89 @@
                                 <tbody id="dash-journal-list" class="divide-y text-slate-600"></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS (Kiosk) -->
+            <section id="pos" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-120px)]">
+                    <!-- Products Grid -->
+                    <div class="lg:col-span-2 flex flex-col">
+                        <div class="flex gap-2 mb-3">
+                            <input type="text" placeholder="بحث عن منتج..."
+                                class="flex-1 p-2.5 border rounded-lg text-sm outline-none focus:border-blue-500"
+                                onkeyup="renderPOSProducts(this.value)">
+                        </div>
+                        <div id="pos-grid"
+                            class="flex-1 overflow-y-auto grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 content-start">
+                            <!-- Products rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Cart -->
+                    <div class="bg-white rounded-xl shadow-sm flex flex-col p-4">
+                        <h3 class="font-bold text-slate-800 mb-3 border-b pb-2"><i
+                                class="fas fa-shopping-basket text-blue-500 me-2"></i>السلة</h3>
+
+                        <!-- Customer -->
+                        <div class="flex items-center gap-2 mb-3 text-xs">
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" id="pos-walkin" checked onchange="togglePOSCustomer()">
+                                <span>عميل نقدي</span>
+                            </label>
+                            <select id="pos-customer"
+                                class="hidden flex-1 p-1.5 border rounded text-xs outline-none"></select>
+                        </div>
+
+                        <!-- Cart Items -->
+                        <div class="flex-1 overflow-y-auto border rounded mb-3">
+                            <table class="w-full text-xs text-right">
+                                <thead class="bg-slate-100 sticky top-0">
+                                    <tr>
+                                        <th class="p-2">الصنف</th>
+                                        <th class="p-2">الكمية</th>
+                                        <th class="p-2">المبلغ</th>
+                                        <th class="p-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pos-cart-body"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- Discount -->
+                        <div class="flex items-center gap-2 mb-2 text-xs">
+                            <span class="text-slate-500">خصم:</span>
+                            <input type="number" id="pos-discount" value="0" min="0"
+                                class="w-20 p-1 border rounded text-center text-xs" onchange="renderPOSCart()">
+                        </div>
+
+                        <!-- Totals -->
+                        <div class="bg-slate-900 text-white p-3 rounded-lg mb-3">
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>المجموع:</span><span id="pos-subtotal">0.00</span>
+                            </div>
+                            <div class="flex justify-between text-lg font-bold text-emerald-400">
+                                <span>الإجمالي:</span><span id="pos-total">0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Payment Buttons -->
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <button onclick="checkoutPOS('Cash')"
+                                class="bg-emerald-600 text-white py-2.5 rounded-lg font-bold hover:bg-emerald-500 shadow text-sm">
+                                <i class="fas fa-money-bill-wave me-1"></i> كاش
+                            </button>
+                            <button onclick="checkoutPOS('Bank')"
+                                class="bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-500 shadow text-sm">
+                                <i class="fas fa-credit-card me-1"></i> بنك
+                            </button>
+                        </div>
+                        <div id="pos-other-methods" class="grid grid-cols-2 gap-2 mb-2"></div>
+                        <button onclick="clearPOSCart()"
+                            class="w-full bg-red-100 text-red-600 py-1.5 rounded text-xs font-bold hover:bg-red-200">
+                            <i class="fas fa-trash me-1"></i> مسح السلة
+                        </button>
                     </div>
                 </div>
             </section>
@@ -602,14 +706,19 @@
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
                                 <span id="sale-title">فاتورة مبيعات</span>
-                                <span id="sale-mode-badge" class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
+                                <span id="sale-mode-badge"
+                                    class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
                             </h3>
                             <div class="flex items-center gap-4">
                                 <label class="flex items-center gap-2 cursor-pointer text-sm select-none">
-                                    <input type="checkbox" id="is-return-sale" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500" onchange="toggleSaleMode()">
+                                    <input type="checkbox" id="is-return-sale"
+                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500"
+                                        onchange="toggleSaleMode()">
                                     <span>وضع المرتجع</span>
                                 </label>
-                                <div class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded border border-blue-100">INV-<span id="inv-num">Auto</span></div>
+                                <div
+                                    class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded border border-blue-100">
+                                    INV-<span id="inv-num">Auto</span></div>
                             </div>
                         </div>
 
@@ -741,14 +850,19 @@
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
                                 <span id="pur-title">فاتورة مشتريات</span>
-                                <span id="pur-mode-badge" class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
+                                <span id="pur-mode-badge"
+                                    class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
                             </h3>
                             <div class="flex items-center gap-4">
                                 <label class="flex items-center gap-2 cursor-pointer text-sm select-none">
-                                    <input type="checkbox" id="is-return-pur" class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500" onchange="togglePurMode()">
+                                    <input type="checkbox" id="is-return-pur"
+                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500"
+                                        onchange="togglePurMode()">
                                     <span>وضع المرتجع</span>
                                 </label>
-                                <div class="text-xs font-mono bg-orange-50 text-orange-700 px-2 py-1 rounded border border-orange-100">PUR-<span id="pur-num">Auto</span></div>
+                                <div
+                                    class="text-xs font-mono bg-orange-50 text-orange-700 px-2 py-1 rounded border border-orange-100">
+                                    PUR-<span id="pur-num">Auto</span></div>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3 mb-3">
@@ -851,7 +965,9 @@
                     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-lg text-slate-800">قائمة الموردين</h3>
-                            <button onclick="exportTableToCSV('suppliers-table', 'suppliers_list')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i class="fas fa-file-excel"></i> تصدير</button>
+                            <button onclick="exportTableToCSV('suppliers-table', 'suppliers_list')"
+                                class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i
+                                    class="fas fa-file-excel"></i> تصدير</button>
                         </div>
                         <table id="suppliers-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-50 text-slate-700">
@@ -868,49 +984,356 @@
                 </div>
             </section>
 
-             <!-- 13. Installment Management (New) -->
+            <!-- 14. Services Module (New) -->
+            <section id="services" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+                    <!-- Service Management -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold text-lg text-slate-800">إدارة الخدمات</h3>
+                            <button
+                                onclick="document.getElementById('serv-id').value='';document.getElementById('serv-form').reset();"
+                                class="text-blue-600 text-xs"><i class="fas fa-plus"></i> جديد</button>
+                        </div>
+                        <form id="serv-form" onsubmit="saveService(event)" class="space-y-3 mb-6">
+                            <input type="hidden" id="serv-id">
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">اسم الخدمة</label><input
+                                    type="text" id="serv-name" required class="w-full p-2 border rounded outline-none">
+                            </div>
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">السعر</label><input
+                                    type="number" id="serv-price" required
+                                    class="w-full p-2 border rounded outline-none"></div>
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">الوصف</label><input
+                                    type="text" id="serv-desc" class="w-full p-2 border rounded outline-none"></div>
+                            <button type="submit"
+                                class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 shadow">حفظ
+                                الخدمة</button>
+                        </form>
+                        <div class="border-t pt-4">
+                            <h4 class="font-bold text-sm text-slate-700 mb-2">قائمة الخدمات</h4>
+                            <div class="overflow-y-auto max-h-[300px] border rounded bg-slate-50">
+                                <table class="w-full text-xs text-right">
+                                    <thead class="bg-indigo-50 font-bold sticky top-0">
+                                        <tr>
+                                            <th class="p-2">الخدمة</th>
+                                            <th class="p-2">السعر</th>
+                                            <th class="p-2">إجراء</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="services-list" class="divide-y divide-slate-200 bg-white"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Invoice -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex flex-col h-full">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold text-lg text-slate-800">فاتورة خدمات</h3>
+                            <div
+                                class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-100">
+                                SRV-<span id="srv-num">Auto</span></div>
+                        </div>
+                        <div class="flex gap-2 mb-3">
+                            <select id="srv-list"
+                                class="flex-1 p-2 border rounded outline-none bg-slate-50 focus:bg-white"></select>
+                            <button onclick="addToServiceCart()"
+                                class="bg-purple-600 text-white px-4 rounded hover:bg-purple-700"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="flex-1 overflow-y-auto border rounded-lg bg-slate-50 mb-3">
+                            <table class="w-full text-sm text-right">
+                                <thead class="bg-slate-100 font-bold sticky top-0">
+                                    <tr>
+                                        <th class="p-2">الخدمة</th>
+                                        <th class="p-2">السعر</th>
+                                        <th class="p-2">حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="srv-cart-body" class="divide-y divide-slate-200 bg-white"></tbody>
+                            </table>
+                        </div>
+                        <div class="border-t pt-3 space-y-2">
+                            <div class="flex justify-between items-center font-bold text-lg"><span>الإجمالي</span><span
+                                    id="srv-total" class="text-purple-700">0.00</span></div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <select id="srv-method" class="p-2 border rounded outline-none bg-slate-50"></select>
+                                <button onclick="postServiceBill()"
+                                    class="bg-indigo-600 text-white py-2 rounded font-bold hover:bg-indigo-700 shadow">حفظ
+                                    الفاتورة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            </section>
+
+            <!-- 15. Expenses Module (New) -->
+            <section id="expenses" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+                    <!-- Add Expense -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">تسجيل مصروف جديد</h3>
+                        <form onsubmit="postExpense(event)" class="space-y-4">
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">بيان المصروف</label><input
+                                    type="text" id="exp-desc" required
+                                    class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">المبلغ</label><input
+                                        type="number" id="exp-amount" required step="0.01"
+                                        class="w-full p-2.5 border rounded-lg outline-none"></div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1">التصنيف</label>
+                                    <select id="exp-cat"
+                                        class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white">
+                                        <!-- Categories -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">طريقة الدفع</label>
+                                <select id="exp-method"
+                                    class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-red-600 text-white py-2 rounded font-bold hover:bg-red-700 shadow">تسجيل
+                                المصروف</button>
+                        </form>
+                    </div>
+
+                    <!-- Expenses List -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm flex flex-col h-full">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold text-lg text-slate-800">سجل المصروفات</h3>
+                            <div class="text-xs bg-red-50 text-red-700 px-2 py-1 rounded">الإجمالي: <span
+                                    id="exp-list-total" class="font-bold">0.00</span></div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto border rounded-lg bg-slate-50 mb-3">
+                            <table class="w-full text-sm text-right">
+                                <thead class="bg-slate-100 font-bold sticky top-0">
+                                    <tr>
+                                        <th class="p-2">التاريخ</th>
+                                        <th class="p-2">البيان</th>
+                                        <th class="p-2">المبلغ</th>
+                                        <th class="p-2">التصنيف</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expenses-list" class="divide-y divide-slate-200 bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 17. HR Module (New) -->
+            <section id="hr" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+                    <!-- Employee Management -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold text-lg text-slate-800">إدارة الموظفين</h3>
+                            <button
+                                onclick="document.getElementById('emp-id').value='';document.getElementById('emp-form').reset();document.getElementById('emp-photo-preview').classList.add('hidden');"
+                                class="text-blue-600 text-xs"><i class="fas fa-plus"></i> جديد</button>
+                        </div>
+                        <form id="emp-form" onsubmit="saveEmployee(event)" class="space-y-3 mb-6">
+                            <input type="hidden" id="emp-id">
+                            <div class="flex gap-4">
+                                <div class="w-24 h-24 bg-slate-100 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center relative overflow-hidden cursor-pointer"
+                                    onclick="document.getElementById('emp-photo').click()">
+                                    <img id="emp-photo-preview"
+                                        class="absolute inset-0 w-full h-full object-cover hidden">
+                                    <i class="fas fa-camera text-slate-400"></i>
+                                    <input type="file" id="emp-photo" class="hidden" accept="image/*"
+                                        onchange="previewEmpPhoto(this)">
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">الاسم</label><input
+                                            type="text" id="emp-name" required
+                                            class="w-full p-2 border rounded outline-none"></div>
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">الوظيفة /
+                                            الرتبة</label><input type="text" id="emp-role" required
+                                            class="w-full p-2 border rounded outline-none"></div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الراتب
+                                        الأساسي</label><input type="number" id="emp-salary" required
+                                        class="w-full p-2 border rounded outline-none"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الهاتف</label><input
+                                        type="text" id="emp-phone" class="w-full p-2 border rounded outline-none"></div>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 shadow">حفظ
+                                بيانات الموظف</button>
+                        </form>
+
+                        <div class="border-t pt-4">
+                            <h4 class="font-bold text-sm text-slate-700 mb-2">قائمة الموظفين</h4>
+                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
+                                <table class="w-full text-xs text-right">
+                                    <thead class="bg-indigo-50 font-bold sticky top-0">
+                                        <tr>
+                                            <th class="p-2">موظف</th>
+                                            <th class="p-2">الوظيفة</th>
+                                            <th class="p-2">الراتب</th>
+                                            <th class="p-2">إجراء</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="employees-list" class="divide-y divide-slate-200 bg-white"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Actions & Payroll -->
+                    <div class="flex flex-col gap-6 h-full">
+                        <!-- Actions -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
+                            <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">الإجراءات (خصم / مكافأة)
+                            </h3>
+                            <form onsubmit="postPayrollAction(event)" class="grid grid-cols-2 gap-3 mb-4">
+                                <select id="act-emp" class="col-span-2 p-2 border rounded outline-none bg-slate-50"
+                                    required></select>
+                                <select id="act-type" class="p-2 border rounded outline-none bg-slate-50" required>
+                                    <option value="bonus">مكافأة / عمولة (+)</option>
+                                    <option value="deduction">خصم / جزاء (-)</option>
+                                </select>
+                                <input type="number" id="act-amount" placeholder="المبلغ" required
+                                    class="p-2 border rounded outline-none">
+                                <input type="text" id="act-desc" placeholder="السبب" required
+                                    class="col-span-2 p-2 border rounded outline-none">
+                                <button type="submit"
+                                    class="col-span-2 bg-slate-800 text-white py-2 rounded font-bold hover:bg-slate-700">تسجيل
+                                    الإجراء</button>
+                            </form>
+                            <div class="overflow-y-auto max-h-[150px] border rounded bg-slate-50">
+                                <table class="w-full text-xs text-right">
+                                    <thead class="bg-slate-100 font-bold sticky top-0">
+                                        <tr>
+                                            <th class="p-2">الاسم</th>
+                                            <th class="p-2">النوع</th>
+                                            <th class="p-2">المبلغ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="actions-list" class="divide-y bg-white"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Payroll Run -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm flex-1">
+                            <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">كشف الرواتب</h3>
+                            <div class="flex gap-2 mb-4">
+                                <input type="month" id="payroll-month" class="flex-1 p-2 border rounded outline-none">
+                                <button onclick="generatePayrollPreview()"
+                                    class="bg-emerald-600 text-white px-4 rounded font-bold hover:bg-emerald-700">إعداد
+                                    الكشف</button>
+                            </div>
+                            <div id="payroll-preview" class="hidden">
+                                <div class="overflow-y-auto max-h-[200px] border rounded mb-3">
+                                    <table class="w-full text-xs text-right bg-white">
+                                        <thead class="bg-slate-100 font-bold sticky top-0">
+                                            <tr>
+                                                <th class="p-2">الموظف</th>
+                                                <th class="p-2">الراتب</th>
+                                                <th class="p-2 text-green-600">(+)</th>
+                                                <th class="p-2 text-red-600">(-)</th>
+                                                <th class="p-2 font-bold">الصافي</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="payroll-table" class="divide-y"></tbody>
+                                    </table>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <div class="font-bold text-lg">إجمالي الرواتب: <span id="payroll-total"
+                                            class="text-emerald-700">0.00</span></div>
+                                    <button onclick="postPayroll()"
+                                        class="bg-indigo-600 text-white px-6 py-2 rounded font-bold hover:bg-indigo-700 shadow">اعتماد
+                                        وصرف الرواتب</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. Installment Management (New) -->
             <section id="installments" class="section-content">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
                     <!-- New Installment Invoice -->
                     <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
                         <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">إنشاء فاتورة تقسيط</h3>
                         <div class="space-y-4">
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">العميل</label><select id="inst-customer" class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select></div>
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">العميل</label><select
+                                    id="inst-customer"
+                                    class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
+                            </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">المنتج</label>
-                                <select id="inst-product" class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white" onchange="updateInstPrice(this)"></select>
+                                <select id="inst-product"
+                                    class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"
+                                    onchange="updateInstPrice(this)"></select>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">سعر البيع (يتضمن الفائدة)</label><input type="number" id="inst-price" class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()"></div>
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الدفعة المقدمة</label><input type="number" id="inst-down" class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()" placeholder="0"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">سعر البيع (يتضمن
+                                        الفائدة)</label><input type="number" id="inst-price"
+                                        class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الدفعة
+                                        المقدمة</label><input type="number" id="inst-down"
+                                        class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()"
+                                        placeholder="0"></div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">عدد الأقساط (شهر)</label><input type="number" id="inst-count" class="w-full p-2.5 border rounded-lg outline-none" value="12" onkeyup="calcInst()"></div>
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">قيمة القسط الشهري</label><input type="number" id="inst-monthly" class="w-full p-2.5 border rounded-lg bg-slate-100 font-bold text-blue-600 outline-none" readonly></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">عدد الأقساط
+                                        (شهر)</label><input type="number" id="inst-count"
+                                        class="w-full p-2.5 border rounded-lg outline-none" value="12"
+                                        onkeyup="calcInst()"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">قيمة القسط
+                                        الشهري</label><input type="number" id="inst-monthly"
+                                        class="w-full p-2.5 border rounded-lg bg-slate-100 font-bold text-blue-600 outline-none"
+                                        readonly></div>
                             </div>
-                             <div>
+                            <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">طريقة دفع المقدم</label>
-                                <select id="inst-method" class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
+                                <select id="inst-method"
+                                    class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
                             </div>
-                            <button onclick="createInstallmentPlan()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 shadow-lg mt-2 transition transform active:scale-95">إنشاء عقد التقسيط</button>
+                            <button onclick="createInstallmentPlan()"
+                                class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 shadow-lg mt-2 transition transform active:scale-95">إنشاء
+                                عقد التقسيط</button>
                         </div>
                     </div>
 
                     <!-- Upcoming Installments -->
                     <div class="bg-white p-6 rounded-xl shadow-sm flex flex-col h-[600px]">
                         <div class="flex justify-between items-center mb-4 border-b pb-2">
-                             <h3 class="font-bold text-lg text-slate-800">الأقساط والتحصيل</h3>
-                             <div class="flex gap-2">
-                                 <button onclick="renderInstallments()" class="bg-slate-100 text-slate-600 px-3 py-1 rounded hover:bg-slate-200 text-xs"><i class="fas fa-sync"></i> تحديث</button>
-                                 <button onclick="exportTableToCSV('installments-table', 'installments_list')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i class="fas fa-file-excel"></i> تصدير</button>
-                             </div>
+                            <h3 class="font-bold text-lg text-slate-800">الأقساط والتحصيل</h3>
+                            <div class="flex gap-2">
+                                <button onclick="renderInstallments()"
+                                    class="bg-slate-100 text-slate-600 px-3 py-1 rounded hover:bg-slate-200 text-xs"><i
+                                        class="fas fa-sync"></i> تحديث</button>
+                                <button onclick="exportTableToCSV('installments-table', 'installments_list')"
+                                    class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i
+                                        class="fas fa-file-excel"></i> تصدير</button>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" placeholder="بحث باسم العميل..." class="p-2 border rounded text-sm w-full focus:border-blue-500 outline-none bg-slate-50" onkeyup="filterInstallments(this.value)">
+                            <input type="text" placeholder="بحث باسم العميل..."
+                                class="p-2 border rounded text-sm w-full focus:border-blue-500 outline-none bg-slate-50"
+                                onkeyup="filterInstallments(this.value)">
                         </div>
                         <div class="flex-1 overflow-y-auto border rounded-lg bg-slate-50">
                             <table id="installments-table" class="w-full text-sm text-right relative border-collapse">
-                                <thead class="bg-indigo-100 text-indigo-900 sticky top-0 font-bold"><tr><th class="p-3">العميل</th><th class="p-3">المبلغ</th><th class="p-3">تاريخ الاستحقاق</th><th class="p-3 text-center">الحالة</th></tr></thead>
+                                <thead class="bg-indigo-100 text-indigo-900 sticky top-0 font-bold">
+                                    <tr>
+                                        <th class="p-3">العميل</th>
+                                        <th class="p-3">المبلغ</th>
+                                        <th class="p-3">تاريخ الاستحقاق</th>
+                                        <th class="p-3 text-center">الحالة</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="installments-list" class="divide-y divide-slate-200 bg-white"></tbody>
                             </table>
                         </div>
@@ -951,7 +1374,9 @@
                     <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="font-bold text-lg text-slate-800">قائمة العملاء</h3>
-                            <button onclick="exportTableToCSV('customers-table', 'customers_list')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i class="fas fa-file-excel"></i> تصدير</button>
+                            <button onclick="exportTableToCSV('customers-table', 'customers_list')"
+                                class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 text-xs shadow flex items-center gap-1"><i
+                                    class="fas fa-file-excel"></i> تصدير</button>
                         </div>
                         <table id="customers-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-50 text-slate-700">
@@ -1190,6 +1615,20 @@
                 phone: '', address: '', vatNumber: '',
                 paymentMethods: ['Cash', 'Bank', 'Wallet', 'InstaPay']
             },
+            services: [{ id: 1, name: 'خدمة تركيب', price: 150, description: 'تركيب وصيانة' }],
+            expensesCategories: [
+                { id: '5201', name: 'مصروفات تشغيلية' },
+                { id: '5202', name: 'رواتب وأجور' }, // We'll use this for HR later
+                { id: '5203', name: 'مصروفات أخرى (طارئة)' }
+            ],
+            expenses: [],
+
+            employees: [
+                { id: 1, name: 'موظف تجريبي', role: 'مبيعات', salary: 3000, phone: '0500000000', photo: '' }
+            ],
+            payrollActions: [],
+            payrollRuns: [],
+
             users: [
                 { id: 1, name: 'المدير العام', role: 'admin', phone: '0000' }
             ],
@@ -1241,6 +1680,7 @@
         }
 
         async function init() {
+            showSection('dashboard');
             showToast('جاري تحميل البيانات من السيرفر...', 'info');
             try {
                 const doc = await dbFirestore.collection('app_data').doc('main_db').get();
@@ -1249,11 +1689,14 @@
                     // Ensure structure integrity if fields are missing
                     if (!db.users) db.users = [{ id: 1, name: 'Admin', role: 'admin' }];
                     if (!db.suppliers) db.suppliers = [{ id: 1, name: 'مورد عام' }];
+                    if (!db.products) db.products = [];
+                    if (!db.chartOfAccounts) db.chartOfAccounts = []; // Should ideally be full chart, but empty prevents crash
                     if (!db.purchases) db.purchases = [];
                     if (!db.settings.paymentMethods) db.settings.paymentMethods = ['Cash', 'Bank', 'Wallet', 'InstaPay'];
                     if (!db.installments) db.installments = [];
                     if (!db.returns) db.returns = [];
                     if (!db.settings.logo) db.settings.logo = '';
+                    if (!db.services) db.services = [];
                     // Structural updates
                     db.customers.forEach(c => { if (c.address === undefined) c.address = ''; if (c.company === undefined) c.company = ''; if (c.vat === undefined) c.vat = ''; });
                     db.suppliers.forEach(s => { if (s.address === undefined) s.address = ''; if (s.company === undefined) s.company = ''; });
@@ -1279,18 +1722,19 @@
             if (document.getElementById('rpt-end-date')) document.getElementById('rpt-end-date').valueAsDate = today;
             if (document.getElementById('pur-date')) document.getElementById('pur-date').valueAsDate = today;
 
-            loadSettingsToForm();
-            populateSelects();
-            renderUsersTable();
-            renderSuppliersTable();
-            renderCustomersTable(); // Render customers table on init
-            updateLogoView();
+            try { loadSettingsToForm(); } catch (e) { console.error('Error loading settings', e); }
+            try { populateSelects(); } catch (e) { console.error('Error populating selects', e); }
+            try { renderUsersTable(); } catch (e) { console.error('Error rendering users', e); }
+            try { renderSuppliersTable(); } catch (e) { console.error('Error rendering suppliers', e); }
+            try { renderCustomersTable(); } catch (e) { console.error('Error rendering customers', e); }
+            try { updateLogoView(); } catch (e) { console.error('Error updating logo', e); }
             renderAll();
 
             document.getElementById('journal-lines').innerHTML = '';
             addJournalLineRow(); addJournalLineRow();
 
             document.getElementById('header-date').innerText = new Date().toLocaleDateString('ar-EG');
+            showSection('dashboard');
         }
 
         async function save() {
@@ -1586,8 +2030,8 @@
 
         // Updated postSale to handle Returns
         function postSale() {
-            if(currentCart.length === 0) return showToast('السلة فارغة', 'error');
-            
+            if (currentCart.length === 0) return showToast('السلة فارغة', 'error');
+
             const custId = document.getElementById('sale-customer').value;
             const customer = db.customers.find(c => c.id == custId);
             const date = new Date().toISOString().split('T')[0];
@@ -1604,54 +2048,54 @@
             const grandTotal = netSale + vatAmount;
 
             const lines = [];
-            
-            if(isReturn) {
-                 // Return Logic
-                 // Dr Sales Return / Inventory / VAT
-                 // Cr Cash / Customer / COGS
-                 
-                 // 1. Refund Cash/Credit Customer
-                 if(paid > 0) lines.push({code: method || '1101', dr: 0, cr: paid}); // Cash Cr
-                 const remaining = grandTotal - paid; // Remaining to credit to customer account
-                 if(remaining > 0.01) lines.push({code: '1103', dr: 0, cr: remaining}); // Customer Cr
-                 
-                 // 2. Debit Sales Return & VAT
-                 lines.push({code: '4101', dr: netSale, cr: 0}); // Sales Dr (Contra)
-                 lines.push({code: '2102', dr: vatAmount, cr: 0}); // VAT Dr
-                 
-                 // 3. Inventory & COGS
-                 lines.push({code: '1104', dr: totalCost, cr: 0}); // Inventory Dr (Stock Up)
-                 lines.push({code: '5101', dr: 0, cr: totalCost}); // COGS Cr (Expense Down)
-                 
-                 if(addJournalEntry(date, `مرتجع مبيعات - ${customer.name}`, lines)) {
-                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if(p) p.stock += i.qty; }); // Increase Stock
-                    db.returns.push({id: Date.now(), date, type: 'sale', customer: customer.name, total: grandTotal, items: [...currentCart]});
+
+            if (isReturn) {
+                // Return Logic
+                // Dr Sales Return / Inventory / VAT
+                // Cr Cash / Customer / COGS
+
+                // 1. Refund Cash/Credit Customer
+                if (paid > 0) lines.push({ code: method || '1101', dr: 0, cr: paid }); // Cash Cr
+                const remaining = grandTotal - paid; // Remaining to credit to customer account
+                if (remaining > 0.01) lines.push({ code: '1103', dr: 0, cr: remaining }); // Customer Cr
+
+                // 2. Debit Sales Return & VAT
+                lines.push({ code: '4101', dr: netSale, cr: 0 }); // Sales Dr (Contra)
+                lines.push({ code: '2102', dr: vatAmount, cr: 0 }); // VAT Dr
+
+                // 3. Inventory & COGS
+                lines.push({ code: '1104', dr: totalCost, cr: 0 }); // Inventory Dr (Stock Up)
+                lines.push({ code: '5101', dr: 0, cr: totalCost }); // COGS Cr (Expense Down)
+
+                if (addJournalEntry(date, `مرتجع مبيعات - ${customer.name}`, lines)) {
+                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock += i.qty; }); // Increase Stock
+                    db.returns.push({ id: Date.now(), date, type: 'sale', customer: customer.name, total: grandTotal, items: [...currentCart] });
                     showToast('تم حفظ المرتجع');
-                 }
+                }
             } else {
                 // ... Existing Sale Logic ...
                 const remaining = grandTotal - paid;
                 // Assuming '1101' is Cash if method not found
-                lines.push({code: '1101', dr: paid, cr: 0}); 
-                
-                if(remaining > 0.01) lines.push({code: '1103', dr: remaining, cr: 0}); // Customer Account
-                if(discount > 0) lines.push({code: '5201', dr: discount, cr: 0}); // Discount Allowed
-                lines.push({code: '5101', dr: totalCost, cr: 0});
-                
-                lines.push({code: '4101', dr: 0, cr: totalSale});
-                lines.push({code: '2102', dr: 0, cr: vatAmount});
-                lines.push({code: '1104', dr: 0, cr: totalCost});
+                lines.push({ code: '1101', dr: paid, cr: 0 });
 
-                if(addJournalEntry(date, `فاتورة - ${customer.name}`, lines)) {
-                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if(p) p.stock -= i.qty; });
-                    db.sales.push({id: Date.now(), date, customer: customer.name, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart]});
-                    printInvoice(db.sales[db.sales.length-1]);
+                if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 }); // Customer Account
+                if (discount > 0) lines.push({ code: '5201', dr: discount, cr: 0 }); // Discount Allowed
+                lines.push({ code: '5101', dr: totalCost, cr: 0 });
+
+                lines.push({ code: '4101', dr: 0, cr: totalSale });
+                lines.push({ code: '2102', dr: 0, cr: vatAmount });
+                lines.push({ code: '1104', dr: 0, cr: totalCost });
+
+                if (addJournalEntry(date, `فاتورة - ${customer.name}`, lines)) {
+                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
+                    db.sales.push({ id: Date.now(), date, customer: customer.name, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart] });
+                    printInvoice(db.sales[db.sales.length - 1]);
                     showToast('تم الحفظ بنجاح');
                 }
             }
             // Reset
-            currentCart = []; renderCart(); 
-            document.getElementById('sale-discount').value = 0; 
+            currentCart = []; renderCart();
+            document.getElementById('sale-discount').value = 0;
             document.getElementById('sale-paid').value = '';
             // Don't uncheck return mode automatically? Maybe better to keep it unchecked for safety.
             document.getElementById('is-return-sale').checked = false; toggleSaleMode();
@@ -1659,8 +2103,8 @@
 
         // Updated postPurchase to handle Returns
         function postPurchase() {
-            if(currentPurCart.length === 0) return showToast('السلة فارغة', 'error');
-            
+            if (currentPurCart.length === 0) return showToast('السلة فارغة', 'error');
+
             const suppId = document.getElementById('pur-supplier').value;
             const supplier = db.suppliers.find(s => s.id == suppId);
             const date = document.getElementById('pur-date').value;
@@ -1674,17 +2118,17 @@
             const netCost = totalCost - discount;
             const vatAmount = netCost * 0.15;
             const grandTotal = netCost + vatAmount;
-            
+
             const lines = [];
 
-            if(isReturn) {
+            if (isReturn) {
                 // Return Logic: Dr Cash/Supplier, Cr Inventory/VAT
                 const remaining = grandTotal - paid;
-                if(paid > 0) lines.push({code: '1101', dr: paid, cr: 0}); // Cash Dr (Refund)
-                if(remaining > 0.01) lines.push({code: '2101', dr: remaining, cr: 0}); // Supplier Dr (Debit Note)
-                
-                lines.push({code: '1104', dr: 0, cr: totalCost}); // Inventory Cr (Stock Down)
-                lines.push({code: '2102', dr: 0, cr: vatAmount}); // VAT Cr (Liability Up? No, Purchase VAT is Asset. Credit reduces Asset. Correct.)
+                if (paid > 0) lines.push({ code: '1101', dr: paid, cr: 0 }); // Cash Dr (Refund)
+                if (remaining > 0.01) lines.push({ code: '2101', dr: remaining, cr: 0 }); // Supplier Dr (Debit Note)
+
+                lines.push({ code: '1104', dr: 0, cr: totalCost }); // Inventory Cr (Stock Down)
+                lines.push({ code: '2102', dr: 0, cr: vatAmount }); // VAT Cr (Liability Up? No, Purchase VAT is Asset. Credit reduces Asset. Correct.)
                 // Wait, if VAT Input is Asset (1xxx), Credit reduces it. If 2102 is Liability, Debit reduces it.
                 // We used 2102 for Output VAT (Liability).
                 // And for Purchase, we Debit 2102 (Reducing Liability... or treating as asset).
@@ -1692,31 +2136,31 @@
                 // Sale: Credit 2102 (Increase Liability).
                 // Purchase: Debit 2102 (Decrease Liability).
                 // Purchase Return: Credit 2102 (Increase Liability/Reverse Debit). Correct.
-                
-                 if(addJournalEntry(date, `مرتجع مشتريات - ${supplier.name}`, lines)) {
-                    currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if(p) { p.stock -= i.qty; } });
-                    db.returns.push({id: Date.now(), date, type: 'purchase', supplier: supplier.name, total: grandTotal, items: [...currentPurCart]});
-                    showToast('تم حفظ المرتجع');
-                 }
-            } else {
-                 const remaining = grandTotal - paid;
-                lines.push({code: '1104', dr: totalCost, cr: 0}); 
-                lines.push({code: '2102', dr: vatAmount, cr: 0}); 
-                
-                if(discount > 0) lines.push({code: '5201', dr: 0, cr: discount}); 
-                if(paid > 0) lines.push({code: '1101', dr: 0, cr: paid}); 
-                if(remaining > 0.01) lines.push({code: '2101', dr: 0, cr: remaining}); 
 
-                if(addJournalEntry(date, `فاتورة مشتريات - ${supplier.name} (${method})`, lines)) {
-                    currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if(p) { p.stock += i.qty; p.cost = i.cost; } });
-                    db.purchases.push({id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart]});
+                if (addJournalEntry(date, `مرتجع مشتريات - ${supplier.name}`, lines)) {
+                    currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) { p.stock -= i.qty; } });
+                    db.returns.push({ id: Date.now(), date, type: 'purchase', supplier: supplier.name, total: grandTotal, items: [...currentPurCart] });
+                    showToast('تم حفظ المرتجع');
+                }
+            } else {
+                const remaining = grandTotal - paid;
+                lines.push({ code: '1104', dr: totalCost, cr: 0 });
+                lines.push({ code: '2102', dr: vatAmount, cr: 0 });
+
+                if (discount > 0) lines.push({ code: '5201', dr: 0, cr: discount });
+                if (paid > 0) lines.push({ code: '1101', dr: 0, cr: paid });
+                if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
+
+                if (addJournalEntry(date, `فاتورة مشتريات - ${supplier.name} (${method})`, lines)) {
+                    currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) { p.stock += i.qty; p.cost = i.cost; } });
+                    db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart] });
                     showToast('تم حفظ المشتريات');
                 }
             }
-            
-            currentPurCart = []; renderPurCart(); 
-            document.getElementById('pur-paid').value='';
-            document.getElementById('pur-discount').value='0';
+
+            currentPurCart = []; renderPurCart();
+            document.getElementById('pur-paid').value = '';
+            document.getElementById('pur-discount').value = '0';
             document.getElementById('is-return-pur').checked = false; togglePurMode();
             renderAll();
         }
@@ -1793,6 +2237,67 @@
         }
 
 
+
+
+
+
+
+        // --- 7.1 Inventory Logic ---
+        function saveProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('prod-id').value;
+            const name = document.getElementById('new-prod-name').value;
+            const price = parseFloat(document.getElementById('new-prod-price').value);
+            const cost = parseFloat(document.getElementById('new-prod-cost').value) || 0;
+            const stock = parseFloat(document.getElementById('new-prod-stock').value) || 0;
+
+            if (id) {
+                const p = db.products.find(x => x.id == id);
+                if (p) { p.name = name; p.price = price; p.cost = cost; p.stock = stock; }
+            } else {
+                db.products.push({ id: Date.now(), name, price, cost, stock });
+            }
+            save(); filterInventory(''); resetProductForm(); showToast('تم حفظ المنتج');
+        }
+
+        function filterInventory(q) {
+            const list = document.getElementById('inventory-list');
+            if (!list) return;
+            const filtered = db.products.filter(p => p.name.includes(q));
+            list.innerHTML = filtered.map(p => `
+                <tr class="hover:bg-slate-50 border-b">
+                    <td class="p-3 font-bold">${p.name}</td><td class="p-3 text-emerald-600">${p.price}</td><td class="p-3 text-slate-500">${p.cost}</td><td class="p-3 font-bold">${p.stock}</td>
+                    <td class="p-3 flex gap-2"><button onclick="editProduct(${p.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteProduct(${p.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
+                </tr>`).join('');
+        }
+
+        function editProduct(id) {
+            const p = db.products.find(x => x.id == id);
+            if (p) {
+                document.getElementById('prod-id').value = p.id;
+                document.getElementById('new-prod-name').value = p.name;
+                document.getElementById('new-prod-price').value = p.price;
+                document.getElementById('new-prod-cost').value = p.cost;
+                document.getElementById('new-prod-stock').value = p.stock;
+                document.getElementById('prod-form-title').innerText = 'تعديل منتج';
+            }
+        }
+
+        function deleteProduct(id) {
+            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+                db.products = db.products.filter(x => x.id != id);
+                save(); filterInventory(''); showToast('تم حذف المنتج');
+            }
+        }
+
+        function resetProductForm() {
+            document.getElementById('prod-id').value = '';
+            document.getElementById('new-prod-name').value = '';
+            document.getElementById('new-prod-price').value = '';
+            document.getElementById('new-prod-cost').value = '';
+            document.getElementById('new-prod-stock').value = '';
+            document.getElementById('prod-form-title').innerText = 'إضافة صنف جديد';
+        }
 
         // --- 7.2 Suppliers Logic ---
         function saveSupplier(e) {
@@ -2023,6 +2528,16 @@
             document.getElementById('dash-expenses').innerText = exp.toFixed(2);
             document.getElementById('dash-net-profit').innerText = (rev - exp).toFixed(2);
 
+            renderJournal();
+            renderInstallments();
+            renderInstallments();
+            renderServices();
+            renderExpenses();
+            renderPOSProducts();
+            renderEmployees();
+            updateChart();
+            document.getElementById('dash-net-profit').innerText = (rev - exp).toFixed(2);
+
             // Lists
             document.getElementById('dash-journal-list').innerHTML = db.journal.slice().reverse().slice(0, 5).map(e => `<tr><td class="p-2">#${e.id}</td><td class="p-2">${e.date}</td><td class="p-2">${e.desc}</td><td class="p-2 font-bold">${(e.lines[0].dr || e.lines[0].cr).toFixed(2)}</td></tr>`).join('');
 
@@ -2112,6 +2627,62 @@
             document.getElementById('tb-total-cr').innerText = tbCr.toFixed(2);
         }
 
+
+        function getAccountBalance(code) {
+            const acc = db.chartOfAccounts.find(a => a.code === code);
+            if (!acc) return 0;
+            if (acc.isGroup) {
+                return db.chartOfAccounts.filter(a => a.parent === code).reduce((sum, child) => sum + getAccountBalance(child.code), 0);
+            }
+            // Calc from Journal
+            let bal = 0;
+            db.journal.forEach(e => {
+                e.lines.forEach(l => {
+                    if (l.code === code) {
+                        if (acc.type === 'asset' || acc.type === 'expense') bal += ((l.dr || 0) - (l.cr || 0));
+                        else bal += ((l.cr || 0) - (l.dr || 0));
+                    }
+                });
+            });
+            return bal;
+        }
+
+        function renderAll() {
+            // Dashboard Counters - always run these first
+            try {
+                const cash = getAccountBalance('1101') + getAccountBalance('1102');
+                if (document.getElementById('dash-cash')) document.getElementById('dash-cash').innerText = cash.toFixed(2);
+                const salesTotal = db.sales.reduce((sum, s) => sum + s.total, 0);
+                if (document.getElementById('dash-sales')) document.getElementById('dash-sales').innerText = salesTotal.toFixed(2);
+                const expTotal = getAccountBalance('5');
+                if (document.getElementById('dash-expenses')) document.getElementById('dash-expenses').innerText = expTotal.toFixed(2);
+                const income = getAccountBalance('4') - getAccountBalance('5');
+                if (document.getElementById('dash-net-profit')) document.getElementById('dash-net-profit').innerText = income.toFixed(2);
+            } catch (e) { console.error('Dashboard counter error:', e); }
+
+            // Render each component independently
+            try { renderUsersTable(); } catch (e) { console.error('renderUsersTable error:', e); }
+            try { renderSuppliersTable(); } catch (e) { console.error('renderSuppliersTable error:', e); }
+            try { renderCustomersTable(); } catch (e) { console.error('renderCustomersTable error:', e); }
+            try { if (typeof updateLogoView === 'function') updateLogoView(); } catch (e) { console.error('updateLogoView error:', e); }
+            try { renderSalesChart(); } catch (e) { console.error('renderSalesChart error:', e); }
+            try { renderReports(); } catch (e) { console.error('renderReports error:', e); }
+            try { if (typeof renderExpenses === 'function') renderExpenses(); } catch (e) { console.error('renderExpenses error:', e); }
+            try { if (typeof filterInventory === 'function') filterInventory(''); } catch (e) { console.error('filterInventory error:', e); }
+            try { if (typeof renderPOSProducts === 'function') renderPOSProducts(); } catch (e) { console.error('renderPOSProducts error:', e); }
+            try { if (typeof renderServiceCart === 'function') renderServiceCart(); } catch (e) { console.error('renderServiceCart error:', e); }
+            try { if (typeof renderServices === 'function') renderServices(); } catch (e) { console.error('renderServices error:', e); }
+            try { if (typeof renderEmployees === 'function') renderEmployees(); } catch (e) { console.error('renderEmployees error:', e); }
+            try { if (typeof renderPayrollHistory === 'function') renderPayrollHistory(); } catch (e) { console.error('renderPayrollHistory error:', e); }
+            try { if (typeof renderInstallments === 'function') renderInstallments(); } catch (e) { console.error('renderInstallments error:', e); }
+            try { if (typeof renderPaymentMethods === 'function') renderPaymentMethods(); } catch (e) { console.error('renderPaymentMethods error:', e); }
+
+            // Update header
+            try {
+                if (document.getElementById('header-company-name')) document.getElementById('header-company-name').innerText = db.settings.companyName;
+            } catch (e) { }
+        }
+
         // --- Helpers ---
         function showToast(msg, type = 'success') {
             const t = document.createElement('div'); t.className = `toast ${type}`; t.innerHTML = `<i class="fas fa-${type == 'success' ? 'check' : 'times'}-circle"></i> ${msg}`;
@@ -2125,25 +2696,58 @@
         }
         function showSection(id) {
             document.querySelectorAll('.section-content').forEach(e => e.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const section = document.getElementById(id);
+            if (!section) { console.error('Section not found:', id); return; }
+            section.classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('text-blue-300'));
             const btn = document.querySelector(`button[data-target="${id}"]`); if (btn) btn.classList.add('text-blue-300');
             if (window.innerWidth < 768) toggleSidebar();
+
+            // Trigger section-specific rendering
+            try {
+                if (id === 'pos') renderPOSProducts();
+                if (id === 'accounts_tree') renderAccountsTree();
+                if (id === 'reports') renderReports();
+                if (id === 'inventory') filterInventory('');
+            } catch (e) { console.error('Section render error:', e); }
+        }
+
+        function renderAccountsTree() {
+            const tbody = document.getElementById('coa-body');
+            if (!tbody || !db.chartOfAccounts) return;
+            tbody.innerHTML = db.chartOfAccounts.map(a => {
+                const bal = getAccountBalance(a.code);
+                const isGroup = a.isGroup ? 'font-bold bg-slate-50' : '';
+                const indent = (a.level || 0) * 20;
+                return `<tr class="border-b hover:bg-blue-50 ${isGroup}">
+                    <td class="p-3 font-mono text-xs">${a.code}</td>
+                    <td class="p-3" style="padding-right:${indent + 12}px">${a.isGroup ? '<i class="fas fa-folder-open text-yellow-500 me-1"></i>' : '<i class="fas fa-file-alt text-slate-400 me-1"></i>'}${a.name}</td>
+                    <td class="p-3 text-xs text-slate-500">${a.type || ''}</td>
+                    <td class="p-3 font-bold font-mono ${bal < 0 ? 'text-red-500' : 'text-emerald-600'}">${bal.toFixed(2)}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function filterAccounts(q) {
+            const rows = document.querySelectorAll('#coa-body tr');
+            rows.forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+            });
         }
 
         function exportTableToCSV(tableId, filename) {
             const table = document.getElementById(tableId);
-            if(!table) return;
+            if (!table) return;
             let csv = [];
             const rows = table.querySelectorAll('tr');
-            for(let i=0; i<rows.length; i++) {
+            for (let i = 0; i < rows.length; i++) {
                 const row = [], cols = rows[i].querySelectorAll('td, th');
-                for(let j=0; j<cols.length; j++) row.push('"' + cols[j].innerText + '"');
+                for (let j = 0; j < cols.length; j++) row.push('"' + cols[j].innerText + '"');
                 csv.push(row.join(','));
             }
             const blob = new Blob(["\uFEFF" + csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            if(link.download !== undefined) {
+            if (link.download !== undefined) {
                 const url = URL.createObjectURL(blob);
                 link.setAttribute("href", url);
                 link.setAttribute("download", filename + '.csv');
@@ -2157,26 +2761,26 @@
         // --- 11. Installment Module Logic ---
         function updateInstPrice(sel) {
             const opt = sel.options[sel.selectedIndex];
-            if(opt) {
+            if (opt) {
                 const prod = db.products.find(p => p.id == sel.value);
-                if(prod) { 
-                    document.getElementById('inst-price').value = prod.price; 
+                if (prod) {
+                    document.getElementById('inst-price').value = prod.price;
                     calcInst();
                 }
             }
         }
-        
+
         function calcInst() {
             const price = parseFloat(document.getElementById('inst-price').value) || 0;
             const down = parseFloat(document.getElementById('inst-down').value) || 0;
             const count = parseInt(document.getElementById('inst-count').value) || 1;
-            
+
             const remaining = Math.max(0, price - down);
             const monthly = count > 0 ? remaining / count : 0;
-            
+
             document.getElementById('inst-monthly').value = monthly.toFixed(2);
         }
-        
+
         function createInstallmentPlan() {
             const custId = document.getElementById('inst-customer').value;
             const prodId = document.getElementById('inst-product').value;
@@ -2184,32 +2788,32 @@
             const down = parseFloat(document.getElementById('inst-down').value) || 0;
             const count = parseInt(document.getElementById('inst-count').value) || 12;
             const method = document.getElementById('inst-method').value;
-            
-            if(!custId || !prodId || !price) return showToast('بيانات ناقصة', 'error');
-            
+
+            if (!custId || !prodId || !price) return showToast('بيانات ناقصة', 'error');
+
             const customer = db.customers.find(c => c.id == custId);
             const product = db.products.find(p => p.id == prodId);
             const monthly = parseFloat(document.getElementById('inst-monthly').value);
             const date = new Date();
-            
+
             // Assume Price is GROSS (Inclusive of VAT)
             const netSale = price / (1 + (db.settings.vatRate / 100));
             const vat = price - netSale;
             const formattedDate = date.toISOString().split('T')[0];
             const remaining = price - down;
-            
+
             const lines = [];
-            if(down > 0) lines.push({code: method || '1101', dr: down, cr: 0});
-            if(remaining > 0) lines.push({code: '1103', dr: remaining, cr: 0});
-            lines.push({code: '4101', dr: 0, cr: netSale});
-            lines.push({code: '2102', dr: 0, cr: vat});
-            lines.push({code: '5101', dr: product.cost, cr: 0});
-            lines.push({code: '1104', dr: 0, cr: product.cost});
-            
-            if(addJournalEntry(formattedDate, `عقد تقسيط - ${customer.name} (${product.name})`, lines)) {
+            if (down > 0) lines.push({ code: method || '1101', dr: down, cr: 0 });
+            if (remaining > 0) lines.push({ code: '1103', dr: remaining, cr: 0 });
+            lines.push({ code: '4101', dr: 0, cr: netSale });
+            lines.push({ code: '2102', dr: 0, cr: vat });
+            lines.push({ code: '5101', dr: product.cost, cr: 0 });
+            lines.push({ code: '1104', dr: 0, cr: product.cost });
+
+            if (addJournalEntry(formattedDate, `عقد تقسيط - ${customer.name} (${product.name})`, lines)) {
                 // Generate Installments
                 const saleId = Date.now();
-                for(let i=0; i<count; i++) {
+                for (let i = 0; i < count; i++) {
                     const d = new Date(date);
                     d.setMonth(d.getMonth() + i + 1); // Next month
                     db.installments.push({
@@ -2222,52 +2826,52 @@
                         status: 'pending'
                     });
                 }
-                
+
                 // Reduce Stock
                 product.stock -= 1;
-                db.sales.push({id: saleId, date: formattedDate, customer: customer.name, total: price, paid: down, remaining: remaining, type: 'installment', items: [{...product, qty: 1, price: price, total: price}]});
-                
+                db.sales.push({ id: saleId, date: formattedDate, customer: customer.name, total: price, paid: down, remaining: remaining, type: 'installment', items: [{ ...product, qty: 1, price: price, total: price }] });
+
                 showToast('تم إنشاء عقد التقسيط');
-                save(); renderInstallments(); renderAll(); 
+                save(); renderInstallments(); renderAll();
                 document.getElementById('inst-price').value = '';
                 document.getElementById('inst-down').value = '';
             }
         }
-        
+
         function renderInstallments() {
-            if(!db.installments) db.installments = [];
+            if (!db.installments) db.installments = [];
             const list = document.getElementById('installments-list');
-            if(list) list.innerHTML = db.installments.sort((a,b) => new Date(a.dueDate) - new Date(b.dueDate)).map(inst => {
+            if (list) list.innerHTML = db.installments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).map(inst => {
                 const isLate = new Date(inst.dueDate) < new Date() && inst.status === 'pending';
                 const statusClass = inst.status === 'paid' ? 'text-emerald-600 bg-emerald-50' : (isLate ? 'text-red-600 bg-red-50' : 'text-slate-600');
                 const statusText = inst.status === 'paid' ? 'مدفوع' : (isLate ? 'متأخر' : 'مستحق');
-                
+
                 return `
                     <tr class="hover:bg-slate-50 border-b">
                         <td class="p-3 font-bold">${inst.customerName}</td>
                         <td class="p-3 font-mono">${inst.amount.toFixed(2)}</td>
                         <td class="p-3 ${isLate ? 'text-red-600 font-bold' : ''}">${inst.dueDate}</td>
                         <td class="p-3 text-center">
-                            ${inst.status === 'pending' ? 
-                                `<button onclick="payInstallment(${inst.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 shadow">تحصيل</button>` : 
-                                `<span class="px-2 py-1 rounded text-xs font-bold ${statusClass}">${statusText}</span>`
-                            }
+                            ${inst.status === 'pending' ?
+                        `<button onclick="payInstallment(${inst.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 shadow">تحصيل</button>` :
+                        `<span class="px-2 py-1 rounded text-xs font-bold ${statusClass}">${statusText}</span>`
+                    }
                         </td>
                     </tr>
                 `;
             }).join('');
         }
-        
+
         function payInstallment(id) {
-            if(!confirm('تأكيد تحصيل القسط؟')) return;
+            if (!confirm('تأكيد تحصيل القسط؟')) return;
             const inst = db.installments.find(i => i.id == id);
-            if(inst && inst.status === 'pending') {
+            if (inst && inst.status === 'pending') {
                 const date = new Date().toISOString().split('T')[0];
                 const lines = [
-                    {code: '1101', dr: inst.amount, cr: 0},
-                    {code: '1103', dr: 0, cr: inst.amount}
+                    { code: '1101', dr: inst.amount, cr: 0 },
+                    { code: '1103', dr: 0, cr: inst.amount }
                 ];
-                if(addJournalEntry(date, `تحصيل قسط - ${inst.customerName}`, lines)) {
+                if (addJournalEntry(date, `تحصيل قسط - ${inst.customerName}`, lines)) {
                     inst.status = 'paid';
                     inst.paidDate = date;
                     save(); renderInstallments(); renderAll();
@@ -2275,7 +2879,7 @@
                 }
             }
         }
-        
+
         function filterInstallments(q) {
             const rows = document.querySelectorAll('#installments-list tr');
             rows.forEach(r => {
@@ -2283,7 +2887,432 @@
             });
         }
 
-        // window.onload = init; // Removed, waiting for login
+        // --- 12. Services Module Logic ---
+        let currentSrvCart = [];
+
+        function renderServices() {
+            if (!db.services) db.services = [];
+            const list = document.getElementById('services-list');
+            if (list) list.innerHTML = db.services.map(s => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-2 font-bold">${s.name}</td>
+                    <td class="p-2 font-mono text-emerald-600">${s.price}</td>
+                    <td class="p-2"><button onclick="editService(${s.id})" class="text-blue-500"><i class="fas fa-edit"></i></button></td>
+                </tr>
+            `).join('');
+
+            const sel = document.getElementById('srv-list');
+            if (sel) sel.innerHTML = '<option value="">اختر خدمة...</option>' + db.services.map(s => `<option value="${s.id}">${s.name} (${s.price})</option>`).join('');
+
+            const methodSel = document.getElementById('srv-method');
+            if (methodSel && db.settings.paymentMethods) methodSel.innerHTML = db.settings.paymentMethods.map(m => `<option value="${m}">${m}</option>`).join('');
+        }
+
+        function saveService(e) {
+            e.preventDefault();
+            const id = document.getElementById('serv-id').value;
+            const name = document.getElementById('serv-name').value;
+            const price = parseFloat(document.getElementById('serv-price').value);
+            const desc = document.getElementById('serv-desc').value;
+
+            if (id) {
+                const s = db.services.find(x => x.id == id);
+                if (s) { s.name = name; s.price = price; s.description = desc; }
+            } else {
+                db.services.push({ id: Date.now(), name, price, description: desc });
+            }
+            save(); renderServices();
+            document.getElementById('serv-id').value = '';
+            document.getElementById('serv-form').reset();
+            showToast('تم حفظ الخدمة');
+        }
+
+        function editService(id) {
+            const s = db.services.find(x => x.id == id);
+            if (s) {
+                document.getElementById('serv-id').value = s.id;
+                document.getElementById('serv-name').value = s.name;
+                document.getElementById('serv-price').value = s.price;
+                document.getElementById('serv-desc').value = s.description || '';
+            }
+        }
+
+        function addToServiceCart() {
+            const id = document.getElementById('srv-list').value;
+            const serv = db.services.find(x => x.id == id);
+            if (serv) {
+                currentSrvCart.push({ ...serv });
+                renderServiceCart();
+            }
+        }
+
+        function renderServiceCart() {
+            const tbody = document.getElementById('srv-cart-body');
+            let total = 0;
+            if (tbody) {
+                tbody.innerHTML = currentSrvCart.map((item, idx) => {
+                    total += item.price;
+                    return `<tr><td class="p-2">${item.name}</td><td class="p-2 font-mono">${item.price}</td><td class="p-2"><button onclick="currentSrvCart.splice(${idx},1);renderServiceCart()" class="text-red-500"><i class="fas fa-times"></i></button></td></tr>`;
+                }).join('');
+                document.getElementById('srv-total').innerText = total.toFixed(2);
+            }
+        }
+
+        function postServiceBill() {
+            if (currentSrvCart.length === 0) return showToast('الفاتورة فارغة', 'error');
+            const total = currentSrvCart.reduce((sum, item) => sum + item.price, 0);
+            const method = document.getElementById('srv-method').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            // Journal: Dr Cash, Cr Services Revenue (4102 maybe? or just 4101)
+            // Let's assume generic Revenue 4101 for now, or create new. 
+            // Better: Add 4102 Services Revenue dynamically if possible, or just use 4101.
+            // Using 4101 for simplicity.
+
+            const lines = [
+                { code: method || '1101', dr: total, cr: 0 },
+                { code: '4101', dr: 0, cr: total }
+            ];
+
+            if (addJournalEntry(date, `فاتورة خدمات - ${method}`, lines)) {
+                // We can add a sales record too if we want to track it in sales list, or separate list.
+                // For now, just journal is enough for financial. 
+                // BUT user might want to see it in a list.
+                // Let's add to Sales with type 'service'
+                db.sales.push({ id: Date.now(), date, customer: 'عميل خدمات', total, paid: total, remaining: 0, method, type: 'service', items: [...currentSrvCart] });
+
+                showToast('تم حفظ الفاتورة');
+                currentSrvCart = []; renderServiceCart(); save(); renderAll();
+            }
+        }
+
+        // --- 13. Expenses Module Logic ---
+        function renderExpenses() {
+            if (!db.expensesCategories) db.expensesCategories = [
+                { id: '5201', name: 'مصروفات تشغيلية' },
+                { id: '5203', name: 'مصروفات أخرى (طارئة)' }
+            ];
+
+            const catSel = document.getElementById('exp-cat');
+            if (catSel) catSel.innerHTML = db.expensesCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+            const methodSel = document.getElementById('exp-method');
+            if (methodSel && db.settings.paymentMethods) methodSel.innerHTML = db.settings.paymentMethods.map(m => `<option value="${m}">${m}</option>`).join('');
+
+            if (!db.expenses) db.expenses = [];
+            const list = document.getElementById('expenses-list');
+            let total = 0;
+            if (list) {
+                list.innerHTML = db.expenses.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 50).map(e => {
+                    total += parseFloat(e.amount);
+                    return `<tr><td class="p-2 border-l">${e.date}</td><td class="p-2 border-l">${e.description}</td><td class="p-2 font-bold text-red-600 border-l">${parseFloat(e.amount).toFixed(2)}</td><td class="p-2 text-xs">${e.categoryName}</td></tr>`;
+                }).join('');
+                document.getElementById('exp-list-total').innerText = total.toFixed(2);
+            }
+        }
+
+        function postExpense(e) {
+            e.preventDefault();
+            const desc = document.getElementById('exp-desc').value;
+            const amount = parseFloat(document.getElementById('exp-amount').value);
+            const catId = document.getElementById('exp-cat').value;
+            const catName = db.expensesCategories.find(c => c.id == catId)?.name || 'مصروف';
+            const method = document.getElementById('exp-method').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            if (!amount || !desc) return showToast('بيانات ناقصة', 'error');
+
+            const lines = [
+                { code: catId, dr: amount, cr: 0 },
+                { code: method || '1101', dr: 0, cr: amount }
+            ];
+
+            if (addJournalEntry(date, `مصروف - ${desc}`, lines)) {
+                db.expenses.push({ id: Date.now(), date, description: desc, amount, categoryId: catId, categoryName: catName, method });
+                showToast('تم تسجيل المصروف Successfully');
+                document.getElementById('exp-desc').value = '';
+                document.getElementById('exp-amount').value = '';
+                save(); renderExpenses(); renderAll();
+            }
+        }
+
+        // --- 14. POS Module Logic ---
+        let posCart = [];
+
+        function renderPOSProducts(q = '', cat = '') {
+            const grid = document.getElementById('pos-grid');
+            if (!grid) return;
+            grid.innerHTML = db.products.filter(p => p.name.includes(q)).map(p => `
+                <div class="bg-slate-50 border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer group" onclick="addToPOSCart(${p.id})">
+                    <div class="h-32 bg-slate-200 flex items-center justify-center relative">
+                        ${p.image ? `<img src="${p.image}" class="w-full h-full object-cover">` : `<i class="fas fa-box text-4xl text-slate-400"></i>`}
+                        <div class="absolute inset-0 bg-black/20 hidden group-hover:flex items-center justify-center text-white font-bold backdrop-blur-sm transition">إضافة للسلة</div>
+                    </div>
+                    <div class="p-3">
+                        <div class="font-bold text-slate-800 text-sm truncate">${p.name}</div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-emerald-600 font-mono font-bold">${p.price}</span>
+                            <span class="text-xs text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded">مخزون: ${p.stock}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Populate Customers Select
+            const custSel = document.getElementById('pos-customer');
+            if (custSel && (!custSel.innerHTML || custSel.innerHTML.length < 10)) {
+                custSel.innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            }
+
+            // Render Other Methods
+            const otherDiv = document.getElementById('pos-other-methods');
+            if (otherDiv && db.settings.paymentMethods) {
+                const others = db.settings.paymentMethods.filter(m => m !== 'Cash' && m !== 'Bank');
+                otherDiv.innerHTML = others.map(m => `
+                    <button onclick="checkoutPOS('${m}')" class="bg-slate-700 text-white py-2 rounded font-bold hover:bg-slate-600 text-xs shadow">${m}</button>
+                `).join('');
+            }
+        }
+
+
+
+        function addToPOSCart(id) {
+            const p = db.products.find(x => x.id == id);
+            if (!p) return;
+            if (p.stock <= 0) return showToast('نافذ من المخزون', 'error');
+
+            const exist = posCart.find(x => x.id == id);
+            if (exist) {
+                if (exist.qty < p.stock) exist.qty++;
+            } else {
+                posCart.push({ ...p, qty: 1, total: p.price });
+            }
+            renderPOSCart();
+        }
+
+        function renderPOSCart() {
+            const tbody = document.getElementById('pos-cart-body');
+            let sub = 0;
+            posCart.forEach(i => { i.total = i.price * i.qty; sub += i.total; });
+
+            tbody.innerHTML = posCart.map((i, idx) => `
+                <tr class="border-b"><td class="p-2 text-xs font-bold">${i.name}</td>
+                <td class="p-2 flex items-center gap-1">
+                    <button onclick="updatePOSQty(${idx}, -1)" class="w-5 h-5 bg-red-100 text-red-600 rounded flex items-center justify-center hover:bg-red-200">-</button>
+                    <span class="font-mono text-xs w-4 text-center">${i.qty}</span>
+                    <button onclick="updatePOSQty(${idx}, 1)" class="w-5 h-5 bg-green-100 text-green-600 rounded flex items-center justify-center hover:bg-green-200">+</button>
+                </td>
+                <td class="p-2 font-mono text-xs">${i.total.toFixed(2)}</td>
+                <td class="p-2"><button onclick="posCart.splice(${idx},1);renderPOSCart()" class="text-red-400 hover:text-red-500"><i class="fas fa-times"></i></button></td></tr>
+            `).join('');
+
+            const disc = parseFloat(document.getElementById('pos-discount').value) || 0;
+            const final = Math.max(0, sub - disc);
+            document.getElementById('pos-subtotal').innerText = sub.toFixed(2);
+            document.getElementById('pos-total').innerText = final.toFixed(2);
+        }
+
+        function updatePOSQty(idx, change) {
+            const item = posCart[idx];
+            const p = db.products.find(x => x.id == item.id);
+            if (change > 0 && item.qty >= p.stock) return showToast('الكمية غير متاحة', 'error');
+            item.qty += change;
+            if (item.qty <= 0) posCart.splice(idx, 1);
+            renderPOSCart();
+        }
+
+        function clearPOSCart() { posCart = []; renderPOSCart(); }
+
+        function checkoutPOS(method) {
+            if (posCart.length === 0) return showToast('السلة فارغة', 'error');
+
+            const isWalkIn = document.getElementById('pos-walkin').checked;
+            const custId = document.getElementById('pos-customer').value;
+            const custName = isWalkIn ? 'عميل نقدي (كاشير)' : (db.customers.find(c => c.id == custId)?.name || 'غير معروف');
+
+            const total = parseFloat(document.getElementById('pos-total').innerText);
+            const subtotal = parseFloat(document.getElementById('pos-subtotal').innerText);
+            const discount = parseFloat(document.getElementById('pos-discount').value) || 0;
+
+            // Logic similar to Sale
+            const date = new Date().toISOString().split('T')[0];
+            const saleId = Date.now();
+
+            // Journal
+            // Dr Cash/Bank, Dr COGS
+            // Cr Sales Rev, Cr VAT, Cr Inventory, Dr Discount Exp
+
+            const vat = total * (db.settings.vatRate / (100 + db.settings.vatRate)); // Inclusive VAT
+            const netSale = total - vat;
+            let totalCost = 0;
+            posCart.forEach(i => { const p = db.products.find(x => x.id == i.id); totalCost += (p?.cost || 0) * i.qty; });
+
+            const lines = [
+                { code: method === 'Cash' ? '1101' : '1102', dr: total, cr: 0 }, // Asset Up
+                { code: '5101', dr: totalCost, cr: 0 }, // COGS
+                { code: '4101', dr: 0, cr: netSale }, // Revenue
+                { code: '1104', dr: 0, cr: totalCost }, // Inventory Down
+                { code: '2102', dr: 0, cr: vat } // VAT Liab
+            ];
+            // Discount? If separate line needed: 
+            // Currently NetSale is reduced by discount. If we want to track Discount Expense:
+            // Dr Cash (Total), Dr Sales Discount (Disc), Cr Sales Revenue (Subtotal - VAT)...
+            // For simplicity, sticking to Net methodology.
+
+            if (addJournalEntry(date, `بيع كاشير - ${custName}`, lines)) {
+                // Stock Update
+                posCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
+
+                db.sales.push({ id: saleId, date, customer: custName, total, paid: total, remaining: 0, method, type: 'pos', items: [...posCart] });
+                showToast('تمت عملية البيع');
+                clearPOSCart();
+                save(); renderAll();
+            }
+        }
+
+        // --- 15. HR Module Logic ---
+        function previewEmpPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.getElementById('emp-photo-preview');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveEmployee(e) {
+            e.preventDefault();
+            const id = document.getElementById('emp-id').value;
+            const name = document.getElementById('emp-name').value;
+            const role = document.getElementById('emp-role').value;
+            const salary = parseFloat(document.getElementById('emp-salary').value);
+            const phone = document.getElementById('emp-phone').value;
+            const photoSrc = document.getElementById('emp-photo-preview').src || '';
+
+            if (id) {
+                const emp = db.employees.find(x => x.id == id);
+                if (emp) { emp.name = name; emp.role = role; emp.salary = salary; emp.phone = phone; if (photoSrc.startsWith('data:')) emp.photo = photoSrc; }
+            } else {
+                db.employees.push({ id: Date.now(), name, role, salary, phone, photo: photoSrc.startsWith('data:') ? photoSrc : '' });
+            }
+            save(); renderEmployees();
+            document.getElementById('emp-id').value = '';
+            document.getElementById('emp-form').reset();
+            document.getElementById('emp-photo-preview').classList.add('hidden');
+            showToast('تم حفظ الموظف');
+        }
+
+        function renderEmployees() {
+            if (!db.employees) db.employees = [];
+
+            // List
+            const list = document.getElementById('employees-list');
+            if (list) list.innerHTML = db.employees.map(e => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-2 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden"><img src="${e.photo || ''}" class="w-full h-full object-cover"></div>
+                        <span class="font-bold">${e.name}</span>
+                    </td>
+                    <td class="p-2 text-xs">${e.role}</td>
+                    <td class="p-2 font-mono">${e.salary}</td>
+                    <td class="p-2"><button onclick="editEmployee(${e.id})" class="text-blue-500"><i class="fas fa-edit"></i></button></td>
+                </tr>
+            `).join('');
+
+            // Select for Actions
+            const sel = document.getElementById('act-emp');
+            if (sel) sel.innerHTML = '<option value="">اختر موظف...</option>' + db.employees.map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+
+            // Render Recent Actions
+            if (!db.payrollActions) db.payrollActions = [];
+            const actList = document.getElementById('actions-list');
+            if (actList) actList.innerHTML = db.payrollActions.slice().reverse().slice(0, 20).map(a => `
+                <tr><td class="p-2">${a.empName}</td><td class="p-2 text-xs ${a.type === 'bonus' ? 'text-emerald-600' : 'text-red-600'}">${a.type === 'bonus' ? 'مكافأة' : 'خصم'}</td><td class="p-2 font-bold">${a.amount}</td></tr>
+            `).join('');
+        }
+
+        function editEmployee(id) {
+            const e = db.employees.find(x => x.id == id);
+            if (e) {
+                document.getElementById('emp-id').value = e.id;
+                document.getElementById('emp-name').value = e.name;
+                document.getElementById('emp-role').value = e.role;
+                document.getElementById('emp-salary').value = e.salary;
+                document.getElementById('emp-phone').value = e.phone;
+                const img = document.getElementById('emp-photo-preview');
+                if (e.photo) { img.src = e.photo; img.classList.remove('hidden'); } else { img.classList.add('hidden'); }
+            }
+        }
+
+        function postPayrollAction(e) {
+            e.preventDefault();
+            const empId = document.getElementById('act-emp').value;
+            const type = document.getElementById('act-type').value;
+            const amount = parseFloat(document.getElementById('act-amount').value);
+            const desc = document.getElementById('act-desc').value;
+            const emp = db.employees.find(x => x.id == empId);
+
+            if (!emp || !amount) return showToast('بيانات ناقصة', 'error');
+
+            db.payrollActions.push({
+                id: Date.now(),
+                empId, empName: emp.name,
+                type, amount, description: desc,
+                date: new Date().toISOString().split('T')[0]
+            });
+            save(); renderEmployees(); showToast('تم تسجيل الإجراء');
+            document.getElementById('act-amount').value = '';
+            document.getElementById('act-desc').value = '';
+        }
+
+        function generatePayrollPreview() {
+            const month = document.getElementById('payroll-month').value;
+            if (!month) return showToast('اختر الشهر', 'error');
+
+            const tbody = document.getElementById('payroll-table');
+            let totalNet = 0;
+
+            const rows = db.employees.map(emp => {
+                const actions = db.payrollActions.filter(a => a.empId == emp.id && a.date.startsWith(month));
+                const bonuses = actions.filter(a => a.type === 'bonus').reduce((sum, a) => sum + a.amount, 0);
+                const deductions = actions.filter(a => a.type === 'deduction').reduce((sum, a) => sum + a.amount, 0);
+                const net = emp.salary + bonuses - deductions;
+                totalNet += net;
+
+                return `<tr>
+                    <td class="p-2 font-bold">${emp.name}</td>
+                    <td class="p-2">${emp.salary}</td>
+                    <td class="p-2 text-green-600">${bonuses}</td>
+                    <td class="p-2 text-red-600">${deductions}</td>
+                    <td class="p-2 font-bold">${net}</td>
+                </tr>`;
+            }).join('');
+
+            tbody.innerHTML = rows;
+            document.getElementById('payroll-total').innerText = totalNet.toFixed(2);
+            document.getElementById('payroll-preview').classList.remove('hidden');
+        }
+
+        function postPayroll() {
+            if (!confirm('هل أنت متأكد من صرف الرواتب؟ سيتم تسجيل قيد يومي.')) return;
+            const total = parseFloat(document.getElementById('payroll-total').innerText);
+            const month = document.getElementById('payroll-month').value;
+            const date = new Date().toISOString().split('T')[0];
+
+            const lines = [
+                { code: '5202', dr: total, cr: 0 },
+                { code: '1101', dr: 0, cr: total }
+            ];
+
+            if (addJournalEntry(date, `رواتب شهر ${month}`, lines)) {
+                showToast('تم صرف الرواتب');
+                document.getElementById('payroll-preview').classList.add('hidden');
+                save(); renderAll();
+            }
+        }
     </script>
 </body>
 
