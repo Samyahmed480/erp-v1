@@ -5300,6 +5300,8 @@
             try { if (typeof renderPayrollHistory === 'function') renderPayrollHistory(); } catch (e) { console.error('renderPayrollHistory error:', e); }
             try { if (typeof renderInstallments === 'function') renderInstallments(); } catch (e) { console.error('renderInstallments error:', e); }
             try { if (typeof renderPaymentMethods === 'function') renderPaymentMethods(); } catch (e) { console.error('renderPaymentMethods error:', e); }
+            try { renderPurchaseInvoices(); } catch (e) { console.error('renderPurchaseInvoices error:', e); }
+            try { renderSalesInvoices(); } catch (e) { console.error('renderSalesInvoices error:', e); }
 
             // Update header
             try {
@@ -6270,7 +6272,7 @@
                 if (id === 'installment_customers') renderInstCustomers();
                 if (id === 'installment_payments') renderInstPayments();
                 if (id === 'sales') { renderCustStatement(); renderSalesInvoices(); }
-                if (id === 'purchases') { renderSuppStatement(); }
+                if (id === 'purchases') { renderSuppStatement(); renderPurchaseInvoices(); }
                 if (id === 'pos_products') { renderPOSProductsList(); }
                 if (id === 'pos') { setTimeout(() => document.getElementById('pos-barcode-input')?.focus(), 100); }
                 // Invoices Module
@@ -6326,6 +6328,25 @@
                     <td class="p-1.5 font-bold">${(s.total || 0).toFixed(2)}</td>
                     <td class="p-1.5">${status}</td>
                     <td class="p-1.5"><button onclick="viewSaleInvoice(${s.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+
+        // --- Purchase Invoice List (Sidebar) ---
+        function renderPurchaseInvoices() {
+            const tbody = document.getElementById('recent-pur-body');
+            if (!tbody) return;
+            const purchases = [...db.purchases].reverse();
+            tbody.innerHTML = purchases.length ? purchases.map((p, i) => {
+                const purNo = p.invoiceNo || ('PUR-' + String(purchases.length - i).padStart(4, '0'));
+                const status = (p.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-orange-50 cursor-pointer" ondblclick="viewPurchaseInvoice(${p.id})">
+                    <td class="p-1.5 font-mono text-orange-600">${purNo}</td>
+                    <td class="p-1.5">${p.date}</td>
+                    <td class="p-1.5 font-bold">${p.supplier}</td>
+                    <td class="p-1.5 font-bold">${(p.total || 0).toFixed(2)}</td>
+                    <td class="p-1.5">${status}</td>
+                    <td class="p-1.5"><button onclick="viewPurchaseInvoice(${p.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
                 </tr>`;
             }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
         }
