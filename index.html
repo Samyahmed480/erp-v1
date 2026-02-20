@@ -440,8 +440,8 @@
                         data-target="inv_services"><i class="fas fa-file-medical w-5 text-center"></i> فواتير
                         الخدمات</button>
                     <button onclick="showSection('inv_installments')"
-                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                        data-target="inv_installments"><i class="fas fa-file-contract w-5 text-center"></i> فواتير
+                        class="w-full flex items-center gap-3 px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+                        data-target="inv_installments"><i class="fas fa-file-invoice-dollar w-5 text-center"></i> فاتورة
                         التقسيط</button>
                 </div>
             </div>
@@ -522,9 +522,9 @@
                 </button>
                 <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
                     <button onclick="showSection('installments')"
-                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                        data-target="installments"><i class="fas fa-file-contract w-5 text-center"></i> إنشاء عقد
-                        تقسيط</button>
+                        class="w-full flex items-center gap-3 px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all group"
+                        data-target="installments"><i class="fas fa-file-invoice-dollar w-5 text-center"></i> فاتورة
+                        التقسيط</button>
                     <button onclick="showSection('installment_customers')"
                         class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
                         data-target="installment_customers"><i class="fas fa-user-plus w-5 text-center"></i> عملاء
@@ -4167,6 +4167,7 @@
                 { code: '2', name: 'الالتزامات', type: 'liability', level: 1, balance: 0, isGroup: true },
                 { code: '2101', name: 'الموردين (الدائنون)', type: 'liability', level: 3, parent: '2', balance: 0 },
                 { code: '2102', name: 'ضريبة القيمة المضافة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '2', balance: 0 },
                 { code: '3', name: 'حقوق الملكية', type: 'equity', level: 1, balance: 0, isGroup: true },
                 { code: '3101', name: 'رأس المال', type: 'equity', level: 3, parent: '3', balance: 0 },
                 { code: '4', name: 'الإيرادات', type: 'revenue', level: 1, balance: 0, isGroup: true },
@@ -5595,8 +5596,8 @@
             // The remaining amount is Receivable (1103) vs Deferred/Stock cleanup
             // For simplicity in this ERP, we'll track the balance in 1103
             if (remaining > 0) {
-                lines.push({ code: '1103', dr: remaining, cr: 0 });
-                // We don't credit Revenue (4101) yet for the remaining part!
+                lines.push({ code: '1103', dr: remaining, cr: 0 }); // DR Receivable
+                lines.push({ code: '2103', dr: 0, cr: remaining }); // CR Deferred Revenue
             }
 
             // Stock reduction logic
@@ -5718,7 +5719,8 @@
                 const lines = [
                     { code: '1101', dr: inst.amount, cr: 0 },    // Cash
                     { code: '4101', dr: 0, cr: inst.amount },   // Revenue
-                    { code: '1103', dr: 0, cr: inst.amount }    // Decrease Receivable
+                    { code: '2103', dr: inst.amount, cr: 0 },   // Reduction of Deferred Revenue
+                    { code: '1103', dr: 0, cr: inst.amount }    // Reduction of Receivable
                 ];
 
                 if (addJournalEntry(date, `تحصيل قسط #${num} - ${inv.invoiceNo} (${inv.customer})`, lines)) {
