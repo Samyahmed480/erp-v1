@@ -291,130 +291,223 @@
             <span class="text-[10px] text-slate-400 mt-1 bg-slate-800 px-2 py-0.5 rounded-full">V10.0 Pro</span>
         </div>
 
-        <nav class="flex-1 p-3 space-y-1 overflow-y-auto text-sm">
+        <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm">
             <button onclick="showSection('dashboard')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="dashboard">
-                <i class="fas fa-chart-pie w-8 text-center text-lg"></i> لوحة القيادة
-            </button>
+                <i class="fas fa-chart-pie w-7 text-center"></i> لوحة القيادة</button>
 
             <!-- نقطة البيع -->
             <button onclick="showSection('pos')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="pos">
-                <i class="fas fa-calculator w-8 text-center text-lg"></i> نقطة بيع (Kiosk)
-            </button>
-            <button onclick="showSection('pos_products')" class="nav-btn w-full text-right pr-10 p-2 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-400 text-xs" data-target="pos_products">
-                <i class="fas fa-box w-6 text-center"></i> المنتجات والأسعار
-            </button>
+                <i class="fas fa-calculator w-7 text-center"></i> نقطة البيع</button>
+            <button onclick="showSection('pos_products')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="pos_products">
+                <i class="fas fa-box w-5 text-center"></i> المنتجات والأسعار</button>
             <button onclick="showSection('barcode')"
-                class="nav-btn w-full text-right pr-10 p-2 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-400 text-xs"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
                 data-target="barcode">
-                <i class="fas fa-barcode w-6 text-center"></i> إصدار باركود
-            </button>
+                <i class="fas fa-barcode w-5 text-center"></i> إصدار باركود</button>
+
+            <!-- الفواتير -->
+            <button onclick="showSection('invoices')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="invoices">
+                <i class="fas fa-file-invoice w-7 text-center"></i> الفواتير</button>
+            <button onclick="showSection('inv_pos')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inv_pos">
+                <i class="fas fa-cash-register w-5 text-center"></i> فواتير نقاط البيع</button>
+            <button onclick="showSection('inv_sales')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inv_sales">
+                <i class="fas fa-file-alt w-5 text-center"></i> فواتير المبيعات</button>
+            <button onclick="showSection('inv_purchases')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inv_purchases">
+                <i class="fas fa-file-import w-5 text-center"></i> فواتير المشتريات</button>
+            <button onclick="showSection('inv_services')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inv_services">
+                <i class="fas fa-file-medical w-5 text-center"></i> فواتير الخدمات</button>
+            <button onclick="showSection('inv_installments')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inv_installments">
+                <i class="fas fa-file-contract w-5 text-center"></i> فواتير التقسيط</button>
 
             <!-- المبيعات -->
             <button onclick="showSection('sales')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="sales">
-                <i class="fas fa-cash-register w-8 text-center text-lg"></i> المبيعات
-            </button>
+                <i class="fas fa-cash-register w-7 text-center"></i> المبيعات</button>
             <button onclick="showSection('customers')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="customers">
-                <i class="fas fa-users w-8 text-center text-lg"></i> العملاء
-            </button>
+                <i class="fas fa-users w-7 text-center"></i> العملاء</button>
+            <button onclick="showSection('cust_statement')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="cust_statement">
+                <i class="fas fa-file-invoice-dollar w-7 text-center"></i> كشف حساب العملاء</button>
 
             <!-- المشتريات -->
             <button onclick="showSection('purchases')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="purchases">
-                <i class="fas fa-shopping-cart w-8 text-center text-lg"></i> المشتريات
-            </button>
+                <i class="fas fa-shopping-cart w-7 text-center"></i> المشتريات</button>
             <button onclick="showSection('suppliers')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="suppliers">
-                <i class="fas fa-truck w-8 text-center text-lg"></i> الموردين
-            </button>
-
-            <!-- الموارد البشرية (رئيسي) مع الرواتب (فرعي) -->
-            <button onclick="showSection('hr')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="hr">
-                <i class="fas fa-user-tie w-8 text-center text-lg"></i> الموارد البشرية
-            </button>
-            <button onclick="showSection('salaries')"
-                class="nav-btn w-full text-right pr-10 p-2 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-400 text-xs"
-                data-target="salaries">
-                <i class="fas fa-money-check-alt w-6 text-center"></i> الرواتب والأجور
-            </button>
-
-            <!-- المخزون -->
-            <button onclick="showSection('inventory')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="inventory">
-                <i class="fas fa-boxes w-8 text-center text-lg"></i> إدارة المخزون
-            </button>
-
-            <!-- التقسيط (رئيسي) مع فرعيات -->
-            <button onclick="showSection('installments')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="installments">
-                <i class="fas fa-calendar-alt w-8 text-center text-lg"></i> التقسيط
-            </button>
-            <button onclick="showSection('installment_customers')"
-                class="nav-btn w-full text-right pr-10 p-2 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-400 text-xs"
-                data-target="installment_customers">
-                <i class="fas fa-user-plus w-6 text-center"></i> عملاء التقسيط
-            </button>
-            <button onclick="showSection('installment_payments')"
-                class="nav-btn w-full text-right pr-10 p-2 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-400 text-xs"
-                data-target="installment_payments">
-                <i class="fas fa-receipt w-6 text-center"></i> كشف حساب الدفعات
-            </button>
+                <i class="fas fa-truck w-7 text-center"></i> الموردين</button>
+            <button onclick="showSection('supp_statement')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="supp_statement">
+                <i class="fas fa-file-invoice w-7 text-center"></i> كشف حساب الموردين</button>
 
             <!-- الخدمات -->
             <button onclick="showSection('services')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="services">
-                <i class="fas fa-tools w-8 text-center text-lg"></i> الخدمات
-            </button>
-            <button onclick="showSection('expenses')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="expenses">
-                <i class="fas fa-money-bill-wave w-8 text-center text-lg"></i> المصروفات
-            </button>
+                <i class="fas fa-tools w-7 text-center"></i> الخدمات</button>
+            <button onclick="showSection('svc_statement')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="svc_statement">
+                <i class="fas fa-file-alt w-5 text-center"></i> كشف حساب الخدمات</button>
 
-            <div class="my-3 border-t border-slate-700"></div>
+            <!-- المخزون -->
+            <button onclick="showSection('inventory')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="inventory">
+                <i class="fas fa-boxes w-7 text-center"></i> إدارة المخزون</button>
+
+            <!-- التقسيط -->
+            <button onclick="showSection('installments')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="installments">
+                <i class="fas fa-calendar-alt w-7 text-center"></i> التقسيط</button>
+            <button onclick="showSection('installment_customers')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="installment_customers">
+                <i class="fas fa-user-plus w-5 text-center"></i> عملاء التقسيط</button>
+            <button onclick="showSection('inst_collection')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="inst_collection">
+                <i class="fas fa-hand-holding-usd w-5 text-center"></i> الأقساط والتحصيل</button>
+
+            <!-- المصروفات -->
+            <button onclick="showSection('expenses')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="expenses">
+                <i class="fas fa-money-bill-wave w-7 text-center"></i> المصروفات</button>
+            <button onclick="showSection('expense_vouchers')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="expense_vouchers">
+                <i class="fas fa-receipt w-5 text-center"></i> سندات الصرف</button>
+
+            <!-- الموارد البشرية -->
+            <button onclick="showSection('hr')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="hr">
+                <i class="fas fa-user-tie w-7 text-center"></i> الموارد البشرية</button>
+            <button onclick="showSection('hr_employees')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="hr_employees">
+                <i class="fas fa-id-card w-5 text-center"></i> إدارة الموظفين</button>
+            <button onclick="showSection('hr_actions')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="hr_actions">
+                <i class="fas fa-clipboard-list w-5 text-center"></i> الإجراءات</button>
+            <button onclick="showSection('hr_list')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="hr_list">
+                <i class="fas fa-list-ul w-5 text-center"></i> الموظفين</button>
+            <button onclick="showSection('hr_payroll')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="hr_payroll">
+                <i class="fas fa-money-check-alt w-5 text-center"></i> كشف رواتب</button>
+
+            <div class="my-2 border-t border-slate-700"></div>
 
             <button onclick="showSection('journal')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="journal">
-                <i class="fas fa-book w-8 text-center text-lg"></i> القيود اليومية
-            </button>
+                <i class="fas fa-book w-7 text-center"></i> القيود اليومية</button>
             <button onclick="showSection('accounts_tree')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="accounts_tree">
-                <i class="fas fa-sitemap w-8 text-center text-lg"></i> شجرة الحسابات
-            </button>
+                <i class="fas fa-sitemap w-7 text-center"></i> شجرة الحسابات</button>
             <button onclick="showSection('reports')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="reports">
-                <i class="fas fa-file-contract w-8 text-center text-lg"></i> التقارير
-            </button>
+                <i class="fas fa-chart-bar w-7 text-center"></i> التقارير</button>
+            <button onclick="showSection('rpt_pos')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_pos">
+                <i class="fas fa-cash-register w-5 text-center"></i> تقارير نقاط البيع</button>
+            <button onclick="showSection('rpt_sales')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_sales">
+                <i class="fas fa-chart-line w-5 text-center"></i> تقارير المبيعات</button>
+            <button onclick="showSection('rpt_customers')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_customers">
+                <i class="fas fa-users w-5 text-center"></i> تقارير العملاء</button>
+            <button onclick="showSection('rpt_purchases')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_purchases">
+                <i class="fas fa-shopping-cart w-5 text-center"></i> تقارير المشتريات</button>
+            <button onclick="showSection('rpt_suppliers')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_suppliers">
+                <i class="fas fa-truck w-5 text-center"></i> تقارير الموردين</button>
+            <button onclick="showSection('rpt_employees')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_employees">
+                <i class="fas fa-user-tie w-5 text-center"></i> تقارير الموظفين</button>
+            <button onclick="showSection('rpt_inventory')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_inventory">
+                <i class="fas fa-boxes w-5 text-center"></i> تقارير المخزون</button>
+            <button onclick="showSection('rpt_services')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_services">
+                <i class="fas fa-tools w-5 text-center"></i> تقارير الخدمات</button>
+            <button onclick="showSection('rpt_installments')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_installments">
+                <i class="fas fa-calendar-alt w-5 text-center"></i> تقارير التقسيط</button>
+            <button onclick="showSection('rpt_inst_customers')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_inst_customers">
+                <i class="fas fa-user-tag w-5 text-center"></i> تقارير عملاء التقسيط</button>
+            <button onclick="showSection('rpt_expenses')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_expenses">
+                <i class="fas fa-money-bill-wave w-5 text-center"></i> تقارير المصروفات</button>
+            <button onclick="showSection('rpt_revenue')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_revenue">
+                <i class="fas fa-coins w-5 text-center"></i> تقارير الإيرادات</button>
+            <button onclick="showSection('rpt_treasury')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_treasury">
+                <i class="fas fa-vault w-5 text-center"></i> تقارير الخزينة</button>
+            <button onclick="showSection('rpt_profits')"
+                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                data-target="rpt_profits">
+                <i class="fas fa-chart-pie w-5 text-center"></i> تقارير الأرباح</button>
 
-            <div class="my-3 border-t border-slate-700"></div>
+            <div class="my-2 border-t border-slate-700"></div>
 
             <button onclick="showSection('users')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="users">
-                <i class="fas fa-users-cog w-8 text-center text-lg"></i> المستخدمين
-            </button>
+                <i class="fas fa-users-cog w-7 text-center"></i> المستخدمين</button>
             <button onclick="showSection('settings')"
-                class="nav-btn w-full text-right p-3 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="settings">
-                <i class="fas fa-cogs w-8 text-center text-lg"></i> الإعدادات
-            </button>
+                <i class="fas fa-cogs w-7 text-center"></i> الإعدادات</button>
         </nav>
     </aside>
 
@@ -1028,9 +1121,25 @@
                                 class="hidden flex justify-between text-xs text-yellow-400 mb-2">
                                 <span>المتبقي على العميل:</span><span id="sale-remaining">0.00</span>
                             </div>
-                            <button onclick="postSale()"
-                                class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg font-bold shadow-lg transition transform active:scale-95">حفظ
-                                وطباعة</button>
+                            <!-- أزرار الإجراءات المنفصلة -->
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="postSale()"
+                                    class="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg font-bold shadow transition active:scale-95 text-sm">
+                                    <i class="fas fa-save me-1"></i>حفظ الفاتورة
+                                </button>
+                                <button onclick="printLastSaleInvoice()"
+                                    class="bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg font-bold shadow transition active:scale-95 text-sm">
+                                    <i class="fas fa-print me-1"></i>طباعة آخر فاتورة
+                                </button>
+                                <button onclick="exportLastSalePDF()"
+                                    class="bg-red-600 hover:bg-red-500 text-white py-1.5 rounded-lg font-bold text-xs">
+                                    <i class="fas fa-file-pdf me-1"></i>تصدير PDF
+                                </button>
+                                <button onclick="exportTableToCSV('recent-inv-table','فواتير_المبيعات')"
+                                    class="bg-green-700 hover:bg-green-600 text-white py-1.5 rounded-lg font-bold text-xs">
+                                    <i class="fas fa-file-excel me-1"></i>تصدير Excel
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -1038,17 +1147,35 @@
                     <div class="lg:col-span-1 flex flex-col gap-4">
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800">آخر الفواتير</h3>
+                                <h3 class="font-bold text-sm text-slate-800"><i
+                                        class="fas fa-file-alt text-blue-500 me-1"></i>سجل الفواتير</h3>
                                 <div class="flex gap-1">
+                                    <input type="text" placeholder="بحث..."
+                                        class="p-1 border rounded text-[10px] w-24 outline-none"
+                                        onkeyup="filterSalesInvoiceList(this.value)">
                                     <button onclick="exportTableToCSV('recent-inv-table','فواتير_المبيعات')"
                                         class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded hover:bg-emerald-100"
                                         title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('recent-invoices')"
+                                    <button onclick="printSection('recent-inv-body')"
                                         class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
                                         title="طباعة"><i class="fas fa-print"></i></button>
                                 </div>
                             </div>
-                            <div id="recent-invoices" class="overflow-y-auto max-h-[200px] space-y-2 pr-1"></div>
+                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
+                                <table id="recent-inv-table" class="w-full text-[10px] text-right">
+                                    <thead class="bg-slate-800 text-white sticky top-0">
+                                        <tr>
+                                            <th class="p-1.5">#</th>
+                                            <th class="p-1.5">التاريخ</th>
+                                            <th class="p-1.5">العميل</th>
+                                            <th class="p-1.5">الإجمالي</th>
+                                            <th class="p-1.5">الحالة</th>
+                                            <th class="p-1.5"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-inv-body" class="bg-white divide-y"></tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
@@ -2154,6 +2281,1439 @@
                 </div>
             </section>
 
+
+            <!-- ===== INVOICES MODULE ===== -->
+            <section id="invoices" class="section-content">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center cursor-pointer hover:shadow-md transition"
+                        onclick="showSection('inv_pos')">
+                        <i class="fas fa-cash-register text-3xl text-purple-500 mb-2"></i>
+                        <div class="text-2xl font-bold text-purple-600" id="inv-count-pos">0</div>
+                        <div class="text-xs text-slate-500">فواتير نقاط البيع</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center cursor-pointer hover:shadow-md transition"
+                        onclick="showSection('inv_sales')">
+                        <i class="fas fa-file-alt text-3xl text-blue-500 mb-2"></i>
+                        <div class="text-2xl font-bold text-blue-600" id="inv-count-sales">0</div>
+                        <div class="text-xs text-slate-500">فواتير المبيعات</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center cursor-pointer hover:shadow-md transition"
+                        onclick="showSection('inv_purchases')">
+                        <i class="fas fa-file-import text-3xl text-orange-500 mb-2"></i>
+                        <div class="text-2xl font-bold text-orange-600" id="inv-count-pur">0</div>
+                        <div class="text-xs text-slate-500">فواتير المشتريات</div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm text-center cursor-pointer hover:shadow-md transition"
+                        onclick="showSection('inv_services')">
+                        <i class="fas fa-file-medical text-3xl text-teal-500 mb-2"></i>
+                        <div class="text-2xl font-bold text-teal-600" id="inv-count-svc">0</div>
+                        <div class="text-xs text-slate-500">فواتير الخدمات</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- فواتير نقاط البيع -->
+            <section id="inv_pos" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-cash-register text-purple-500 me-2"></i>فواتير نقاط البيع</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث برقم الفاتورة..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('inv-pos-body',this.value)">
+                            <button onclick="exportTableToCSV('inv-pos-table','فواتير_نقاط_البيع')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inv-pos-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="inv-pos-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">الوقت</th>
+                                    <th class="p-2.5">المنتجات</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-pos-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- فواتير المبيعات -->
+            <section id="inv_sales" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-alt text-blue-500 me-2"></i>فواتير المبيعات</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث برقم الفاتورة أو العميل..."
+                                class="p-2 border rounded text-sm w-56 outline-none"
+                                onkeyup="filterInvTable('inv-sales-body',this.value)">
+                            <button onclick="exportTableToCSV('inv-sales-table','فواتير_المبيعات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inv-sales-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="inv-sales-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">المنتجات</th>
+                                    <th class="p-2.5">الخصم</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-sales-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- فواتير المشتريات -->
+            <section id="inv_purchases" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-import text-orange-500 me-2"></i>فواتير المشتريات</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث برقم الفاتورة أو المورد..."
+                                class="p-2 border rounded text-sm w-56 outline-none"
+                                onkeyup="filterInvTable('inv-pur-body',this.value)">
+                            <button onclick="exportTableToCSV('inv-pur-table','فواتير_المشتريات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inv-pur-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="inv-pur-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">المورد</th>
+                                    <th class="p-2.5">المنتجات</th>
+                                    <th class="p-2.5">الخصم</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-pur-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- فواتير الخدمات -->
+            <section id="inv_services" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-medical text-teal-500 me-2"></i>فواتير الخدمات</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('inv-svc-body',this.value)">
+                            <button onclick="exportTableToCSV('inv-svc-table','فواتير_الخدمات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inv-svc-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="inv-svc-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الخدمات</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-svc-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- فواتير التقسيط -->
+            <section id="inv_installments" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-contract text-indigo-500 me-2"></i>فواتير التقسيط</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('inv-inst-body',this.value)">
+                            <button onclick="exportTableToCSV('inv-inst-table','فواتير_التقسيط')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inv-inst-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="inv-inst-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المقدم</th>
+                                    <th class="p-2.5">عدد الأقساط</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inv-inst-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== كشف حساب العملاء (مستقل) ===== -->
+            <section id="cust_statement" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-invoice-dollar text-blue-500 me-2"></i>كشف حساب العملاء</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <select id="cust-stmt-filter" class="p-2 border rounded text-sm outline-none"
+                                onchange="renderCustStatementFull()">
+                                <option value="">كل العملاء</option>
+                            </select>
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="cust-stmt-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderCustStatementFull()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="cust-stmt-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderCustStatementFull()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
+                                onkeyup="filterInvTable('cust-stmt-body',this.value)">
+                            <button onclick="exportTableToCSV('cust-stmt-table','كشف_حساب_العملاء')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('cust-stmt-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[550px] overflow-y-auto">
+                        <table id="cust-stmt-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">النوع</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">إجمالي الفاتورة</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cust-stmt-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 bg-slate-100 p-4 rounded-lg grid grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="text-lg font-bold text-indigo-600" id="cust-stmt-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-blue-600" id="cust-stmt-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الفواتير</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-emerald-600" id="cust-stmt-paid">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المدفوع</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-red-600" id="cust-stmt-remaining">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المتبقي</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== كشف حساب الموردين (مستقل) ===== -->
+            <section id="supp_statement" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-invoice text-orange-500 me-2"></i>كشف حساب الموردين</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <select id="supp-stmt-filter" class="p-2 border rounded text-sm outline-none"
+                                onchange="renderSuppStatementFull()">
+                                <option value="">كل الموردين</option>
+                            </select>
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="supp-stmt-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderSuppStatementFull()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="supp-stmt-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderSuppStatementFull()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
+                                onkeyup="filterInvTable('supp-stmt-body',this.value)">
+                            <button onclick="exportTableToCSV('supp-stmt-table','كشف_حساب_الموردين')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('supp-stmt-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[550px] overflow-y-auto">
+                        <table id="supp-stmt-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">المورد</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">إجمالي الفاتورة</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                    <th class="p-2.5">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="supp-stmt-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 bg-slate-100 p-4 rounded-lg grid grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="text-lg font-bold text-indigo-600" id="supp-stmt-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-orange-600" id="supp-stmt-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الفواتير</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-emerald-600" id="supp-stmt-paid">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المدفوع</div>
+                        </div>
+                        <div>
+                            <div class="text-lg font-bold text-red-600" id="supp-stmt-remaining">0.00</div>
+                            <div class="text-xs text-slate-500">المستحق علينا</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== كشف حساب الخدمات ===== -->
+            <section id="svc_statement" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-file-alt text-teal-500 me-2"></i>كشف حساب الخدمات</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('svc-stmt-body',this.value)">
+                            <button onclick="exportTableToCSV('svc-stmt-table','كشف_حساب_الخدمات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('svc-stmt-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="svc-stmt-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="svc-stmt-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== الأقساط والتحصيل ===== -->
+            <section id="inst_collection" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-hand-holding-usd text-indigo-500 me-2"></i>الأقساط والتحصيل</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="بحث باسم العميل أو رقم التلفون..."
+                                class="p-2 border rounded text-sm w-56 outline-none"
+                                onkeyup="filterInvTable('inst-collect-body',this.value)">
+                            <button onclick="exportTableToCSV('inst-collect-table','الأقساط_والتحصيل')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('inst-collect-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[550px] overflow-y-auto">
+                        <table id="inst-collect-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">التلفون</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">إجمالي العقد</th>
+                                    <th class="p-2.5">عدد الأقساط</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
+                                    <th class="p-2.5">القسط القادم</th>
+                                    <th class="p-2.5"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="inst-collect-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== سندات الصرف ===== -->
+            <section id="expense_vouchers" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-receipt text-red-500 me-2"></i>سندات الصرف</h3>
+                        <div class="flex gap-2">
+                            <input type="date" id="exp-voucher-from" class="p-2 border rounded text-xs outline-none"
+                                onchange="renderExpenseVouchers()">
+                            <input type="date" id="exp-voucher-to" class="p-2 border rounded text-xs outline-none"
+                                onchange="renderExpenseVouchers()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-36 outline-none"
+                                onkeyup="filterInvTable('exp-voucher-body',this.value)">
+                            <button onclick="exportTableToCSV('exp-voucher-table','سندات_الصرف')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('exp-voucher-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="exp-voucher-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">#</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">البيان</th>
+                                    <th class="p-2.5">الفئة</th>
+                                    <th class="p-2.5">المبلغ</th>
+                                    <th class="p-2.5">طريقة الصرف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="exp-voucher-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 bg-red-50 p-3 rounded-lg text-center">
+                        <span class="text-sm text-slate-600">إجمالي المصروفات: </span>
+                        <span class="text-xl font-bold text-red-600" id="exp-voucher-total">0.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HR: إدارة الموظفين ===== -->
+            <section id="hr_employees" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="lg:col-span-1 bg-white p-5 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4"><i
+                                class="fas fa-id-card text-blue-500 me-2"></i>إضافة / تعديل موظف</h3>
+                        <form onsubmit="saveHREmployee(event)" class="space-y-3">
+                            <input type="hidden" id="hr-emp-id">
+                            <div><label class="text-xs text-slate-500 mb-1 block">الاسم الكامل *</label><input
+                                    type="text" id="hr-emp-name" required
+                                    class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-xs text-slate-500 mb-1 block">الهاتف</label><input type="text"
+                                        id="hr-emp-phone" class="w-full p-2.5 border rounded-lg outline-none"></div>
+                                <div><label class="text-xs text-slate-500 mb-1 block">الوظيفة</label><input type="text"
+                                        id="hr-emp-position" class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-xs text-slate-500 mb-1 block">الراتب الأساسي</label><input
+                                        type="number" id="hr-emp-salary" step="0.01"
+                                        class="w-full p-2.5 border rounded-lg outline-none"></div>
+                                <div><label class="text-xs text-slate-500 mb-1 block">تاريخ التعيين</label><input
+                                        type="date" id="hr-emp-hiredate"
+                                        class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            </div>
+                            <div class="flex gap-2"><button type="submit"
+                                    class="flex-1 bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-700"><i
+                                        class="fas fa-save me-1"></i>حفظ</button><button type="button"
+                                    onclick="resetHREmployeeForm()"
+                                    class="bg-slate-200 text-slate-600 px-4 py-2.5 rounded-lg">إلغاء</button></div>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">الموظفين</h3><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('hr-emp-body',this.value)">
+                        </div>
+                        <div class="overflow-x-auto border rounded-lg max-h-[400px] overflow-y-auto">
+                            <table class="w-full text-sm text-right">
+                                <thead class="bg-slate-800 text-white sticky top-0">
+                                    <tr>
+                                        <th class="p-2.5">الاسم</th>
+                                        <th class="p-2.5">الوظيفة</th>
+                                        <th class="p-2.5">الهاتف</th>
+                                        <th class="p-2.5">الراتب</th>
+                                        <th class="p-2.5">تاريخ التعيين</th>
+                                        <th class="p-2.5"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hr-emp-body" class="divide-y bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HR: الإجراءات ===== -->
+            <section id="hr_actions" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="lg:col-span-1 bg-white p-5 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4"><i
+                                class="fas fa-clipboard-list text-amber-500 me-2"></i>تسجيل إجراء</h3>
+                        <div class="space-y-3">
+                            <div><label class="text-xs text-slate-500 mb-1 block">الموظف</label><select
+                                    id="hr-action-emp" class="w-full p-2.5 border rounded-lg outline-none"></select>
+                            </div>
+                            <div><label class="text-xs text-slate-500 mb-1 block">نوع الإجراء</label>
+                                <select id="hr-action-type" class="w-full p-2.5 border rounded-lg outline-none">
+                                    <option value="bonus">مكافأة</option>
+                                    <option value="deduction">خصم</option>
+                                    <option value="warning">إنذار</option>
+                                    <option value="leave">إجازة</option>
+                                    <option value="promotion">ترقية</option>
+                                </select>
+                            </div>
+                            <div><label class="text-xs text-slate-500 mb-1 block">المبلغ (إن وجد)</label><input
+                                    type="number" id="hr-action-amount" step="0.01"
+                                    class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            <div><label class="text-xs text-slate-500 mb-1 block">السبب / الملاحظات</label><input
+                                    type="text" id="hr-action-reason"
+                                    class="w-full p-2.5 border rounded-lg outline-none"></div>
+                            <button onclick="saveHRAction()"
+                                class="w-full bg-amber-600 text-white py-2.5 rounded-lg font-bold hover:bg-amber-500"><i
+                                    class="fas fa-save me-1"></i>تسجيل</button>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">سجل الإجراءات</h3>
+                            <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                    class="p-2 border rounded text-sm w-36 outline-none"
+                                    onkeyup="filterInvTable('hr-action-body',this.value)"><button
+                                    onclick="exportTableToCSV('hr-action-table','الإجراءات')"
+                                    class="text-xs bg-emerald-50 text-emerald-600 px-2 py-1 rounded"><i
+                                        class="fas fa-file-excel"></i></button><button
+                                    onclick="printSection('hr-action-body')"
+                                    class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded"><i
+                                        class="fas fa-print"></i></button></div>
+                        </div>
+                        <div class="overflow-x-auto border rounded-lg max-h-[400px] overflow-y-auto">
+                            <table id="hr-action-table" class="w-full text-sm text-right">
+                                <thead class="bg-slate-800 text-white sticky top-0">
+                                    <tr>
+                                        <th class="p-2.5">التاريخ</th>
+                                        <th class="p-2.5">الموظف</th>
+                                        <th class="p-2.5">النوع</th>
+                                        <th class="p-2.5">المبلغ</th>
+                                        <th class="p-2.5">السبب</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hr-action-body" class="divide-y bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HR: قائمة الموظفين ===== -->
+            <section id="hr_list" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-list-ul text-blue-500 me-2"></i>قائمة الموظفين</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('hr-list-body',this.value)"><button
+                                onclick="exportTableToCSV('hr-list-table','الموظفين')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('hr-list-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="hr-list-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">#</th>
+                                    <th class="p-2.5">الاسم</th>
+                                    <th class="p-2.5">الوظيفة</th>
+                                    <th class="p-2.5">الهاتف</th>
+                                    <th class="p-2.5">الراتب</th>
+                                    <th class="p-2.5">تاريخ التعيين</th>
+                                    <th class="p-2.5">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hr-list-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HR: كشف رواتب ===== -->
+            <section id="hr_payroll" class="section-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="lg:col-span-1 bg-white p-5 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4"><i
+                                class="fas fa-money-check-alt text-emerald-500 me-2"></i>صرف راتب</h3>
+                        <div class="space-y-3">
+                            <div><label class="text-xs font-bold text-slate-600 mb-1 block">الموظف</label><select
+                                    id="payroll-emp" class="w-full p-2.5 border rounded-lg text-sm outline-none"
+                                    onchange="loadPayrollSalary()">
+                                    <option value="">-- اختر --</option>
+                                </select></div>
+                            <div><label class="text-xs font-bold text-slate-600 mb-1 block">الشهر</label><input
+                                    type="month" id="payroll-month"
+                                    class="w-full p-2.5 border rounded-lg text-sm outline-none"></div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-xs text-slate-600 mb-1 block">الأساسي</label><input
+                                        type="number" id="payroll-basic"
+                                        class="w-full p-2 border rounded-lg text-sm outline-none"
+                                        oninput="calcPayrollNet()"></div>
+                                <div><label class="text-xs text-slate-600 mb-1 block">البدلات</label><input
+                                        type="number" id="payroll-allowance" value="0"
+                                        class="w-full p-2 border rounded-lg text-sm outline-none"
+                                        oninput="calcPayrollNet()"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div><label class="text-xs text-slate-600 mb-1 block">الخصومات</label><input
+                                        type="number" id="payroll-deduction" value="0"
+                                        class="w-full p-2 border rounded-lg text-sm outline-none"
+                                        oninput="calcPayrollNet()"></div>
+                                <div><label class="text-xs text-slate-600 mb-1 block">الحوافز</label><input
+                                        type="number" id="payroll-bonus" value="0"
+                                        class="w-full p-2 border rounded-lg text-sm outline-none"
+                                        oninput="calcPayrollNet()"></div>
+                            </div>
+                            <div><label class="text-xs text-slate-600 mb-1 block">ملاحظات</label><input type="text"
+                                    id="payroll-notes" class="w-full p-2 border rounded-lg text-sm outline-none"></div>
+                            <div><label class="text-xs text-slate-600 mb-1 block">طريقة الصرف</label><select
+                                    id="payroll-method" class="w-full p-2.5 border rounded-lg text-sm outline-none">
+                                    <option value="1101">نقدي</option>
+                                    <option value="1102">بنك</option>
+                                </select></div>
+                            <div class="bg-slate-900 text-white p-3 rounded-lg">
+                                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                    <span>الإجمالي:</span><span id="payroll-gross">0.00</span>
+                                </div>
+                                <div class="flex justify-between text-xs text-red-400 mb-1"><span>- خصومات:</span><span
+                                        id="payroll-ded-show">0.00</span></div>
+                                <div
+                                    class="flex justify-between text-sm font-bold text-emerald-400 border-t border-slate-700 pt-1">
+                                    <span>الصافي:</span><span id="payroll-net">0.00</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="processPayroll()"
+                                    class="bg-emerald-600 text-white py-2.5 rounded-lg font-bold hover:bg-emerald-500 text-sm"><i
+                                        class="fas fa-save me-1"></i>حفظ</button>
+                                <button onclick="printLastPayroll()"
+                                    class="bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-500 text-sm"><i
+                                        class="fas fa-print me-1"></i>طباعة</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-sm text-slate-800"><i
+                                    class="fas fa-history text-blue-500 me-1"></i>سجل الرواتب</h3>
+                            <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                    class="p-1.5 border rounded text-xs w-36 outline-none"
+                                    onkeyup="filterInvTable('payroll-body',this.value)"><input type="month"
+                                    id="payroll-filter-month" class="p-1.5 border rounded text-xs outline-none"
+                                    onchange="filterPayrollByMonth()"><button
+                                    onclick="exportTableToCSV('payroll-table','كشف_رواتب')"
+                                    class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded"><i
+                                        class="fas fa-file-excel"></i></button><button
+                                    onclick="printSection('payroll-body')"
+                                    class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded"><i
+                                        class="fas fa-print"></i></button></div>
+                        </div>
+                        <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                            <table id="payroll-table" class="w-full text-xs text-right">
+                                <thead class="bg-slate-800 text-white sticky top-0">
+                                    <tr>
+                                        <th class="p-2">#</th>
+                                        <th class="p-2">التاريخ</th>
+                                        <th class="p-2">الشهر</th>
+                                        <th class="p-2">الموظف</th>
+                                        <th class="p-2">الأساسي</th>
+                                        <th class="p-2">البدلات</th>
+                                        <th class="p-2 text-red-400">الخصومات</th>
+                                        <th class="p-2 text-emerald-400">الحوافز</th>
+                                        <th class="p-2 text-yellow-400 font-bold">الصافي</th>
+                                        <th class="p-2">الصرف</th>
+                                        <th class="p-2">ملاحظات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payroll-body" class="divide-y bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ===== تقارير نقاط البيع ===== -->
+            <section id="rpt_pos" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-cash-register text-purple-500 me-2"></i>تقرير نقاط البيع</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-pos-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptPOS()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-pos-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptPOS()">
+                            <button onclick="exportTableToCSV('rpt-pos-table','تقرير_نقاط_البيع')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-pos-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-purple-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-purple-600" id="rpt-pos-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الإيصالات</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-pos-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المبيعات</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-pos-items">0</div>
+                            <div class="text-xs text-slate-500">عدد الأصناف المباعة</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-pos-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الإيصال</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">الوقت</th>
+                                    <th class="p-2.5">عدد الأصناف</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-pos-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير المبيعات ===== -->
+            <section id="rpt_sales" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-chart-line text-blue-500 me-2"></i>تقرير المبيعات</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-sales-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptSales()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-sales-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptSales()">
+                            <button onclick="exportTableToCSV('rpt-sales-table','تقرير_المبيعات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-sales-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-sales-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-sales-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المبيعات</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-green-600" id="rpt-sales-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-sales-remaining">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-sales-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-sales-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير العملاء ===== -->
+            <section id="rpt_customers" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-users text-indigo-500 me-2"></i>تقرير العملاء</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('rpt-customers-body',this.value)"><button
+                                onclick="exportTableToCSV('rpt-customers-table','تقرير_العملاء')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-customers-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-indigo-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-indigo-600" id="rpt-cust-count">0</div>
+                            <div class="text-xs text-slate-500">عدد العملاء</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-cust-total-sales">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المبيعات</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-cust-total-due">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المستحق</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-customers-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الهاتف</th>
+                                    <th class="p-2.5">عدد الفواتير</th>
+                                    <th class="p-2.5">إجمالي المشتريات</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المستحق</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-customers-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير المشتريات ===== -->
+            <section id="rpt_purchases" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-shopping-cart text-orange-500 me-2"></i>تقرير المشتريات</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-pur-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptPurchases()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-pur-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptPurchases()">
+                            <button onclick="exportTableToCSV('rpt-pur-table','تقرير_المشتريات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-pur-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-orange-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-orange-600" id="rpt-pur-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-pur-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المشتريات</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-pur-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المدفوع</div>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-amber-600" id="rpt-pur-remaining">0.00</div>
+                            <div class="text-xs text-slate-500">المستحق علينا</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-pur-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">المورد</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-pur-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الموردين ===== -->
+            <section id="rpt_suppliers" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-truck text-amber-500 me-2"></i>تقرير الموردين</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('rpt-supp-body',this.value)"><button
+                                onclick="exportTableToCSV('rpt-supp-table','تقرير_الموردين')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-supp-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-amber-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-amber-600" id="rpt-supp-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الموردين</div>
+                        </div>
+                        <div class="bg-orange-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-orange-600" id="rpt-supp-total-pur">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المشتريات</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-supp-total-due">0.00</div>
+                            <div class="text-xs text-slate-500">المستحق علينا</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-supp-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">المورد</th>
+                                    <th class="p-2.5">الهاتف</th>
+                                    <th class="p-2.5">عدد الفواتير</th>
+                                    <th class="p-2.5">إجمالي المشتريات</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5 text-red-400">المستحق</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-supp-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الموظفين ===== -->
+            <section id="rpt_employees" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-user-tie text-blue-500 me-2"></i>تقرير الموظفين</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('rpt-emp-body',this.value)"><button
+                                onclick="exportTableToCSV('rpt-emp-table','تقرير_الموظفين')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-emp-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-emp-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الموظفين</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-emp-total-salary">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الرواتب الشهري</div>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-amber-600" id="rpt-emp-total-paid">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المصروف</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-emp-actions">0</div>
+                            <div class="text-xs text-slate-500">عدد الإجراءات</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-emp-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">الاسم</th>
+                                    <th class="p-2.5">الوظيفة</th>
+                                    <th class="p-2.5">الراتب</th>
+                                    <th class="p-2.5">عدد المرتبات</th>
+                                    <th class="p-2.5">إجمالي المصروف</th>
+                                    <th class="p-2.5">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-emp-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير المخزون ===== -->
+            <section id="rpt_inventory" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-boxes text-teal-500 me-2"></i>تقرير المخزون</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('rpt-inv-body',this.value)"><button
+                                onclick="exportTableToCSV('rpt-inv-table','تقرير_المخزون')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-inv-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-teal-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-teal-600" id="rpt-inv-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الأصناف</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-inv-total-stock">0</div>
+                            <div class="text-xs text-slate-500">إجمالي المخزون</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-inv-total-value">0.00</div>
+                            <div class="text-xs text-slate-500">قيمة المخزون (بيع)</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-inv-low">0</div>
+                            <div class="text-xs text-slate-500">أصناف منخفضة</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-inv-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">الكود</th>
+                                    <th class="p-2.5">الصنف</th>
+                                    <th class="p-2.5">الفئة</th>
+                                    <th class="p-2.5">سعر البيع</th>
+                                    <th class="p-2.5">التكلفة</th>
+                                    <th class="p-2.5">المخزون</th>
+                                    <th class="p-2.5">قيمة المخزون</th>
+                                    <th class="p-2.5">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-inv-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الخدمات ===== -->
+            <section id="rpt_services" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-tools text-cyan-500 me-2"></i>تقرير الخدمات</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-svc-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptServices()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-svc-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptServices()">
+                            <button onclick="exportTableToCSV('rpt-svc-table','تقرير_الخدمات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-svc-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-cyan-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-cyan-600" id="rpt-svc-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-svc-total">0.00</div>
+                            <div class="text-xs text-slate-500">الإجمالي</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-green-600" id="rpt-svc-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-svc-remaining">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-svc-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المدفوع</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-svc-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير التقسيط ===== -->
+            <section id="rpt_installments" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-calendar-alt text-indigo-500 me-2"></i>تقرير التقسيط</h3>
+                        <div class="flex gap-2"><button onclick="exportTableToCSV('rpt-inst-table','تقرير_التقسيط')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-inst-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-indigo-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-indigo-600" id="rpt-inst-count">0</div>
+                            <div class="text-xs text-slate-500">عدد العقود</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-inst-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي العقود</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-inst-collected">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-inst-pending">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-inst-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">الإجمالي</th>
+                                    <th class="p-2.5">المقدم</th>
+                                    <th class="p-2.5">الأقساط</th>
+                                    <th class="p-2.5">المحصّل</th>
+                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-inst-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير عملاء التقسيط ===== -->
+            <section id="rpt_inst_customers" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-user-tag text-violet-500 me-2"></i>تقرير عملاء التقسيط</h3>
+                        <div class="flex gap-2"><input type="text" placeholder="بحث..."
+                                class="p-2 border rounded text-sm w-48 outline-none"
+                                onkeyup="filterInvTable('rpt-instcust-body',this.value)"><button
+                                onclick="exportTableToCSV('rpt-instcust-table','تقرير_عملاء_التقسيط')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-instcust-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
+                        <table id="rpt-instcust-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">العميل</th>
+                                    <th class="p-2.5">الهاتف</th>
+                                    <th class="p-2.5">العنوان</th>
+                                    <th class="p-2.5">عدد العقود</th>
+                                    <th class="p-2.5">إجمالي المبلغ</th>
+                                    <th class="p-2.5">المحصّل</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-instcust-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير المصروفات ===== -->
+            <section id="rpt_expenses" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-money-bill-wave text-red-500 me-2"></i>تقرير المصروفات</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-exp-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptExpenses()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-exp-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptExpenses()">
+                            <button onclick="exportTableToCSV('rpt-exp-table','تقرير_المصروفات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-exp-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-exp-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي المصروفات</div>
+                        </div>
+                        <div class="bg-orange-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-orange-600" id="rpt-exp-count">0</div>
+                            <div class="text-xs text-slate-500">عدد السندات</div>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-amber-600" id="rpt-exp-avg">0.00</div>
+                            <div class="text-xs text-slate-500">المتوسط لكل سند</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-exp-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">#</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">البيان</th>
+                                    <th class="p-2.5">الفئة</th>
+                                    <th class="p-2.5">المبلغ</th>
+                                    <th class="p-2.5">الطريقة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-exp-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الإيرادات ===== -->
+            <section id="rpt_revenue" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-coins text-yellow-500 me-2"></i>تقرير الإيرادات</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-rev-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptRevenue()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-rev-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptRevenue()">
+                            <button onclick="exportTableToCSV('rpt-rev-table','تقرير_الإيرادات')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('rpt-rev-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-yellow-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-yellow-600" id="rpt-rev-sales">0.00</div>
+                            <div class="text-xs text-slate-500">إيرادات المبيعات</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-purple-600" id="rpt-rev-pos">0.00</div>
+                            <div class="text-xs text-slate-500">إيرادات POS</div>
+                        </div>
+                        <div class="bg-teal-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-teal-600" id="rpt-rev-svc">0.00</div>
+                            <div class="text-xs text-slate-500">إيرادات الخدمات</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-rev-total">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الإيرادات</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-rev-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">المصدر</th>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">البيان</th>
+                                    <th class="p-2.5">المبلغ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-rev-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الخزينة ===== -->
+            <section id="rpt_treasury" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-vault text-slate-600 me-2"></i>تقرير الخزينة</h3>
+                        <div class="flex gap-2"><button onclick="exportTableToCSV('rpt-treasury-table','تقرير_الخزينة')"
+                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button><button
+                                onclick="printSection('rpt-treasury-body')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button></div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="rpt-trs-in">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الوارد</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="rpt-trs-out">0.00</div>
+                            <div class="text-xs text-slate-500">إجمالي الصادر</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="rpt-trs-cash">0.00</div>
+                            <div class="text-xs text-slate-500">رصيد الصندوق</div>
+                        </div>
+                        <div class="bg-indigo-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-indigo-600" id="rpt-trs-bank">0.00</div>
+                            <div class="text-xs text-slate-500">رصيد البنك</div>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto border rounded-lg max-h-[450px] overflow-y-auto">
+                        <table id="rpt-treasury-table" class="w-full text-sm text-right">
+                            <thead class="bg-slate-800 text-white sticky top-0">
+                                <tr>
+                                    <th class="p-2.5">التاريخ</th>
+                                    <th class="p-2.5">البيان</th>
+                                    <th class="p-2.5 text-emerald-400">وارد</th>
+                                    <th class="p-2.5 text-red-400">صادر</th>
+                                    <th class="p-2.5">الرصيد</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rpt-treasury-body" class="divide-y bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== تقارير الأرباح ===== -->
+            <section id="rpt_profits" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <h3 class="font-bold text-lg text-slate-800"><i
+                                class="fas fa-chart-pie text-green-500 me-2"></i>تقرير الأرباح</h3>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="rpt-profit-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptProfits()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="rpt-profit-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderRptProfits()">
+                            <button onclick="printSection('rpt-profit-summary')"
+                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+                    <div id="rpt-profit-summary" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div class="bg-emerald-100 p-4 rounded-xl text-center border-2 border-emerald-300">
+                            <div class="text-2xl font-bold text-emerald-700" id="rpt-pft-revenue">0.00</div>
+                            <div class="text-xs text-emerald-600 font-bold">إجمالي الإيرادات</div>
+                        </div>
+                        <div class="bg-red-100 p-4 rounded-xl text-center border-2 border-red-300">
+                            <div class="text-2xl font-bold text-red-700" id="rpt-pft-cost">0.00</div>
+                            <div class="text-xs text-red-600 font-bold">تكلفة البضاعة المباعة</div>
+                        </div>
+                        <div class="bg-amber-100 p-4 rounded-xl text-center border-2 border-amber-300">
+                            <div class="text-2xl font-bold text-amber-700" id="rpt-pft-expenses">0.00</div>
+                            <div class="text-xs text-amber-600 font-bold">المصروفات + الرواتب</div>
+                        </div>
+                        <div class="bg-green-100 p-4 rounded-xl text-center border-2 border-green-400">
+                            <div class="text-3xl font-bold" id="rpt-pft-net">0.00</div>
+                            <div class="text-xs font-bold" id="rpt-pft-label">صافي الربح</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-sm mb-2">تفاصيل الإيرادات</h4>
+                            <div id="rpt-pft-rev-details" class="space-y-1 text-xs"></div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-sm mb-2">تفاصيل التكاليف</h4>
+                            <div id="rpt-pft-cost-details" class="space-y-1 text-xs"></div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-sm mb-2">تفاصيل المصروفات</h4>
+                            <div id="rpt-pft-exp-details" class="space-y-1 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     </main>
 
@@ -2653,9 +4213,10 @@
 
                 if (addJournalEntry(date, `فاتورة - ${customer.name}`, lines)) {
                     currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
-                    db.sales.push({ id: Date.now(), date, customer: customer.name, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart] });
-                    printInvoice(db.sales[db.sales.length - 1]);
-                    showToast('تم الحفظ بنجاح');
+                    const saleId = 'INV-' + String(db.sales.length + 1).padStart(4, '0');
+                    db.sales.push({ id: Date.now(), invoiceNo: saleId, date, customer: customer.name, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart], payType: salePayType });
+                    showToast('تم حفظ الفاتورة بنجاح ✅');
+                    renderSalesInvoices();
                 }
             }
             // Reset
@@ -4319,19 +5880,141 @@
                 if (id === 'barcode') renderBarcodeList();
                 if (id === 'installment_customers') renderInstCustomers();
                 if (id === 'installment_payments') renderInstPayments();
-                if (id === 'sales') { renderCustStatement(); }
+                if (id === 'sales') { renderCustStatement(); renderSalesInvoices(); }
                 if (id === 'purchases') { renderSuppStatement(); }
-                if (id === 'salaries') { populateSalaryEmployees(); renderSalaryHistory(); }
                 if (id === 'pos_products') { renderPOSProductsList(); }
                 if (id === 'pos') { setTimeout(() => document.getElementById('pos-barcode-input')?.focus(), 100); }
+                // Invoices Module
+                if (id === 'invoices') { renderInvoicesDashboard(); }
+                if (id === 'inv_pos') { renderInvPOS(); }
+                if (id === 'inv_sales') { renderInvSales(); }
+                if (id === 'inv_purchases') { renderInvPurchases(); }
+                if (id === 'inv_services') { renderInvServices(); }
+                if (id === 'inv_installments') { renderInvInstallments(); }
+                // Statements
+                if (id === 'cust_statement') { renderCustStatementFull(); }
+                if (id === 'supp_statement') { renderSuppStatementFull(); }
+                if (id === 'svc_statement') { renderSvcStatement(); }
+                // Collection
+                if (id === 'inst_collection') { renderInstCollection(); }
+                // Expenses
+                if (id === 'expense_vouchers') { renderExpenseVouchers(); }
+                // HR
+                if (id === 'hr_employees') { renderHREmployees(); }
+                if (id === 'hr_actions') { populateHRActionEmps(); renderHRActions(); }
+                if (id === 'hr_list') { renderHRList(); }
+                if (id === 'hr_payroll') { populatePayrollEmps(); renderPayrollHistory(); }
+                // Reports
+                if (id === 'rpt_pos') { renderRptPOS(); }
+                if (id === 'rpt_sales') { renderRptSales(); }
+                if (id === 'rpt_customers') { renderRptCustomers(); }
+                if (id === 'rpt_purchases') { renderRptPurchases(); }
+                if (id === 'rpt_suppliers') { renderRptSuppliers(); }
+                if (id === 'rpt_employees') { renderRptEmployees(); }
+                if (id === 'rpt_inventory') { renderRptInventory(); }
+                if (id === 'rpt_services') { renderRptServices(); }
+                if (id === 'rpt_installments') { renderRptInstallments(); }
+                if (id === 'rpt_inst_customers') { renderRptInstCustomers(); }
+                if (id === 'rpt_expenses') { renderRptExpenses(); }
+                if (id === 'rpt_revenue') { renderRptRevenue(); }
+                if (id === 'rpt_treasury') { renderRptTreasury(); }
+                if (id === 'rpt_profits') { renderRptProfits(); }
             } catch (e) { console.error('Sub-module render error:', e); }
         };
+
+        // --- Sales Invoice List (Individual) ---
+        function renderSalesInvoices() {
+            const tbody = document.getElementById('recent-inv-body');
+            if (!tbody) return;
+            const invoices = [...db.sales].reverse();
+            tbody.innerHTML = invoices.length ? invoices.map((s, i) => {
+                const invNo = s.invoiceNo || ('INV-' + String(invoices.length - i).padStart(4, '0'));
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-blue-50 cursor-pointer" ondblclick="viewSaleInvoice(${s.id})">
+                    <td class="p-1.5 font-mono text-blue-600">${invNo}</td>
+                    <td class="p-1.5">${s.date}</td>
+                    <td class="p-1.5 font-bold">${s.customer}</td>
+                    <td class="p-1.5 font-bold">${(s.total || 0).toFixed(2)}</td>
+                    <td class="p-1.5">${status}</td>
+                    <td class="p-1.5"><button onclick="viewSaleInvoice(${s.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+
+        function filterSalesInvoiceList(q) {
+            document.querySelectorAll('#recent-inv-body tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        // View individual invoice
+        function viewSaleInvoice(saleId) {
+            const sale = db.sales.find(s => s.id == saleId);
+            if (!sale) return showToast('فاتورة غير موجودة', 'error');
+            const invNo = sale.invoiceNo || 'INV-' + String(sale.id).slice(-4);
+            const w = window.open('', 'invoice', 'width=700,height=800');
+            w.document.write(`<html dir="rtl"><head><style>
+                body { font-family: 'Cairo', sans-serif; max-width: 650px; margin: 20px auto; padding: 20px; font-size: 13px; }
+                .header { text-align: center; margin-bottom: 20px; }
+                .header h1 { font-size: 18px; margin: 0; } .header p { color: #666; font-size: 11px; margin: 2px 0; }
+                .info { display: flex; justify-content: space-between; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+                .info div { font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                th { background: #1e293b; color: white; padding: 8px; text-align: right; font-size: 12px; }
+                td { padding: 8px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 12px; }
+                .totals { background: #f1f5f9; padding: 12px; border-radius: 8px; }
+                .totals .row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+                .totals .grand { font-size: 16px; font-weight: bold; color: #059669; border-top: 2px solid #1e293b; padding-top: 8px; margin-top: 8px; }
+                .no-print { margin-top: 20px; text-align: center; }
+                @media print { .no-print { display: none; } }
+            </style></head><body>
+            <div class="header">
+                ${db.settings.logo ? `<img src="${db.settings.logo}" style="max-height:60px;margin-bottom:5px">` : ''}
+                <h1>${db.settings.companyName || 'نظام ERP'}</h1>
+                <p>${db.settings.address || ''} ${db.settings.phone ? '| ' + db.settings.phone : ''}</p>
+            </div>
+            <div class="info">
+                <div><strong>فاتورة رقم:</strong> ${invNo}</div>
+                <div><strong>التاريخ:</strong> ${sale.date}</div>
+                <div><strong>العميل:</strong> ${sale.customer}</div>
+            </div>
+            <table>
+                <thead><tr><th>#</th><th>الصنف</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+                <tbody>${(sale.items || []).map((it, i) => `<tr><td>${i + 1}</td><td>${it.name}</td><td>${it.qty}</td><td>${(it.price || 0).toFixed(2)}</td><td>${(it.total || 0).toFixed(2)}</td></tr>`).join('')}</tbody>
+            </table>
+            <div class="totals">
+                ${sale.discount > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${sale.discount.toFixed(2)}</span></div>` : ''}
+                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(sale.paid || 0).toFixed(2)}</span></div>
+                ${(sale.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${sale.remaining.toFixed(2)}</span></div>` : ''}
+                <div class="row grand"><span>الإجمالي:</span><span>${(sale.total || 0).toFixed(2)}</span></div>
+            </div>
+            <div class="no-print">
+                <button onclick="window.print()" style="padding:10px 30px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">طباعة</button>
+                <button onclick="window.close()" style="padding:10px 30px;background:#64748b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">إغلاق</button>
+            </div>
+            </body></html>`);
+            w.document.close();
+        }
+
+        // Print last invoice
+        function printLastSaleInvoice() {
+            if (db.sales.length === 0) return showToast('لا توجد فواتير للطباعة', 'error');
+            const lastSale = db.sales[db.sales.length - 1];
+            viewSaleInvoice(lastSale.id);
+        }
+
+        // Export last invoice as PDF (print dialog)
+        function exportLastSalePDF() {
+            if (db.sales.length === 0) return showToast('لا توجد فواتير', 'error');
+            viewSaleInvoice(db.sales[db.sales.length - 1].id);
+            showToast('اختر "Save as PDF" من نافذة الطباعة');
+        }
 
         // --- Add Product by Barcode/Code ---
         function addByBarcode(code) {
             if (!code || !code.trim()) return;
             code = code.trim();
-            const product = db.products.find(p => 
+            const product = db.products.find(p =>
                 String(p.barcode) === code || String(p.id) === code || String(p.code) === code
             );
             if (product) {
@@ -4421,6 +6104,654 @@
             document.querySelectorAll('#pos-products-body tr').forEach(r => {
                 r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
             });
+        }
+
+        // ===== Universal table filter =====
+        function filterInvTable(tbodyId, q) {
+            document.querySelectorAll('#' + tbodyId + ' tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        // ===== INVOICES DASHBOARD =====
+        function renderInvoicesDashboard() {
+            const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+            el('inv-count-pos', (db.posInvoices || []).length);
+            el('inv-count-sales', (db.sales || []).length);
+            el('inv-count-pur', (db.purchases || []).length);
+            el('inv-count-svc', (db.serviceInvoices || []).length);
+        }
+
+        // ===== Invoice view helper =====
+        function openInvoiceWindow(title, invNo, date, party, items, totals) {
+            const w = window.open('', 'invoice', 'width=700,height=800');
+            w.document.write(`<html dir="rtl"><head><style>
+                body{font-family:'Cairo',sans-serif;max-width:650px;margin:20px auto;padding:20px;font-size:13px}
+                .header{text-align:center;margin-bottom:20px}.header h1{font-size:18px;margin:0}.header p{color:#666;font-size:11px}
+                .info{display:flex;justify-content:space-between;margin-bottom:15px;background:#f8f9fa;padding:10px;border-radius:8px}.info div{font-size:12px}
+                table{width:100%;border-collapse:collapse;margin-bottom:15px}th{background:#1e293b;color:white;padding:8px;text-align:right;font-size:12px}
+                td{padding:8px;border-bottom:1px solid #e2e8f0;text-align:right;font-size:12px}
+                .totals{background:#f1f5f9;padding:12px;border-radius:8px}.totals .row{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px}
+                .totals .grand{font-size:16px;font-weight:bold;color:#059669;border-top:2px solid #1e293b;padding-top:8px;margin-top:8px}
+                .no-print{margin-top:20px;text-align:center}@media print{.no-print{display:none}}
+            </style></head><body>
+            <div class="header">${db.settings.logo ? `<img src="${db.settings.logo}" style="max-height:60px;margin-bottom:5px">` : ''}<h1>${db.settings.companyName || 'نظام ERP'}</h1><p>${db.settings.address || ''} ${db.settings.phone ? '| ' + db.settings.phone : ''}</p></div>
+            <div class="info"><div><strong>${title}:</strong> ${invNo}</div><div><strong>التاريخ:</strong> ${date}</div><div><strong>${party.label}:</strong> ${party.name}</div></div>
+            <table><thead><tr><th>#</th><th>الصنف</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+            <tbody>${items.map((it, i) => `<tr><td>${i + 1}</td><td>${it.name}</td><td>${it.qty}</td><td>${(it.price || 0).toFixed(2)}</td><td>${(it.total || 0).toFixed(2)}</td></tr>`).join('')}</tbody></table>
+            <div class="totals">${totals}</div>
+            <div class="no-print"><button onclick="window.print()" style="padding:10px 30px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">طباعة</button><button onclick="window.close()" style="padding:10px 30px;background:#64748b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">إغلاق</button></div>
+            </body></html>`);
+            w.document.close();
+        }
+
+        // ===== Render Invoice Sub-Modules =====
+        function renderInvPOS() {
+            const tbody = document.getElementById('inv-pos-body'); if (!tbody) return;
+            const inv = [...(db.posInvoices || [])].reverse();
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const items = (s.items || []).map(i => i.name).join(', ');
+                return `<tr class="hover:bg-purple-50"><td class="p-2 font-mono text-purple-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2">${s.time || '-'}</td><td class="p-2 text-xs">${items}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2"><span class="text-emerald-600">مكتمل</span></td><td class="p-2"><button onclick="viewPOSInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+        function viewPOSInvoice(id) {
+            const s = (db.posInvoices || []).find(x => x.id == id); if (!s) return;
+            openInvoiceWindow('إيصال POS', s.invoiceNo || 'POS-' + s.id, s.date, { label: 'الكاشير', name: s.cashier || '-' }, s.items || [],
+                `<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+        }
+
+        function renderInvSales() {
+            const tbody = document.getElementById('inv-sales-body'); if (!tbody) return;
+            const inv = [...(db.sales || [])].reverse();
+            tbody.innerHTML = inv.length ? inv.map((s, i) => {
+                const invNo = s.invoiceNo || 'INV-SALE-' + String(inv.length - i).padStart(4, '0');
+                const items = (s.items || []).map(i => i.name).join(', ');
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-mono text-blue-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 text-xs">${items}</td><td class="p-2">${(s.discount || 0).toFixed(2)}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewSaleInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="10" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+
+        function renderInvPurchases() {
+            const tbody = document.getElementById('inv-pur-body'); if (!tbody) return;
+            const inv = [...(db.purchases || [])].reverse();
+            tbody.innerHTML = inv.length ? inv.map((s, i) => {
+                const invNo = s.invoiceNo || 'INV-PUR-' + String(inv.length - i).padStart(4, '0');
+                const items = (s.items || []).map(i => i.name).join(', ');
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-orange-50"><td class="p-2 font-mono text-orange-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.supplier}</td><td class="p-2 text-xs">${items}</td><td class="p-2">${(s.discount || 0).toFixed(2)}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewPurchaseInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="10" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+        function viewPurchaseInvoice(id) {
+            const s = (db.purchases || []).find(x => x.id == id); if (!s) return;
+            const invNo = s.invoiceNo || 'INV-PUR-' + String(s.id).slice(-4);
+            openInvoiceWindow('فاتورة مشتريات', invNo, s.date, { label: 'المورد', name: s.supplier }, s.items || [],
+                `${s.discount > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}
+                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
+                ${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}
+                <div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+        }
+
+        function renderInvServices() {
+            const tbody = document.getElementById('inv-svc-body'); if (!tbody) return;
+            const inv = [...(db.serviceInvoices || [])].reverse();
+            tbody.innerHTML = inv.length ? inv.map((s, i) => {
+                const invNo = s.invoiceNo || 'INV-SVC-' + String(inv.length - i).padStart(4, '0');
+                const items = (s.items || []).map(i => i.name).join(', ');
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-teal-50"><td class="p-2 font-mono text-teal-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 text-xs">${items}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+        function viewServiceInvoice(id) {
+            const s = (db.serviceInvoices || []).find(x => x.id == id); if (!s) return;
+            openInvoiceWindow('فاتورة خدمات', s.invoiceNo || 'SVC-' + s.id, s.date, { label: 'العميل', name: s.customer }, s.items || [],
+                `<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
+                <div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+        }
+
+        function renderInvInstallments() {
+            const tbody = document.getElementById('inv-inst-body'); if (!tbody) return;
+            const inv = [...(db.installmentInvoices || [])].reverse();
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
+                const status = paid >= s.total ? '<span class="text-emerald-600">مكتمل</span>' : '<span class="text-amber-600">جاري</span>';
+                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-mono text-indigo-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2">${(s.downPayment || 0).toFixed(2)}</td><td class="p-2">${(s.schedule || []).length}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewInstInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+        function viewInstInvoice(id) {
+            const s = (db.installmentInvoices || []).find(x => x.id == id); if (!s) return;
+            const schedHTML = (s.schedule || []).map((p, i) => `<tr><td>${i + 1}</td><td>${p.dueDate}</td><td>${p.amount.toFixed(2)}</td><td>${p.paid ? '✅ مدفوع' : '⏳ قادم'}</td></tr>`).join('');
+            openInvoiceWindow('فاتورة تقسيط', s.invoiceNo, s.date, { label: 'العميل', name: s.customer }, s.items || [],
+                `<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>
+                <table style="margin-top:15px"><thead><tr><th>#</th><th>تاريخ الاستحقاق</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>${schedHTML}</tbody></table>`);
+        }
+
+        // ===== CUSTOMER STATEMENT (Full - All Invoices) =====
+        function renderCustStatementFull() {
+            const tbody = document.getElementById('cust-stmt-body'); if (!tbody) return;
+            const filterCust = document.getElementById('cust-stmt-filter')?.value || '';
+            const from = document.getElementById('cust-stmt-from')?.value;
+            const to = document.getElementById('cust-stmt-to')?.value;
+            // Populate customer dropdown
+            const sel = document.getElementById('cust-stmt-filter');
+            if (sel && sel.options.length <= 1) {
+                const names = new Set();
+                (db.sales||[]).forEach(s => names.add(s.customer));
+                (db.serviceInvoices||[]).forEach(s => names.add(s.customer));
+                (db.installmentInvoices||[]).forEach(s => names.add(s.customer));
+                (db.customers||[]).forEach(c => names.add(c.name));
+                [...names].sort().forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; sel.appendChild(o); });
+            }
+            // Aggregate all customer invoices
+            let rows = [];
+            (db.sales||[]).forEach(s => rows.push({src:'sales',type:'مبيعات',id:s.id,customer:s.customer,invNo:s.invoiceNo||'INV-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
+            (db.serviceInvoices||[]).forEach(s => rows.push({src:'services',type:'خدمات',id:s.id,customer:s.customer,invNo:s.invoiceNo||'SVC-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
+            (db.installmentInvoices||[]).forEach(s => {
+                const paid = (s.schedule||[]).filter(p=>p.paid).reduce((a,b)=>a+b.amount,0);
+                rows.push({src:'installments',type:'تقسيط',id:s.id,customer:s.customer,invNo:s.invoiceNo||'INST-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:paid,remaining:(s.total||0)-paid});
+            });
+            if (filterCust) rows = rows.filter(r => r.customer === filterCust);
+            if (from) rows = rows.filter(r => r.date >= from);
+            if (to) rows = rows.filter(r => r.date <= to);
+            rows.sort((a,b) => b.date.localeCompare(a.date));
+            let totalAll=0, paidAll=0, remAll=0;
+            const typeColors = {مبيعات:'bg-blue-100 text-blue-700', خدمات:'bg-teal-100 text-teal-700', تقسيط:'bg-indigo-100 text-indigo-700'};
+            tbody.innerHTML = rows.length ? rows.map(r => {
+                totalAll += r.total; paidAll += r.paid; remAll += r.remaining;
+                const status = r.remaining > 0 ? '<span class="text-red-600 font-bold">مستحق</span>' : '<span class="text-emerald-600">تم السداد</span>';
+                const viewFn = r.src==='sales'?`viewSaleInvoice(${r.id})`:r.src==='services'?`viewServiceInvoice(${r.id})`:`viewInstInvoice(${r.id})`;
+                const editBtn = r.remaining > 0 ? `<button onclick="editInvoicePaid('${r.src}',${r.id})" class="text-amber-500 text-xs me-1" title="تعديل المدفوع"><i class="fas fa-edit"></i></button>` : '';
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${r.customer}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-xs ${typeColors[r.type]||''}">${r.type}</span></td><td class="p-2 font-mono text-blue-600">${r.invNo}</td><td class="p-2">${r.date}</td><td class="p-2 font-bold">${r.total.toFixed(2)}</td><td class="p-2 text-emerald-600">${r.paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${r.remaining.toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${editBtn}<button onclick="${viewFn}" class="text-blue-500 text-xs"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('cust-stmt-count', rows.length); _el('cust-stmt-total', totalAll.toFixed(2)); _el('cust-stmt-paid', paidAll.toFixed(2)); _el('cust-stmt-remaining', remAll.toFixed(2));
+        }
+
+        // ===== SUPPLIER STATEMENT (Full - All Invoices) =====
+        function renderSuppStatementFull() {
+            const tbody = document.getElementById('supp-stmt-body'); if (!tbody) return;
+            const filterSupp = document.getElementById('supp-stmt-filter')?.value || '';
+            const from = document.getElementById('supp-stmt-from')?.value;
+            const to = document.getElementById('supp-stmt-to')?.value;
+            // Populate supplier dropdown
+            const sel = document.getElementById('supp-stmt-filter');
+            if (sel && sel.options.length <= 1) {
+                const names = new Set();
+                (db.purchases||[]).forEach(s => names.add(s.supplier));
+                (db.suppliers||[]).forEach(c => names.add(c.name));
+                [...names].sort().forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; sel.appendChild(o); });
+            }
+            let rows = [];
+            (db.purchases||[]).forEach(s => rows.push({src:'purchases',id:s.id,supplier:s.supplier,invNo:s.invoiceNo||'PUR-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
+            if (filterSupp) rows = rows.filter(r => r.supplier === filterSupp);
+            if (from) rows = rows.filter(r => r.date >= from);
+            if (to) rows = rows.filter(r => r.date <= to);
+            rows.sort((a,b) => b.date.localeCompare(a.date));
+            let totalAll=0, paidAll=0, remAll=0;
+            tbody.innerHTML = rows.length ? rows.map(r => {
+                totalAll += r.total; paidAll += r.paid; remAll += r.remaining;
+                const status = r.remaining > 0 ? '<span class="text-red-600 font-bold">مستحق</span>' : '<span class="text-emerald-600">تم السداد</span>';
+                const editBtn = r.remaining > 0 ? `<button onclick="editInvoicePaid('purchases',${r.id})" class="text-amber-500 text-xs me-1" title="تعديل المدفوع"><i class="fas fa-edit"></i></button>` : '';
+                return `<tr class="hover:bg-orange-50"><td class="p-2 font-bold">${r.supplier}</td><td class="p-2 font-mono text-orange-600">${r.invNo}</td><td class="p-2">${r.date}</td><td class="p-2 font-bold">${r.total.toFixed(2)}</td><td class="p-2 text-emerald-600">${r.paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${r.remaining.toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${editBtn}<button onclick="viewPurchaseInvoice(${r.id})" class="text-blue-500 text-xs"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('supp-stmt-count', rows.length); _el('supp-stmt-total', totalAll.toFixed(2)); _el('supp-stmt-paid', paidAll.toFixed(2)); _el('supp-stmt-remaining', remAll.toFixed(2));
+        }
+
+        // ===== EDIT INVOICE PAID (Universal) =====
+        function editInvoicePaid(source, id) {
+            let inv, arr;
+            if (source === 'sales') { arr = db.sales||[]; inv = arr.find(x => x.id == id); }
+            else if (source === 'purchases') { arr = db.purchases||[]; inv = arr.find(x => x.id == id); }
+            else if (source === 'services') { arr = db.serviceInvoices||[]; inv = arr.find(x => x.id == id); }
+            else if (source === 'installments') { showToast('التقسيط يُعدَّل من صفحة التقسيط', 'error'); return; }
+            if (!inv) return showToast('لم يتم العثور على الفاتورة', 'error');
+            const remaining = (inv.total||0) - (inv.paid||0);
+            const val = prompt(`المتبقي: ${remaining.toFixed(2)}\nأدخل المبلغ المراد تسديده:`);
+            if (val === null) return;
+            const amount = parseFloat(val);
+            if (isNaN(amount) || amount <= 0) return showToast('مبلغ غير صحيح', 'error');
+            if (amount > remaining + 0.01) return showToast('المبلغ أكبر من المتبقي', 'error');
+            inv.paid = (inv.paid||0) + amount;
+            inv.remaining = (inv.total||0) - inv.paid;
+            if (inv.remaining < 0.01) inv.remaining = 0;
+            // Journal entry for payment
+            const date = new Date().toISOString().split('T')[0];
+            const desc = source === 'purchases' ? `سداد فاتورة مشتريات: ${inv.supplier||''} #${inv.invoiceNo||inv.id}` : `تحصيل فاتورة: ${inv.customer||''} #${inv.invoiceNo||inv.id}`;
+            if (source === 'purchases') { addJournalEntry(date, desc, [{code:'2101',dr:amount,cr:0},{code:'1101',dr:0,cr:amount}]); }
+            else { addJournalEntry(date, desc, [{code:'1101',dr:amount,cr:0},{code:'1201',dr:0,cr:amount}]); }
+            showToast('تم تسجيل الدفعة ✅'); save();
+            renderCustStatementFull(); renderSuppStatementFull();
+        }
+
+        // ===== SERVICE STATEMENT =====
+        function renderSvcStatement() {
+            const tbody = document.getElementById('svc-stmt-body'); if (!tbody) return;
+            const inv = (db.serviceInvoices || []).filter(s => (s.remaining || 0) > 0);
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                return `<tr class="hover:bg-teal-50"><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-mono text-teal-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد حسابات آجلة</td></tr>';
+        }
+
+        // ===== INSTALLMENT COLLECTION =====
+        function renderInstCollection() {
+            const tbody = document.getElementById('inst-collect-body'); if (!tbody) return;
+            const inv = db.installmentInvoices || [];
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const cust = (db.installmentCustomers || []).find(c => c.name === s.customer) || {};
+                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
+                const rem = (s.total || 0) - paid;
+                const next = (s.schedule || []).find(p => !p.paid);
+                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-bold">${s.customer}</td><td class="p-2">${cust.phone || '-'}</td><td class="p-2 font-mono text-indigo-600">${s.invoiceNo || '-'}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2">${(s.schedule || []).length}</td><td class="p-2 text-emerald-600">${paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${rem.toFixed(2)}</td><td class="p-2 text-amber-600">${next ? next.dueDate : '-'}</td><td class="p-2"><button onclick="viewInstInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد عقود تقسيط</td></tr>';
+        }
+
+        // ===== EXPENSE VOUCHERS =====
+        function renderExpenseVouchers() {
+            const tbody = document.getElementById('exp-voucher-body'); if (!tbody) return;
+            const from = document.getElementById('exp-voucher-from')?.value;
+            const to = document.getElementById('exp-voucher-to')?.value;
+            let exps = db.expenses || [];
+            if (from) exps = exps.filter(e => e.date >= from);
+            if (to) exps = exps.filter(e => e.date <= to);
+            let total = 0;
+            tbody.innerHTML = exps.length ? exps.map((e, i) => {
+                total += e.amount || 0;
+                return `<tr class="hover:bg-red-50"><td class="p-2">${i + 1}</td><td class="p-2">${e.date}</td><td class="p-2 font-bold">${e.desc || e.description || '-'}</td><td class="p-2">${e.category || '-'}</td><td class="p-2 font-bold text-red-600">${(e.amount || 0).toFixed(2)}</td><td class="p-2">${e.method === '1101' ? 'نقدي' : e.method === '1102' ? 'بنك' : (e.method || 'نقدي')}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد سندات صرف</td></tr>';
+            const el = document.getElementById('exp-voucher-total'); if (el) el.textContent = total.toFixed(2);
+        }
+
+        // ===== HR EMPLOYEE MANAGEMENT =====
+        function saveHREmployee(e) {
+            e.preventDefault();
+            const id = document.getElementById('hr-emp-id').value;
+            const emp = {
+                id: id ? parseInt(id) : Date.now(),
+                name: document.getElementById('hr-emp-name').value,
+                phone: document.getElementById('hr-emp-phone').value,
+                position: document.getElementById('hr-emp-position').value,
+                salary: parseFloat(document.getElementById('hr-emp-salary').value) || 0,
+                hireDate: document.getElementById('hr-emp-hiredate').value,
+                status: 'active'
+            };
+            if (!db.employees) db.employees = [];
+            if (id) { const idx = db.employees.findIndex(x => x.id == id); if (idx >= 0) db.employees[idx] = { ...db.employees[idx], ...emp }; }
+            else { db.employees.push(emp); }
+            showToast('تم حفظ الموظف ✅'); resetHREmployeeForm(); renderHREmployees(); save();
+        }
+        function resetHREmployeeForm() {
+            ['hr-emp-id', 'hr-emp-name', 'hr-emp-phone', 'hr-emp-position', 'hr-emp-salary', 'hr-emp-hiredate'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
+        }
+        function renderHREmployees() {
+            const tbody = document.getElementById('hr-emp-body'); if (!tbody) return;
+            const emps = db.employees || [];
+            tbody.innerHTML = emps.length ? emps.map(e => `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${e.name}</td><td class="p-2">${e.position || '-'}</td><td class="p-2">${e.phone || '-'}</td><td class="p-2 font-bold">${(e.salary || 0).toFixed(2)}</td><td class="p-2">${e.hireDate || '-'}</td><td class="p-2"><button onclick="editHREmployee(${e.id})" class="text-blue-500 text-xs me-1"><i class="fas fa-edit"></i></button><button onclick="deleteHREmployee(${e.id})" class="text-red-500 text-xs"><i class="fas fa-trash"></i></button></td></tr>`).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا يوجد موظفين</td></tr>';
+        }
+        function editHREmployee(id) {
+            const e = (db.employees || []).find(x => x.id == id); if (!e) return;
+            document.getElementById('hr-emp-id').value = e.id;
+            document.getElementById('hr-emp-name').value = e.name;
+            document.getElementById('hr-emp-phone').value = e.phone || '';
+            document.getElementById('hr-emp-position').value = e.position || '';
+            document.getElementById('hr-emp-salary').value = e.salary || '';
+            document.getElementById('hr-emp-hiredate').value = e.hireDate || '';
+        }
+        function deleteHREmployee(id) {
+            if (!confirm('حذف هذا الموظف؟')) return;
+            db.employees = (db.employees || []).filter(e => e.id != id); renderHREmployees(); save();
+        }
+
+        // ===== HR ACTIONS =====
+        function populateHRActionEmps() {
+            const sel = document.getElementById('hr-action-emp'); if (!sel) return;
+            sel.innerHTML = '<option value="">-- اختر --</option>' + (db.employees || []).map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+        }
+        function saveHRAction() {
+            const empId = document.getElementById('hr-action-emp').value;
+            const emp = (db.employees || []).find(e => e.id == empId);
+            if (!empId || !emp) return showToast('اختر الموظف', 'error');
+            if (!db.hrActions) db.hrActions = [];
+            db.hrActions.push({
+                id: Date.now(), date: new Date().toISOString().split('T')[0],
+                empId, empName: emp.name,
+                type: document.getElementById('hr-action-type').value,
+                amount: parseFloat(document.getElementById('hr-action-amount').value) || 0,
+                reason: document.getElementById('hr-action-reason').value
+            });
+            showToast('تم تسجيل الإجراء ✅'); renderHRActions(); save();
+            document.getElementById('hr-action-amount').value = '';
+            document.getElementById('hr-action-reason').value = '';
+        }
+        function renderHRActions() {
+            const tbody = document.getElementById('hr-action-body'); if (!tbody) return;
+            const acts = [...(db.hrActions || [])].reverse();
+            const typeMap = { bonus: 'مكافأة', deduction: 'خصم', warning: 'إنذار', leave: 'إجازة', promotion: 'ترقية' };
+            tbody.innerHTML = acts.length ? acts.map(a => `<tr class="hover:bg-amber-50"><td class="p-2">${a.date}</td><td class="p-2 font-bold">${a.empName}</td><td class="p-2">${typeMap[a.type] || a.type}</td><td class="p-2 ${a.type === 'deduction' ? 'text-red-600' : 'text-emerald-600'} font-bold">${a.amount > 0 ? a.amount.toFixed(2) : '-'}</td><td class="p-2">${a.reason || '-'}</td></tr>`).join('') : '<tr><td colspan="5" class="p-4 text-center text-slate-400">لا توجد إجراءات</td></tr>';
+        }
+
+        // ===== HR LIST =====
+        function renderHRList() {
+            const tbody = document.getElementById('hr-list-body'); if (!tbody) return;
+            const emps = db.employees || [];
+            tbody.innerHTML = emps.length ? emps.map((e, i) => `<tr class="hover:bg-blue-50"><td class="p-2">${i + 1}</td><td class="p-2 font-bold">${e.name}</td><td class="p-2">${e.position || '-'}</td><td class="p-2">${e.phone || '-'}</td><td class="p-2 font-bold">${(e.salary || 0).toFixed(2)}</td><td class="p-2">${e.hireDate || '-'}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-xs ${e.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${e.status === 'active' ? 'نشط' : 'متوقف'}</span></td></tr>`).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا يوجد موظفين</td></tr>';
+        }
+
+        // ===== PAYROLL =====
+        function populatePayrollEmps() {
+            const sel = document.getElementById('payroll-emp'); if (!sel) return;
+            sel.innerHTML = '<option value="">-- اختر --</option>' + (db.employees || []).map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+        }
+        function loadPayrollSalary() {
+            const empId = document.getElementById('payroll-emp').value;
+            const emp = (db.employees || []).find(e => e.id == empId);
+            if (emp) document.getElementById('payroll-basic').value = emp.salary || '';
+            calcPayrollNet();
+        }
+        function calcPayrollNet() {
+            const basic = parseFloat(document.getElementById('payroll-basic')?.value) || 0;
+            const allow = parseFloat(document.getElementById('payroll-allowance')?.value) || 0;
+            const ded = parseFloat(document.getElementById('payroll-deduction')?.value) || 0;
+            const bonus = parseFloat(document.getElementById('payroll-bonus')?.value) || 0;
+            const gross = basic + allow; const net = gross - ded + bonus;
+            const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+            el('payroll-gross', gross.toFixed(2)); el('payroll-ded-show', ded.toFixed(2)); el('payroll-net', net.toFixed(2));
+        }
+        function processPayroll() {
+            const empSel = document.getElementById('payroll-emp');
+            const empName = empSel.options[empSel.selectedIndex]?.text;
+            const empId = empSel.value;
+            const month = document.getElementById('payroll-month').value;
+            const basic = parseFloat(document.getElementById('payroll-basic').value) || 0;
+            const allowance = parseFloat(document.getElementById('payroll-allowance').value) || 0;
+            const deduction = parseFloat(document.getElementById('payroll-deduction').value) || 0;
+            const bonus = parseFloat(document.getElementById('payroll-bonus').value) || 0;
+            const method = document.getElementById('payroll-method').value;
+            const notes = document.getElementById('payroll-notes').value;
+            if (!empId || basic <= 0) return showToast('اختر الموظف وحدد الراتب', 'error');
+            if (!month) return showToast('حدد الشهر', 'error');
+            const net = basic + allowance - deduction + bonus;
+            if (net <= 0) return showToast('الصافي يجب أن يكون أكبر من صفر', 'error');
+            const date = new Date().toISOString().split('T')[0];
+            const lines = [{ code: '5202', dr: net, cr: 0 }, { code: method, dr: 0, cr: net }];
+            if (addJournalEntry(date, `صرف راتب: ${empName} - ${month}`, lines)) {
+                if (!db.salaryHistory) db.salaryHistory = [];
+                db.salaryHistory.push({ id: Date.now(), date, month, empId, empName, basic, allowance, deduction, bonus, net, method: method === '1101' ? 'نقدي' : 'بنك', notes });
+                showToast('تم صرف الراتب ✅'); renderPayrollHistory(); save();
+                document.getElementById('payroll-basic').value = '';
+                document.getElementById('payroll-allowance').value = '0';
+                document.getElementById('payroll-deduction').value = '0';
+                document.getElementById('payroll-bonus').value = '0';
+                document.getElementById('payroll-notes').value = '';
+            }
+        }
+        function renderPayrollHistory() {
+            const tbody = document.getElementById('payroll-body'); if (!tbody) return;
+            const hist = [...(db.salaryHistory || [])].reverse();
+            tbody.innerHTML = hist.length ? hist.map((h, i) => `<tr class="hover:bg-emerald-50"><td class="p-2">${hist.length - i}</td><td class="p-2">${h.date}</td><td class="p-2">${h.month}</td><td class="p-2 font-bold">${h.empName}</td><td class="p-2">${(h.basic || 0).toFixed(2)}</td><td class="p-2">${(h.allowance || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(h.deduction || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(h.bonus || 0).toFixed(2)}</td><td class="p-2 font-bold text-yellow-600">${(h.net || 0).toFixed(2)}</td><td class="p-2">${h.method}</td><td class="p-2 text-xs">${h.notes || '-'}</td></tr>`).join('') : '<tr><td colspan="11" class="p-4 text-center text-slate-400">لا توجد رواتب مسجلة</td></tr>';
+        }
+        function filterPayrollByMonth() {
+            const month = document.getElementById('payroll-filter-month')?.value || '';
+            document.querySelectorAll('#payroll-body tr').forEach(r => {
+                r.style.display = !month || r.innerText.includes(month) ? '' : 'none';
+            });
+        }
+        function printLastPayroll() {
+            if (!(db.salaryHistory || []).length) return showToast('لا توجد رواتب', 'error');
+            const h = db.salaryHistory[db.salaryHistory.length - 1];
+            const w = window.open('', 'payroll', 'width=500,height=600');
+            w.document.write(`<html dir="rtl"><head><style>body{font-family:'Cairo',sans-serif;max-width:450px;margin:20px auto;padding:20px;font-size:13px}.row{display:flex;justify-content:space-between;margin-bottom:5px;padding:5px 0;border-bottom:1px dashed #ddd}.no-print{text-align:center;margin-top:20px}@media print{.no-print{display:none}}</style></head><body>
+            <h2 style="text-align:center">إيصال صرف راتب</h2><p style="text-align:center;color:#666">${db.settings.companyName || ''}</p><hr>
+            <div class="row"><span>الموظف:</span><strong>${h.empName}</strong></div>
+            <div class="row"><span>الشهر:</span><span>${h.month}</span></div>
+            <div class="row"><span>التاريخ:</span><span>${h.date}</span></div>
+            <div class="row"><span>الأساسي:</span><span>${(h.basic || 0).toFixed(2)}</span></div>
+            <div class="row"><span>البدلات:</span><span>${(h.allowance || 0).toFixed(2)}</span></div>
+            <div class="row"><span>الخصومات:</span><span style="color:red">${(h.deduction || 0).toFixed(2)}</span></div>
+            <div class="row"><span>الحوافز:</span><span style="color:green">${(h.bonus || 0).toFixed(2)}</span></div>
+            <div class="row" style="border-top:2px solid #333;font-size:16px;font-weight:bold"><span>الصافي:</span><span style="color:#059669">${(h.net || 0).toFixed(2)}</span></div>
+            <div class="row"><span>طريقة الصرف:</span><span>${h.method}</span></div>
+            ${h.notes ? `<div class="row"><span>ملاحظات:</span><span>${h.notes}</span></div>` : ''}
+            <div class="no-print"><button onclick="window.print()" style="padding:8px 25px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer">طباعة</button></div>
+            </body></html>`);
+            w.document.close();
+        }
+
+        // ===== REPORT UTILITY =====
+        function _dtFilter(arr, fromId, toId) {
+            const from = document.getElementById(fromId)?.value;
+            const to = document.getElementById(toId)?.value;
+            let r = arr;
+            if (from) r = r.filter(x => x.date >= from);
+            if (to) r = r.filter(x => x.date <= to);
+            return r;
+        }
+        function _el(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+
+        // ===== RPT: POS =====
+        function renderRptPOS() {
+            const data = _dtFilter(db.posInvoices || [], 'rpt-pos-from', 'rpt-pos-to');
+            let total = 0, items = 0;
+            const tbody = document.getElementById('rpt-pos-body'); if (!tbody) return;
+            tbody.innerHTML = data.length ? data.map(s => {
+                total += s.total || 0; items += (s.items || []).reduce((a, b) => a + (b.qty || 1), 0);
+                return `<tr class="hover:bg-purple-50"><td class="p-2 font-mono text-purple-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2">${s.time || '-'}</td><td class="p-2">${(s.items || []).length}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="5" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-pos-count', data.length); _el('rpt-pos-total', total.toFixed(2)); _el('rpt-pos-items', items);
+        }
+
+        // ===== RPT: Sales =====
+        function renderRptSales() {
+            const data = _dtFilter(db.sales || [], 'rpt-sales-from', 'rpt-sales-to');
+            let total = 0, paid = 0, rem = 0;
+            const tbody = document.getElementById('rpt-sales-body'); if (!tbody) return;
+            tbody.innerHTML = data.length ? data.map((s, i) => {
+                total += s.total || 0; paid += s.paid || 0; rem += s.remaining || 0;
+                const invNo = s.invoiceNo || 'INV-' + String(data.length - i).padStart(4, '0');
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-mono text-blue-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td></tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-sales-count', data.length); _el('rpt-sales-total', total.toFixed(2)); _el('rpt-sales-paid', paid.toFixed(2)); _el('rpt-sales-remaining', rem.toFixed(2));
+        }
+
+        // ===== RPT: Customers =====
+        function renderRptCustomers() {
+            const tbody = document.getElementById('rpt-customers-body'); if (!tbody) return;
+            const custs = db.customers || [];
+            const sales = db.sales || [];
+            let totalSales = 0, totalDue = 0;
+            tbody.innerHTML = custs.length ? custs.map(c => {
+                const custSales = sales.filter(s => s.customer === c.name);
+                const t = custSales.reduce((a, s) => a + (s.total || 0), 0);
+                const p = custSales.reduce((a, s) => a + (s.paid || 0), 0);
+                const d = t - p; totalSales += t; totalDue += d;
+                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-bold">${c.name}</td><td class="p-2">${c.phone || '-'}</td><td class="p-2">${custSales.length}</td><td class="p-2 font-bold">${t.toFixed(2)}</td><td class="p-2 text-emerald-600">${p.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${d.toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-cust-count', custs.length); _el('rpt-cust-total-sales', totalSales.toFixed(2)); _el('rpt-cust-total-due', totalDue.toFixed(2));
+        }
+
+        // ===== RPT: Purchases =====
+        function renderRptPurchases() {
+            const data = _dtFilter(db.purchases || [], 'rpt-pur-from', 'rpt-pur-to');
+            let total = 0, paid = 0, rem = 0;
+            const tbody = document.getElementById('rpt-pur-body'); if (!tbody) return;
+            tbody.innerHTML = data.length ? data.map((s, i) => {
+                total += s.total || 0; paid += s.paid || 0; rem += s.remaining || 0;
+                const invNo = s.invoiceNo || 'PUR-' + String(data.length - i).padStart(4, '0');
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600">مستحق</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-orange-50"><td class="p-2 font-mono text-orange-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.supplier}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td></tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-pur-count', data.length); _el('rpt-pur-total', total.toFixed(2)); _el('rpt-pur-paid', paid.toFixed(2)); _el('rpt-pur-remaining', rem.toFixed(2));
+        }
+
+        // ===== RPT: Suppliers =====
+        function renderRptSuppliers() {
+            const tbody = document.getElementById('rpt-supp-body'); if (!tbody) return;
+            const supps = db.suppliers || [];
+            const purs = db.purchases || [];
+            let totalPur = 0, totalDue = 0;
+            tbody.innerHTML = supps.length ? supps.map(c => {
+                const ss = purs.filter(s => s.supplier === c.name);
+                const t = ss.reduce((a, s) => a + (s.total || 0), 0);
+                const p = ss.reduce((a, s) => a + (s.paid || 0), 0);
+                const d = t - p; totalPur += t; totalDue += d;
+                return `<tr class="hover:bg-amber-50"><td class="p-2 font-bold">${c.name}</td><td class="p-2">${c.phone || '-'}</td><td class="p-2">${ss.length}</td><td class="p-2 font-bold">${t.toFixed(2)}</td><td class="p-2 text-emerald-600">${p.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${d.toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-supp-count', supps.length); _el('rpt-supp-total-pur', totalPur.toFixed(2)); _el('rpt-supp-total-due', totalDue.toFixed(2));
+        }
+
+        // ===== RPT: Employees =====
+        function renderRptEmployees() {
+            const tbody = document.getElementById('rpt-emp-body'); if (!tbody) return;
+            const emps = db.employees || [];
+            const hist = db.salaryHistory || [];
+            const acts = db.hrActions || [];
+            let totalSalary = 0, totalPaid = 0;
+            tbody.innerHTML = emps.length ? emps.map(e => {
+                totalSalary += e.salary || 0;
+                const empHist = hist.filter(h => h.empId == e.id);
+                const empActs = acts.filter(a => a.empId == e.id);
+                const paidTotal = empHist.reduce((a, h) => a + (h.net || 0), 0); totalPaid += paidTotal;
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${e.name}</td><td class="p-2">${e.position || '-'}</td><td class="p-2 font-bold">${(e.salary || 0).toFixed(2)}</td><td class="p-2">${empHist.length}</td><td class="p-2 text-emerald-600">${paidTotal.toFixed(2)}</td><td class="p-2">${empActs.length}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-emp-count', emps.length); _el('rpt-emp-total-salary', totalSalary.toFixed(2)); _el('rpt-emp-total-paid', totalPaid.toFixed(2)); _el('rpt-emp-actions', acts.length);
+        }
+
+        // ===== RPT: Inventory =====
+        function renderRptInventory() {
+            const tbody = document.getElementById('rpt-inv-body'); if (!tbody) return;
+            const prods = db.products || [];
+            let totalStock = 0, totalValue = 0, lowCount = 0;
+            tbody.innerHTML = prods.length ? prods.map(p => {
+                const stock = p.stock || 0; const value = stock * (p.price || 0);
+                totalStock += stock; totalValue += value; if (stock <= 5) lowCount++;
+                const status = stock <= 0 ? '<span class="text-red-600 font-bold">نفد</span>' : stock <= 5 ? '<span class="text-amber-600 font-bold">منخفض</span>' : '<span class="text-emerald-600">متوفر</span>';
+                return `<tr class="hover:bg-teal-50"><td class="p-2 font-mono">${p.barcode || p.code || '-'}</td><td class="p-2 font-bold">${p.name}</td><td class="p-2">${p.category || 'عام'}</td><td class="p-2 text-emerald-600">${(p.price || 0).toFixed(2)}</td><td class="p-2 text-slate-500">${(p.cost || 0).toFixed(2)}</td><td class="p-2 ${stock <= 5 ? 'text-red-600 font-bold' : ''}">${stock}</td><td class="p-2 font-bold">${value.toFixed(2)}</td><td class="p-2">${status}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-inv-count', prods.length); _el('rpt-inv-total-stock', totalStock); _el('rpt-inv-total-value', totalValue.toFixed(2)); _el('rpt-inv-low', lowCount);
+        }
+
+        // ===== RPT: Services =====
+        function renderRptServices() {
+            const data = _dtFilter(db.serviceInvoices || [], 'rpt-svc-from', 'rpt-svc-to');
+            let total = 0, paid = 0, rem = 0;
+            const tbody = document.getElementById('rpt-svc-body'); if (!tbody) return;
+            tbody.innerHTML = data.length ? data.map(s => {
+                total += s.total || 0; paid += s.paid || 0; rem += s.remaining || 0;
+                return `<tr class="hover:bg-cyan-50"><td class="p-2 font-mono text-cyan-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-svc-count', data.length); _el('rpt-svc-total', total.toFixed(2)); _el('rpt-svc-paid', paid.toFixed(2)); _el('rpt-svc-remaining', rem.toFixed(2));
+        }
+
+        // ===== RPT: Installments =====
+        function renderRptInstallments() {
+            const tbody = document.getElementById('rpt-inst-body'); if (!tbody) return;
+            const inv = db.installmentInvoices || [];
+            let totalAll = 0, collectedAll = 0;
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
+                const rem = (s.total || 0) - paid; totalAll += s.total || 0; collectedAll += paid;
+                const status = rem <= 0 ? '<span class="text-emerald-600">مكتمل</span>' : '<span class="text-amber-600">جاري</span>';
+                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-mono text-indigo-600">${s.invoiceNo || '-'}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2">${(s.downPayment || 0).toFixed(2)}</td><td class="p-2">${(s.schedule || []).length}</td><td class="p-2 text-emerald-600">${paid.toFixed(2)}</td><td class="p-2 text-red-600">${rem.toFixed(2)}</td><td class="p-2">${status}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-inst-count', inv.length); _el('rpt-inst-total', totalAll.toFixed(2)); _el('rpt-inst-collected', collectedAll.toFixed(2)); _el('rpt-inst-pending', (totalAll - collectedAll).toFixed(2));
+        }
+
+        // ===== RPT: Installment Customers =====
+        function renderRptInstCustomers() {
+            const tbody = document.getElementById('rpt-instcust-body'); if (!tbody) return;
+            const custs = db.installmentCustomers || [];
+            const inv = db.installmentInvoices || [];
+            tbody.innerHTML = custs.length ? custs.map(c => {
+                const custInv = inv.filter(s => s.customer === c.name);
+                const totalAmt = custInv.reduce((a, s) => a + (s.total || 0), 0);
+                const collected = custInv.reduce((a, s) => a + (s.schedule || []).filter(p => p.paid).reduce((x, y) => x + y.amount, 0), 0);
+                return `<tr class="hover:bg-violet-50"><td class="p-2 font-bold">${c.name}</td><td class="p-2">${c.phone || '-'}</td><td class="p-2">${c.address || '-'}</td><td class="p-2">${custInv.length}</td><td class="p-2 font-bold">${totalAmt.toFixed(2)}</td><td class="p-2 text-emerald-600">${collected.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(totalAmt - collected).toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+        }
+
+        // ===== RPT: Expenses =====
+        function renderRptExpenses() {
+            const data = _dtFilter(db.expenses || [], 'rpt-exp-from', 'rpt-exp-to');
+            let total = 0;
+            const tbody = document.getElementById('rpt-exp-body'); if (!tbody) return;
+            tbody.innerHTML = data.length ? data.map((e, i) => {
+                total += e.amount || 0;
+                return `<tr class="hover:bg-red-50"><td class="p-2">${i + 1}</td><td class="p-2">${e.date}</td><td class="p-2 font-bold">${e.desc || e.description || '-'}</td><td class="p-2">${e.category || '-'}</td><td class="p-2 font-bold text-red-600">${(e.amount || 0).toFixed(2)}</td><td class="p-2">${e.method === '1101' ? 'نقدي' : e.method === '1102' ? 'بنك' : (e.method || 'نقدي')}</td></tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-exp-total', total.toFixed(2)); _el('rpt-exp-count', data.length); _el('rpt-exp-avg', data.length ? (total / data.length).toFixed(2) : '0.00');
+        }
+
+        // ===== RPT: Revenue =====
+        function renderRptRevenue() {
+            const tbody = document.getElementById('rpt-rev-body'); if (!tbody) return;
+            const from = document.getElementById('rpt-rev-from')?.value;
+            const to = document.getElementById('rpt-rev-to')?.value;
+            let rows = [];
+            // Sales revenue
+            (db.sales || []).forEach(s => { if ((!from || s.date >= from) && (!to || s.date <= to)) rows.push({ src: 'مبيعات', date: s.date, desc: s.customer + ' - ' + (s.invoiceNo || ''), amount: s.paid || s.total || 0 }); });
+            // POS revenue
+            (db.posInvoices || []).forEach(s => { if ((!from || s.date >= from) && (!to || s.date <= to)) rows.push({ src: 'POS', date: s.date, desc: s.invoiceNo || 'POS', amount: s.total || 0 }); });
+            // Service revenue
+            (db.serviceInvoices || []).forEach(s => { if ((!from || s.date >= from) && (!to || s.date <= to)) rows.push({ src: 'خدمات', date: s.date, desc: s.customer + ' - ' + (s.invoiceNo || ''), amount: s.paid || s.total || 0 }); });
+            rows.sort((a, b) => b.date.localeCompare(a.date));
+            const salesRev = rows.filter(r => r.src === 'مبيعات').reduce((a, r) => a + r.amount, 0);
+            const posRev = rows.filter(r => r.src === 'POS').reduce((a, r) => a + r.amount, 0);
+            const svcRev = rows.filter(r => r.src === 'خدمات').reduce((a, r) => a + r.amount, 0);
+            const totalRev = salesRev + posRev + svcRev;
+            tbody.innerHTML = rows.length ? rows.map(r => `<tr class="hover:bg-yellow-50"><td class="p-2">${r.src}</td><td class="p-2">${r.date}</td><td class="p-2">${r.desc}</td><td class="p-2 font-bold text-emerald-600">${r.amount.toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="4" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            _el('rpt-rev-sales', salesRev.toFixed(2)); _el('rpt-rev-pos', posRev.toFixed(2)); _el('rpt-rev-svc', svcRev.toFixed(2)); _el('rpt-rev-total', totalRev.toFixed(2));
+        }
+
+        // ===== RPT: Treasury =====
+        function renderRptTreasury() {
+            const tbody = document.getElementById('rpt-treasury-body'); if (!tbody) return;
+            const journal = db.journal || [];
+            let totalIn = 0, totalOut = 0, balance = 0;
+            const cashEntries = journal.filter(j => (j.lines || []).some(l => l.code === '1101' || l.code === '1102'));
+            tbody.innerHTML = cashEntries.length ? cashEntries.map(j => {
+                let dr = 0, cr = 0;
+                (j.lines || []).forEach(l => { if (l.code === '1101' || l.code === '1102') { dr += l.dr || 0; cr += l.cr || 0; } });
+                totalIn += dr; totalOut += cr; balance += dr - cr;
+                return `<tr class="hover:bg-slate-50"><td class="p-2">${j.date}</td><td class="p-2">${j.desc || '-'}</td><td class="p-2 text-emerald-600 font-bold">${dr > 0 ? dr.toFixed(2) : '-'}</td><td class="p-2 text-red-600 font-bold">${cr > 0 ? cr.toFixed(2) : '-'}</td><td class="p-2 font-bold">${balance.toFixed(2)}</td></tr>`;
+            }).join('') : '<tr><td colspan="5" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
+            // Calc cash vs bank
+            let cash = 0, bank = 0;
+            journal.forEach(j => (j.lines || []).forEach(l => { if (l.code === '1101') { cash += (l.dr || 0) - (l.cr || 0); } if (l.code === '1102') { bank += (l.dr || 0) - (l.cr || 0); } }));
+            _el('rpt-trs-in', totalIn.toFixed(2)); _el('rpt-trs-out', totalOut.toFixed(2)); _el('rpt-trs-cash', cash.toFixed(2)); _el('rpt-trs-bank', bank.toFixed(2));
+        }
+
+        // ===== RPT: Profits =====
+        function renderRptProfits() {
+            const from = document.getElementById('rpt-profit-from')?.value;
+            const to = document.getElementById('rpt-profit-to')?.value;
+            const df = (arr) => { let r = arr; if (from) r = r.filter(x => x.date >= from); if (to) r = r.filter(x => x.date <= to); return r; };
+            // Revenue
+            const salesRev = df(db.sales || []).reduce((a, s) => a + (s.paid || s.total || 0), 0);
+            const posRev = df(db.posInvoices || []).reduce((a, s) => a + (s.total || 0), 0);
+            const svcRev = df(db.serviceInvoices || []).reduce((a, s) => a + (s.paid || s.total || 0), 0);
+            const totalRevenue = salesRev + posRev + svcRev;
+            // COGS
+            let cogs = 0;
+            df(db.sales || []).forEach(s => (s.items || []).forEach(it => { const p = (db.products || []).find(x => x.name === it.name); cogs += (p?.cost || 0) * (it.qty || 1); }));
+            df(db.posInvoices || []).forEach(s => (s.items || []).forEach(it => { const p = (db.products || []).find(x => x.name === it.name); cogs += (p?.cost || 0) * (it.qty || 1); }));
+            // Expenses
+            const expTotal = df(db.expenses || []).reduce((a, e) => a + (e.amount || 0), 0);
+            const salaryTotal = df(db.salaryHistory || []).reduce((a, h) => a + (h.net || 0), 0);
+            const totalExpenses = expTotal + salaryTotal;
+            // Net
+            const netProfit = totalRevenue - cogs - totalExpenses;
+            _el('rpt-pft-revenue', totalRevenue.toFixed(2));
+            _el('rpt-pft-cost', cogs.toFixed(2));
+            _el('rpt-pft-expenses', totalExpenses.toFixed(2));
+            const netEl = document.getElementById('rpt-pft-net');
+            const labelEl = document.getElementById('rpt-pft-label');
+            if (netEl) { netEl.textContent = Math.abs(netProfit).toFixed(2); netEl.style.color = netProfit >= 0 ? '#15803d' : '#dc2626'; }
+            if (labelEl) { labelEl.textContent = netProfit >= 0 ? 'صافي الربح ✅' : 'صافي الخسارة ❌'; labelEl.style.color = netProfit >= 0 ? '#15803d' : '#dc2626'; }
+            // Details
+            const revDet = document.getElementById('rpt-pft-rev-details');
+            if (revDet) revDet.innerHTML = `<div class="flex justify-between"><span>مبيعات:</span><span class="font-bold">${salesRev.toFixed(2)}</span></div><div class="flex justify-between"><span>POS:</span><span class="font-bold">${posRev.toFixed(2)}</span></div><div class="flex justify-between"><span>خدمات:</span><span class="font-bold">${svcRev.toFixed(2)}</span></div>`;
+            const costDet = document.getElementById('rpt-pft-cost-details');
+            if (costDet) costDet.innerHTML = `<div class="flex justify-between"><span>تكلفة البضاعة:</span><span class="font-bold text-red-600">${cogs.toFixed(2)}</span></div>`;
+            const expDet = document.getElementById('rpt-pft-exp-details');
+            if (expDet) expDet.innerHTML = `<div class="flex justify-between"><span>المصروفات:</span><span class="font-bold">${expTotal.toFixed(2)}</span></div><div class="flex justify-between"><span>الرواتب:</span><span class="font-bold">${salaryTotal.toFixed(2)}</span></div>`;
         }
 
     </script>
