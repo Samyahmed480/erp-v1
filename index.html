@@ -566,10 +566,6 @@
                     <button onclick="showSection('hr')"
                         class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
                         data-target="hr"><i class="fas fa-user-tie w-5 text-center"></i> نظرة عامة</button>
-                    <button onclick="showSection('hr_employees')"
-                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                        data-target="hr_employees"><i class="fas fa-id-card w-5 text-center"></i> إدارة
-                        الموظفين</button>
                     <button onclick="showSection('hr_actions')"
                         class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
                         data-target="hr_actions"><i class="fas fa-clipboard-list w-5 text-center"></i>
@@ -581,6 +577,10 @@
                         class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
                         data-target="hr_payroll"><i class="fas fa-money-check-alt w-5 text-center"></i> كشف
                         رواتب</button>
+                    <button onclick="showSection('hr_emp_statement')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr_emp_statement"><i class="fas fa-file-invoice w-5 text-center"></i> كشف حساب
+                        موظف</button>
                 </div>
             </div>
 
@@ -1981,38 +1981,7 @@
 
                     <!-- Right: Actions & Payroll -->
                     <div class="flex flex-col gap-6 h-full">
-                        <!-- Actions -->
-                        <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
-                            <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">الإجراءات (خصم / مكافأة)
-                            </h3>
-                            <form onsubmit="postPayrollAction(event)" class="grid grid-cols-2 gap-3 mb-4">
-                                <select id="act-emp" class="col-span-2 p-2 border rounded outline-none bg-slate-50"
-                                    required></select>
-                                <select id="act-type" class="p-2 border rounded outline-none bg-slate-50" required>
-                                    <option value="bonus">مكافأة / عمولة (+)</option>
-                                    <option value="deduction">خصم / جزاء (-)</option>
-                                </select>
-                                <input type="number" id="act-amount" placeholder="المبلغ" required
-                                    class="p-2 border rounded outline-none">
-                                <input type="text" id="act-desc" placeholder="السبب" required
-                                    class="col-span-2 p-2 border rounded outline-none">
-                                <button type="submit"
-                                    class="col-span-2 bg-slate-800 text-white py-2 rounded font-bold hover:bg-slate-700">تسجيل
-                                    الإجراء</button>
-                            </form>
-                            <div class="overflow-y-auto max-h-[150px] border rounded bg-slate-50">
-                                <table class="w-full text-xs text-right">
-                                    <thead class="bg-slate-100 font-bold sticky top-0">
-                                        <tr>
-                                            <th class="p-2">الاسم</th>
-                                            <th class="p-2">النوع</th>
-                                            <th class="p-2">المبلغ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="actions-list" class="divide-y bg-white"></tbody>
-                                </table>
-                            </div>
-                        </div>
+
 
                         <!-- Payroll Run -->
                         <div class="bg-white p-6 rounded-xl shadow-sm flex-1">
@@ -3148,62 +3117,7 @@
                 </div>
             </section>
 
-            <!-- ===== HR: إدارة الموظفين ===== -->
-            <section id="hr_employees" class="section-content">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div class="lg:col-span-1 bg-white p-5 rounded-xl shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-800 mb-4"><i
-                                class="fas fa-id-card text-blue-500 me-2"></i>إضافة / تعديل موظف</h3>
-                        <form onsubmit="saveHREmployee(event)" class="space-y-3">
-                            <input type="hidden" id="hr-emp-id">
-                            <div><label class="text-xs text-slate-500 mb-1 block">الاسم الكامل *</label><input
-                                    type="text" id="hr-emp-name" required
-                                    class="w-full p-2.5 border rounded-lg outline-none"></div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div><label class="text-xs text-slate-500 mb-1 block">الهاتف</label><input type="text"
-                                        id="hr-emp-phone" class="w-full p-2.5 border rounded-lg outline-none"></div>
-                                <div><label class="text-xs text-slate-500 mb-1 block">الوظيفة</label><input type="text"
-                                        id="hr-emp-position" class="w-full p-2.5 border rounded-lg outline-none"></div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div><label class="text-xs text-slate-500 mb-1 block">الراتب الأساسي</label><input
-                                        type="number" id="hr-emp-salary" step="0.01"
-                                        class="w-full p-2.5 border rounded-lg outline-none"></div>
-                                <div><label class="text-xs text-slate-500 mb-1 block">تاريخ التعيين</label><input
-                                        type="date" id="hr-emp-hiredate"
-                                        class="w-full p-2.5 border rounded-lg outline-none"></div>
-                            </div>
-                            <div class="flex gap-2"><button type="submit"
-                                    class="flex-1 bg-blue-600 text-white py-2.5 rounded-lg font-bold hover:bg-blue-700"><i
-                                        class="fas fa-save me-1"></i>حفظ</button><button type="button"
-                                    onclick="resetHREmployeeForm()"
-                                    class="bg-slate-200 text-slate-600 px-4 py-2.5 rounded-lg">إلغاء</button></div>
-                        </form>
-                    </div>
-                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-slate-800">الموظفين</h3><input type="text" placeholder="بحث..."
-                                class="p-2 border rounded text-sm w-48 outline-none"
-                                onkeyup="filterInvTable('hr-emp-body',this.value)">
-                        </div>
-                        <div class="overflow-x-auto border rounded-lg max-h-[400px] overflow-y-auto">
-                            <table class="w-full text-sm text-right">
-                                <thead class="bg-slate-800 text-white sticky top-0">
-                                    <tr>
-                                        <th class="p-2.5">الاسم</th>
-                                        <th class="p-2.5">الوظيفة</th>
-                                        <th class="p-2.5">الهاتف</th>
-                                        <th class="p-2.5">الراتب</th>
-                                        <th class="p-2.5">تاريخ التعيين</th>
-                                        <th class="p-2.5"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="hr-emp-body" class="divide-y bg-white"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
 
             <!-- ===== HR: الإجراءات ===== -->
             <section id="hr_actions" class="section-content">
@@ -3315,7 +3229,8 @@
                                 </select></div>
                             <div><label class="text-xs font-bold text-slate-600 mb-1 block">الشهر</label><input
                                     type="month" id="payroll-month"
-                                    class="w-full p-2.5 border rounded-lg text-sm outline-none"></div>
+                                    class="w-full p-2.5 border rounded-lg text-sm outline-none"
+                                    onchange="loadPayrollSalary()"></div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div><label class="text-xs text-slate-600 mb-1 block">الأساسي</label><input
                                         type="number" id="payroll-basic"
@@ -3327,14 +3242,12 @@
                                         oninput="calcPayrollNet()"></div>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
-                                <div><label class="text-xs text-slate-600 mb-1 block">الخصومات</label><input
-                                        type="number" id="payroll-deduction" value="0"
-                                        class="w-full p-2 border rounded-lg text-sm outline-none"
-                                        oninput="calcPayrollNet()"></div>
-                                <div><label class="text-xs text-slate-600 mb-1 block">الحوافز</label><input
-                                        type="number" id="payroll-bonus" value="0"
-                                        class="w-full p-2 border rounded-lg text-sm outline-none"
-                                        oninput="calcPayrollNet()"></div>
+                                <div><label class="text-xs text-slate-600 mb-1 block">الخصومات (آلي)</label><input
+                                        type="number" id="payroll-deduction" value="0" readonly
+                                        class="w-full p-2 border rounded-lg text-sm outline-none bg-slate-50"></div>
+                                <div><label class="text-xs text-slate-600 mb-1 block">الحوافز (آلي)</label><input
+                                        type="number" id="payroll-bonus" value="0" readonly
+                                        class="w-full p-2 border rounded-lg text-sm outline-none bg-slate-50"></div>
                             </div>
                             <div><label class="text-xs text-slate-600 mb-1 block">ملاحظات</label><input type="text"
                                     id="payroll-notes" class="w-full p-2 border rounded-lg text-sm outline-none"></div>
@@ -3398,6 +3311,83 @@
                                     </tr>
                                 </thead>
                                 <tbody id="payroll-body" class="divide-y bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HR: كشف حساب موظف ===== -->
+            <section id="hr_emp_statement" class="section-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                        <div class="flex items-center gap-4">
+                            <h3 class="font-bold text-xl text-slate-800"><i
+                                    class="fas fa-file-invoice text-indigo-500 me-2"></i>كشف حساب الموظف الشامل</h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportTableToCSV('emp-stmt-table','كشف_حساب_موظف')"
+                                class="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-emerald-100 transition"><i
+                                    class="fas fa-file-excel me-1"></i>Excel</button>
+                            <button onclick="printSection('emp-stmt-print-area')"
+                                class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg font-bold text-sm hover:bg-blue-100 transition"><i
+                                    class="fas fa-print me-1"></i>طباعة</button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 mb-1">الموظف</label>
+                            <select id="emp-stmt-id"
+                                class="w-full p-2.5 border rounded-lg outline-none bg-white text-sm"
+                                onchange="renderHREmpStatement()">
+                                <option value="">اختر الموظف...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">من تاريخ</label>
+                            <input type="date" id="emp-stmt-from"
+                                class="w-full p-2.5 border rounded-lg outline-none bg-white text-sm"
+                                onchange="renderHREmpStatement()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">إلى تاريخ</label>
+                            <input type="date" id="emp-stmt-to"
+                                class="w-full p-2.5 border rounded-lg outline-none bg-white text-sm"
+                                onchange="renderHREmpStatement()">
+                        </div>
+                    </div>
+
+                    <div id="emp-stmt-print-area">
+                        <div id="emp-stmt-header" class="mb-4 hidden">
+                            <h2 class="text-2xl font-bold text-center border-b-2 pb-2 mb-4">كشف حساب تاريخي للموظف</h2>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div><strong>الموظف:</strong> <span id="emp-stmt-name-show">-</span></div>
+                                <div><strong>الوظيفة:</strong> <span id="emp-stmt-role-show">-</span></div>
+                                <div><strong>الهاتف:</strong> <span id="emp-stmt-phone-show">-</span></div>
+                                <div><strong>الراتب الأساسي:</strong> <span id="emp-stmt-salary-show">-</span></div>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto border rounded-lg">
+                            <table id="emp-stmt-table" class="w-full text-sm text-right">
+                                <thead class="bg-slate-800 text-white">
+                                    <tr>
+                                        <th class="p-3">التاريخ</th>
+                                        <th class="p-3">النوع</th>
+                                        <th class="p-3">البيان / السبب</th>
+                                        <th class="p-3">المبلغ (+)</th>
+                                        <th class="p-3">المبلغ (-)</th>
+                                        <th class="p-3">الصافي / الرصيد</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emp-stmt-body" class="divide-y bg-white">
+                                    <tr>
+                                        <td colspan="6" class="p-8 text-center text-slate-400">يرجى اختيار الموظف لعرض
+                                            البيانات</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -4142,7 +4132,7 @@
             services: [{ id: 1, name: 'خدمة تركيب', price: 150, description: 'تركيب وصيانة' }],
             expensesCategories: [
                 { id: '5201', name: 'مصروفات تشغيلية' },
-                { id: '5202', name: 'رواتب وأجور' }, // We'll use this for HR later
+                { id: '5202', name: 'مصروفات نثرية' }, // petty cash
                 { id: '5203', name: 'مصروفات أخرى (طارئة)' }
             ],
             expenses: [],
@@ -4175,7 +4165,7 @@
                 { code: '5', name: 'المصروفات', type: 'expense', level: 1, balance: 0, isGroup: true },
                 { code: '5101', name: 'تكلفة المبيعات', type: 'expense', level: 3, parent: '5', balance: 0 },
                 { code: '5201', name: 'مصروفات تشغيلية', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5202', name: 'الرواتب والأجور', type: 'expense', level: 3, parent: '5', balance: 0 }
+                { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '5', balance: 0 }
             ],
             journal: [],
             products: [{ id: 1, name: 'منتج تجريبي', price: 100, cost: 80, stock: 10 }],
@@ -6403,16 +6393,6 @@
                 </tr>
             `).join('');
 
-            // Select for Actions
-            const sel = document.getElementById('act-emp');
-            if (sel) sel.innerHTML = '<option value="">اختر موظف...</option>' + db.employees.map(e => `<option value="${e.id}">${e.name}</option>`).join('');
-
-            // Render Recent Actions
-            if (!db.payrollActions) db.payrollActions = [];
-            const actList = document.getElementById('actions-list');
-            if (actList) actList.innerHTML = db.payrollActions.slice().reverse().slice(0, 20).map(a => `
-                <tr><td class="p-2">${a.empName}</td><td class="p-2 text-xs ${a.type === 'bonus' ? 'text-emerald-600' : 'text-red-600'}">${a.type === 'bonus' ? 'مكافأة' : 'خصم'}</td><td class="p-2 font-bold">${a.amount}</td></tr>
-            `).join('');
         }
 
         function editEmployee(id) {
@@ -6428,26 +6408,7 @@
             }
         }
 
-        function postPayrollAction(e) {
-            e.preventDefault();
-            const empId = document.getElementById('act-emp').value;
-            const type = document.getElementById('act-type').value;
-            const amount = parseFloat(document.getElementById('act-amount').value);
-            const desc = document.getElementById('act-desc').value;
-            const emp = db.employees.find(x => x.id == empId);
 
-            if (!emp || !amount) return showToast('بيانات ناقصة', 'error');
-
-            db.payrollActions.push({
-                id: Date.now(),
-                empId, empName: emp.name,
-                type, amount, description: desc,
-                date: new Date().toISOString().split('T')[0]
-            });
-            save(); renderEmployees(); showToast('تم تسجيل الإجراء');
-            document.getElementById('act-amount').value = '';
-            document.getElementById('act-desc').value = '';
-        }
 
         function generatePayrollPreview() {
             const month = document.getElementById('payroll-month').value;
@@ -6838,10 +6799,10 @@
                 // Expenses
                 if (id === 'expense_vouchers') { renderExpenseVouchers(); }
                 // HR
-                if (id === 'hr_employees') { renderHREmployees(); }
                 if (id === 'hr_actions') { populateHRActionEmps(); renderHRActions(); }
                 if (id === 'hr_list') { renderHRList(); }
                 if (id === 'hr_payroll') { populatePayrollEmps(); renderPayrollHistory(); }
+                if (id === 'hr_emp_statement') { populateHRStmtEmps(); }
                 // Reports
                 if (id === 'rpt_pos') { renderRptPOS(); }
                 if (id === 'rpt_sales') { renderRptSales(); }
@@ -7452,45 +7413,7 @@
             const el = document.getElementById('exp-voucher-total'); if (el) el.textContent = total.toFixed(2);
         }
 
-        // ===== HR EMPLOYEE MANAGEMENT =====
-        function saveHREmployee(e) {
-            e.preventDefault();
-            const id = document.getElementById('hr-emp-id').value;
-            const emp = {
-                id: id ? parseInt(id) : Date.now(),
-                name: document.getElementById('hr-emp-name').value,
-                phone: document.getElementById('hr-emp-phone').value,
-                position: document.getElementById('hr-emp-position').value,
-                salary: parseFloat(document.getElementById('hr-emp-salary').value) || 0,
-                hireDate: document.getElementById('hr-emp-hiredate').value,
-                status: 'active'
-            };
-            if (!db.employees) db.employees = [];
-            if (id) { const idx = db.employees.findIndex(x => x.id == id); if (idx >= 0) db.employees[idx] = { ...db.employees[idx], ...emp }; }
-            else { db.employees.push(emp); }
-            showToast('تم حفظ الموظف ✅'); resetHREmployeeForm(); renderHREmployees(); save();
-        }
-        function resetHREmployeeForm() {
-            ['hr-emp-id', 'hr-emp-name', 'hr-emp-phone', 'hr-emp-position', 'hr-emp-salary', 'hr-emp-hiredate'].forEach(id => { const e = document.getElementById(id); if (e) e.value = ''; });
-        }
-        function renderHREmployees() {
-            const tbody = document.getElementById('hr-emp-body'); if (!tbody) return;
-            const emps = db.employees || [];
-            tbody.innerHTML = emps.length ? emps.map(e => `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${e.name}</td><td class="p-2">${e.position || '-'}</td><td class="p-2">${e.phone || '-'}</td><td class="p-2 font-bold">${(e.salary || 0).toFixed(2)}</td><td class="p-2">${e.hireDate || '-'}</td><td class="p-2"><button onclick="editHREmployee(${e.id})" class="text-blue-500 text-xs me-1"><i class="fas fa-edit"></i></button><button onclick="deleteHREmployee(${e.id})" class="text-red-500 text-xs"><i class="fas fa-trash"></i></button></td></tr>`).join('') : '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا يوجد موظفين</td></tr>';
-        }
-        function editHREmployee(id) {
-            const e = (db.employees || []).find(x => x.id == id); if (!e) return;
-            document.getElementById('hr-emp-id').value = e.id;
-            document.getElementById('hr-emp-name').value = e.name;
-            document.getElementById('hr-emp-phone').value = e.phone || '';
-            document.getElementById('hr-emp-position').value = e.position || '';
-            document.getElementById('hr-emp-salary').value = e.salary || '';
-            document.getElementById('hr-emp-hiredate').value = e.hireDate || '';
-        }
-        function deleteHREmployee(id) {
-            if (!confirm('حذف هذا الموظف؟')) return;
-            db.employees = (db.employees || []).filter(e => e.id != id); renderHREmployees(); save();
-        }
+
 
         // ===== HR ACTIONS =====
         function populateHRActionEmps() {
@@ -7534,8 +7457,25 @@
         }
         function loadPayrollSalary() {
             const empId = document.getElementById('payroll-emp').value;
+            const month = document.getElementById('payroll-month').value; // YYYY-MM
             const emp = (db.employees || []).find(e => e.id == empId);
-            if (emp) document.getElementById('payroll-basic').value = emp.salary || '';
+            if (!emp) return;
+
+            document.getElementById('payroll-basic').value = emp.salary || '';
+
+            // Auto sync from HR Actions if month is selected
+            let totalBonus = 0, totalDed = 0;
+            if (month) {
+                (db.hrActions || []).forEach(a => {
+                    if (a.empId == empId && a.date.startsWith(month)) {
+                        if (a.type === 'bonus') totalBonus += (a.amount || 0);
+                        if (a.type === 'deduction') totalDed += (a.amount || 0);
+                    }
+                });
+            }
+            document.getElementById('payroll-bonus').value = totalBonus;
+            document.getElementById('payroll-deduction').value = totalDed;
+
             calcPayrollNet();
         }
         function calcPayrollNet() {
@@ -7566,12 +7506,16 @@
             const lines = [{ code: '5202', dr: net, cr: 0 }, { code: method, dr: 0, cr: net }];
             if (addJournalEntry(date, `صرف راتب: ${empName} - ${month}`, lines)) {
                 if (!db.salaryHistory) db.salaryHistory = [];
-                db.salaryHistory.push({ id: Date.now(), date, month, empId, empName, basic, allowance, deduction, bonus, net, method: method === '1101' ? 'نقدي' : 'بنك', notes });
+
+                // Capture the specific actions synced for this month
+                const syncedActions = (db.hrActions || []).filter(a => a.empId == empId && a.date.startsWith(month));
+
+                db.salaryHistory.push({
+                    id: Date.now(), date, month, empId, empName, basic, allowance, deduction, bonus, net,
+                    method: method === '1101' ? 'نقدي' : 'بنك', notes,
+                    details: syncedActions.map(a => ({ date: a.date, type: a.type, reason: a.reason, amount: a.amount }))
+                });
                 showToast('تم صرف الراتب ✅'); renderPayrollHistory(); save();
-                document.getElementById('payroll-basic').value = '';
-                document.getElementById('payroll-allowance').value = '0';
-                document.getElementById('payroll-deduction').value = '0';
-                document.getElementById('payroll-bonus').value = '0';
                 document.getElementById('payroll-notes').value = '';
             }
         }
@@ -7597,11 +7541,22 @@
             <div class="row"><span>التاريخ:</span><span>${h.date}</span></div>
             <div class="row"><span>الأساسي:</span><span>${(h.basic || 0).toFixed(2)}</span></div>
             <div class="row"><span>البدلات:</span><span>${(h.allowance || 0).toFixed(2)}</span></div>
-            <div class="row"><span>الخصومات:</span><span style="color:red">${(h.deduction || 0).toFixed(2)}</span></div>
-            <div class="row"><span>الحوافز:</span><span style="color:green">${(h.bonus || 0).toFixed(2)}</span></div>
-            <div class="row" style="border-top:2px solid #333;font-size:16px;font-weight:bold"><span>الصافي:</span><span style="color:#059669">${(h.net || 0).toFixed(2)}</span></div>
+            <div class="row"><span>الخصومات الكلية:</span><span style="color:red">${(h.deduction || 0).toFixed(2)}</span></div>
+            <div class="row"><span>الحوافز الكلية:</span><span style="color:green">${(h.bonus || 0).toFixed(2)}</span></div>
+            
+            ${h.details && h.details.length ? `
+                <div style="margin-top:10px;border:1px solid #eee;padding:5px;border-radius:4px">
+                    <p style="font-weight:bold;margin-bottom:5px;font-size:11px;background:#f8f9fa;padding:3px">تفاصيل الإجراءات (خصم/مكافأة):</p>
+                    ${h.details.map(d => `<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px">
+                        <span>${d.date} - ${d.reason || (d.type === 'bonus' ? 'مكافأة' : 'خصم')}</span>
+                        <span style="color:${d.type === 'bonus' ? 'green' : 'red'}">${d.type === 'bonus' ? '+' : '-'}${d.amount.toFixed(2)}</span>
+                    </div>`).join('')}
+                </div>
+            ` : ''}
+
+            <div class="row" style="border-top:2px solid #333;font-size:16px;font-weight:bold;margin-top:10px"><span>الصافي النهائي:</span><span style="color:#059669">${(h.net || 0).toFixed(2)}</span></div>
             <div class="row"><span>طريقة الصرف:</span><span>${h.method}</span></div>
-            ${h.notes ? `<div class="row"><span>ملاحظات:</span><span>${h.notes}</span></div>` : ''}
+            ${h.notes ? `<div class="row"><span>ملاحظات إضافية:</span><span>${h.notes}</span></div>` : ''}
             <div class="no-print"><button onclick="window.print()" style="padding:8px 25px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer">طباعة</button></div>
             </body></html>`);
             w.document.close();
@@ -7644,7 +7599,60 @@
             _el('rpt-sales-count', data.length); _el('rpt-sales-total', total.toFixed(2)); _el('rpt-sales-paid', paid.toFixed(2)); _el('rpt-sales-remaining', rem.toFixed(2));
         }
 
-        // ===== RPT: Customers =====
+        // ===== HR STATEMENT =====
+        function populateHRStmtEmps() {
+            const sel = document.getElementById('emp-stmt-id'); if (!sel) return;
+            sel.innerHTML = '<option value="">-- اختر الموظف --</option>' + (db.employees || []).map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+        }
+        function renderHREmpStatement() {
+            const empId = document.getElementById('emp-stmt-id').value;
+            const from = document.getElementById('emp-stmt-from').value;
+            const to = document.getElementById('emp-stmt-to').value;
+            const tbody = document.getElementById('emp-stmt-body');
+            if (!tbody || !empId) return;
+
+            const emp = (db.employees || []).find(e => e.id == empId);
+            if (emp) {
+                document.getElementById('emp-stmt-header').classList.remove('hidden');
+                document.getElementById('emp-stmt-name-show').textContent = emp.name;
+                document.getElementById('emp-stmt-role-show').textContent = emp.position || '-';
+                document.getElementById('emp-stmt-phone-show').textContent = emp.phone || '-';
+                document.getElementById('emp-stmt-salary-show').textContent = (emp.salary || 0).toFixed(2);
+            }
+
+            let transactions = [];
+            // Add Salary Payments
+            (db.salaryHistory || []).forEach(h => {
+                if (h.empId == empId) {
+                    transactions.push({ date: h.date, type: 'راتب شهري', desc: `صرف راتب شهر ${h.month}`, dr: 0, cr: h.net, bal: -h.net });
+                }
+            });
+            // Add HR Actions
+            (db.hrActions || []).forEach(a => {
+                if (a.empId == empId) {
+                    const typeMap = { bonus: 'مكافأة', deduction: 'خصم', warning: 'إنذار', leave: 'إجازة', promotion: 'ترقية' };
+                    transactions.push({ date: a.date, type: typeMap[a.type] || a.type, desc: a.reason || '-', dr: a.type === 'bonus' ? a.amount : 0, cr: a.type === 'deduction' ? a.amount : 0 });
+                }
+            });
+
+            transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+            if (from) transactions = transactions.filter(t => t.date >= from);
+            if (to) transactions = transactions.filter(t => t.date <= to);
+
+            let cumulative = 0;
+            tbody.innerHTML = transactions.length ? transactions.map(t => {
+                const rowNet = (t.dr || 0) - (t.cr || 0);
+                cumulative += rowNet;
+                return `<tr>
+                    <td class="p-3">${t.date}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-slate-100 text-slate-700">${t.type}</span></td>
+                    <td class="p-3">${t.desc}</td>
+                    <td class="p-3 text-emerald-600 font-bold">${t.dr > 0 ? t.dr.toFixed(2) : '-'}</td>
+                    <td class="p-3 text-red-600 font-bold">${t.cr > 0 ? t.cr.toFixed(2) : '-'}</td>
+                    <td class="p-3 font-bold ${cumulative >= 0 ? 'text-emerald-700' : 'text-red-700'}">${cumulative.toFixed(2)}</td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-8 text-center text-slate-400">لا توجد حركات مسجلة لهذا الموظف في هذه الفترة</td></tr>';
+        }
         function renderRptCustomers() {
             const tbody = document.getElementById('rpt-customers-body'); if (!tbody) return;
             const custs = db.customers || [];
