@@ -291,89 +291,121 @@
             <span class="text-[10px] text-slate-400 mt-1 bg-slate-800 px-2 py-0.5 rounded-full">V10.0 Pro</span>
         </div>
 
-        <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm">
+        <nav class="flex-1 p-3 space-y-0.5 overflow-y-auto text-sm" id="sidebar-nav">
             <button onclick="showSection('dashboard')"
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="dashboard">
                 <i class="fas fa-chart-pie w-7 text-center"></i> لوحة القيادة</button>
 
             <!-- نقطة البيع -->
-            <button onclick="showSection('pos')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="pos">
-                <i class="fas fa-calculator w-7 text-center"></i> نقطة البيع</button>
-            <button onclick="showSection('pos_products')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="pos_products">
-                <i class="fas fa-box w-5 text-center"></i> المنتجات والأسعار</button>
-            <button onclick="showSection('barcode')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="barcode">
-                <i class="fas fa-barcode w-5 text-center"></i> إصدار باركود</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-calculator w-7 text-center"></i> نقطة البيع</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('pos')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="pos"><i class="fas fa-cash-register w-5 text-center"></i> بدء البيع</button>
+                    <button onclick="showSection('pos_products')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="pos_products"><i class="fas fa-box w-5 text-center"></i> المنتجات والأسعار</button>
+                    <button onclick="showSection('barcode')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="barcode"><i class="fas fa-barcode w-5 text-center"></i> إصدار باركود</button>
+                </div>
+            </div>
 
             <!-- الفواتير -->
-            <button onclick="showSection('invoices')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="invoices">
-                <i class="fas fa-file-invoice w-7 text-center"></i> الفواتير</button>
-            <button onclick="showSection('inv_pos')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inv_pos">
-                <i class="fas fa-cash-register w-5 text-center"></i> فواتير نقاط البيع</button>
-            <button onclick="showSection('inv_sales')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inv_sales">
-                <i class="fas fa-file-alt w-5 text-center"></i> فواتير المبيعات</button>
-            <button onclick="showSection('inv_purchases')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inv_purchases">
-                <i class="fas fa-file-import w-5 text-center"></i> فواتير المشتريات</button>
-            <button onclick="showSection('inv_services')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inv_services">
-                <i class="fas fa-file-medical w-5 text-center"></i> فواتير الخدمات</button>
-            <button onclick="showSection('inv_installments')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inv_installments">
-                <i class="fas fa-file-contract w-5 text-center"></i> فواتير التقسيط</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-file-invoice w-7 text-center"></i> الفواتير</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('invoices')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="invoices"><i class="fas fa-th-large w-5 text-center"></i> نظرة عامة</button>
+                    <button onclick="showSection('inv_sales')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="inv_sales"><i class="fas fa-file-alt w-5 text-center"></i> فواتير المبيعات</button>
+                    <button onclick="showSection('inv_purchases')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="inv_purchases"><i class="fas fa-file-import w-5 text-center"></i> فواتير
+                        المشتريات</button>
+                    <button onclick="showSection('inv_services')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="inv_services"><i class="fas fa-file-medical w-5 text-center"></i> فواتير
+                        الخدمات</button>
+                    <button onclick="showSection('inv_installments')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="inv_installments"><i class="fas fa-file-contract w-5 text-center"></i> فواتير
+                        التقسيط</button>
+                </div>
+            </div>
 
-            <!-- المبيعات -->
-            <button onclick="showSection('sales')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="sales">
-                <i class="fas fa-cash-register w-7 text-center"></i> المبيعات</button>
-            <button onclick="showSection('customers')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="customers">
-                <i class="fas fa-users w-7 text-center"></i> العملاء</button>
-            <button onclick="showSection('cust_statement')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="cust_statement">
-                <i class="fas fa-file-invoice-dollar w-7 text-center"></i> كشف حساب العملاء</button>
+            <!-- المبيعات والعملاء -->
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-shopping-bag w-7 text-center"></i> المبيعات والعملاء</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('sales')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="sales"><i class="fas fa-cash-register w-5 text-center"></i> فاتورة مبيعات</button>
+                    <button onclick="showSection('customers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="customers"><i class="fas fa-users w-5 text-center"></i> العملاء</button>
+                    <button onclick="showSection('cust_statement')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="cust_statement"><i class="fas fa-file-invoice-dollar w-5 text-center"></i> كشف حساب
+                        العملاء</button>
+                </div>
+            </div>
 
-            <!-- المشتريات -->
-            <button onclick="showSection('purchases')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="purchases">
-                <i class="fas fa-shopping-cart w-7 text-center"></i> المشتريات</button>
-            <button onclick="showSection('suppliers')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="suppliers">
-                <i class="fas fa-truck w-7 text-center"></i> الموردين</button>
-            <button onclick="showSection('supp_statement')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="supp_statement">
-                <i class="fas fa-file-invoice w-7 text-center"></i> كشف حساب الموردين</button>
+            <!-- المشتريات والموردين -->
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-shopping-cart w-7 text-center"></i> المشتريات والموردين</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('purchases')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="purchases"><i class="fas fa-shopping-cart w-5 text-center"></i> فاتورة
+                        مشتريات</button>
+                    <button onclick="showSection('suppliers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="suppliers"><i class="fas fa-truck w-5 text-center"></i> الموردين</button>
+                    <button onclick="showSection('supp_statement')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="supp_statement"><i class="fas fa-file-invoice w-5 text-center"></i> كشف حساب
+                        الموردين</button>
+                </div>
+            </div>
 
             <!-- الخدمات -->
-            <button onclick="showSection('services')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="services">
-                <i class="fas fa-tools w-7 text-center"></i> الخدمات</button>
-            <button onclick="showSection('svc_statement')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="svc_statement">
-                <i class="fas fa-file-alt w-5 text-center"></i> كشف حساب الخدمات</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-tools w-7 text-center"></i> الخدمات</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('services')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="services"><i class="fas fa-tools w-5 text-center"></i> إنشاء فاتورة خدمة</button>
+                    <button onclick="showSection('svc_statement')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="svc_statement"><i class="fas fa-file-alt w-5 text-center"></i> كشف حساب
+                        الخدمات</button>
+                </div>
+            </div>
 
             <!-- المخزون -->
             <button onclick="showSection('inventory')"
@@ -382,121 +414,155 @@
                 <i class="fas fa-boxes w-7 text-center"></i> إدارة المخزون</button>
 
             <!-- التقسيط -->
-            <button onclick="showSection('installments')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="installments">
-                <i class="fas fa-calendar-alt w-7 text-center"></i> التقسيط</button>
-            <button onclick="showSection('installment_customers')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="installment_customers">
-                <i class="fas fa-user-plus w-5 text-center"></i> عملاء التقسيط</button>
-            <button onclick="showSection('inst_collection')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="inst_collection">
-                <i class="fas fa-hand-holding-usd w-5 text-center"></i> الأقساط والتحصيل</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-calendar-alt w-7 text-center"></i> التقسيط</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('installments')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="installments"><i class="fas fa-file-contract w-5 text-center"></i> إنشاء عقد
+                        تقسيط</button>
+                    <button onclick="showSection('installment_customers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="installment_customers"><i class="fas fa-user-plus w-5 text-center"></i> عملاء
+                        التقسيط</button>
+                    <button onclick="showSection('inst_collection')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="inst_collection"><i class="fas fa-hand-holding-usd w-5 text-center"></i> الأقساط
+                        والتحصيل</button>
+                </div>
+            </div>
 
             <!-- المصروفات -->
-            <button onclick="showSection('expenses')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="expenses">
-                <i class="fas fa-money-bill-wave w-7 text-center"></i> المصروفات</button>
-            <button onclick="showSection('expense_vouchers')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="expense_vouchers">
-                <i class="fas fa-receipt w-5 text-center"></i> سندات الصرف</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-money-bill-wave w-7 text-center"></i> المصروفات</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('expenses')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="expenses"><i class="fas fa-money-bill-wave w-5 text-center"></i> تسجيل
+                        مصروف</button>
+                    <button onclick="showSection('expense_vouchers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="expense_vouchers"><i class="fas fa-receipt w-5 text-center"></i> سندات
+                        الصرف</button>
+                </div>
+            </div>
 
             <!-- الموارد البشرية -->
-            <button onclick="showSection('hr')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="hr">
-                <i class="fas fa-user-tie w-7 text-center"></i> الموارد البشرية</button>
-            <button onclick="showSection('hr_employees')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="hr_employees">
-                <i class="fas fa-id-card w-5 text-center"></i> إدارة الموظفين</button>
-            <button onclick="showSection('hr_actions')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="hr_actions">
-                <i class="fas fa-clipboard-list w-5 text-center"></i> الإجراءات</button>
-            <button onclick="showSection('hr_list')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="hr_list">
-                <i class="fas fa-list-ul w-5 text-center"></i> الموظفين</button>
-            <button onclick="showSection('hr_payroll')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="hr_payroll">
-                <i class="fas fa-money-check-alt w-5 text-center"></i> كشف رواتب</button>
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-user-tie w-7 text-center"></i> الموارد البشرية</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('hr')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr"><i class="fas fa-user-tie w-5 text-center"></i> نظرة عامة</button>
+                    <button onclick="showSection('hr_employees')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr_employees"><i class="fas fa-id-card w-5 text-center"></i> إدارة
+                        الموظفين</button>
+                    <button onclick="showSection('hr_actions')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr_actions"><i class="fas fa-clipboard-list w-5 text-center"></i>
+                        الإجراءات</button>
+                    <button onclick="showSection('hr_list')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr_list"><i class="fas fa-list-ul w-5 text-center"></i> الموظفين</button>
+                    <button onclick="showSection('hr_payroll')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="hr_payroll"><i class="fas fa-money-check-alt w-5 text-center"></i> كشف
+                        رواتب</button>
+                </div>
+            </div>
 
             <div class="my-2 border-t border-slate-700"></div>
 
-            <button onclick="showSection('journal')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="journal">
-                <i class="fas fa-book w-7 text-center"></i> القيود اليومية</button>
-            <button onclick="showSection('accounts_tree')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="accounts_tree">
-                <i class="fas fa-sitemap w-7 text-center"></i> شجرة الحسابات</button>
-            <button onclick="showSection('reports')"
-                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
-                data-target="reports">
-                <i class="fas fa-chart-bar w-7 text-center"></i> التقارير</button>
-            <button onclick="showSection('rpt_pos')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_pos">
-                <i class="fas fa-cash-register w-5 text-center"></i> تقارير نقاط البيع</button>
-            <button onclick="showSection('rpt_sales')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_sales">
-                <i class="fas fa-chart-line w-5 text-center"></i> تقارير المبيعات</button>
-            <button onclick="showSection('rpt_customers')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_customers">
-                <i class="fas fa-users w-5 text-center"></i> تقارير العملاء</button>
-            <button onclick="showSection('rpt_purchases')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_purchases">
-                <i class="fas fa-shopping-cart w-5 text-center"></i> تقارير المشتريات</button>
-            <button onclick="showSection('rpt_suppliers')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_suppliers">
-                <i class="fas fa-truck w-5 text-center"></i> تقارير الموردين</button>
-            <button onclick="showSection('rpt_employees')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_employees">
-                <i class="fas fa-user-tie w-5 text-center"></i> تقارير الموظفين</button>
-            <button onclick="showSection('rpt_inventory')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_inventory">
-                <i class="fas fa-boxes w-5 text-center"></i> تقارير المخزون</button>
-            <button onclick="showSection('rpt_services')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_services">
-                <i class="fas fa-tools w-5 text-center"></i> تقارير الخدمات</button>
-            <button onclick="showSection('rpt_installments')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_installments">
-                <i class="fas fa-calendar-alt w-5 text-center"></i> تقارير التقسيط</button>
-            <button onclick="showSection('rpt_inst_customers')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_inst_customers">
-                <i class="fas fa-user-tag w-5 text-center"></i> تقارير عملاء التقسيط</button>
-            <button onclick="showSection('rpt_expenses')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_expenses">
-                <i class="fas fa-money-bill-wave w-5 text-center"></i> تقارير المصروفات</button>
-            <button onclick="showSection('rpt_revenue')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_revenue">
-                <i class="fas fa-coins w-5 text-center"></i> تقارير الإيرادات</button>
-            <button onclick="showSection('rpt_treasury')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_treasury">
-                <i class="fas fa-vault w-5 text-center"></i> تقارير الخزينة</button>
-            <button onclick="showSection('rpt_profits')"
-                class="nav-btn w-full text-right pr-9 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
-                data-target="rpt_profits">
-                <i class="fas fa-chart-pie w-5 text-center"></i> تقارير الأرباح</button>
+            <!-- المحاسبة -->
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-book w-7 text-center"></i> المحاسبة</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('journal')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="journal"><i class="fas fa-book w-5 text-center"></i> القيود اليومية</button>
+                    <button onclick="showSection('accounts_tree')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="accounts_tree"><i class="fas fa-sitemap w-5 text-center"></i> شجرة
+                        الحسابات</button>
+                </div>
+            </div>
+
+            <!-- التقارير -->
+            <div class="sidebar-group">
+                <button onclick="toggleSubMenu(this)"
+                    class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
+                    <span><i class="fas fa-chart-bar w-7 text-center"></i> التقارير</span>
+                    <i class="fas fa-chevron-down text-[10px] text-slate-500 transition-transform submenu-arrow"></i>
+                </button>
+                <div class="submenu hidden pr-3 space-y-0.5 mt-0.5">
+                    <button onclick="showSection('reports')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="reports"><i class="fas fa-th-large w-5 text-center"></i> نظرة عامة</button>
+                    <button onclick="showSection('rpt_pos')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_pos"><i class="fas fa-cash-register w-5 text-center"></i> نقاط البيع</button>
+                    <button onclick="showSection('rpt_sales')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_sales"><i class="fas fa-chart-line w-5 text-center"></i> المبيعات</button>
+                    <button onclick="showSection('rpt_customers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_customers"><i class="fas fa-users w-5 text-center"></i> العملاء</button>
+                    <button onclick="showSection('rpt_purchases')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_purchases"><i class="fas fa-shopping-cart w-5 text-center"></i>
+                        المشتريات</button>
+                    <button onclick="showSection('rpt_suppliers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_suppliers"><i class="fas fa-truck w-5 text-center"></i> الموردين</button>
+                    <button onclick="showSection('rpt_employees')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_employees"><i class="fas fa-user-tie w-5 text-center"></i> الموظفين</button>
+                    <button onclick="showSection('rpt_inventory')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_inventory"><i class="fas fa-boxes w-5 text-center"></i> المخزون</button>
+                    <button onclick="showSection('rpt_services')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_services"><i class="fas fa-tools w-5 text-center"></i> الخدمات</button>
+                    <button onclick="showSection('rpt_installments')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_installments"><i class="fas fa-calendar-alt w-5 text-center"></i>
+                        التقسيط</button>
+                    <button onclick="showSection('rpt_inst_customers')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_inst_customers"><i class="fas fa-user-tag w-5 text-center"></i> عملاء
+                        التقسيط</button>
+                    <button onclick="showSection('rpt_expenses')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_expenses"><i class="fas fa-money-bill-wave w-5 text-center"></i>
+                        المصروفات</button>
+                    <button onclick="showSection('rpt_revenue')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_revenue"><i class="fas fa-coins w-5 text-center"></i> الإيرادات</button>
+                    <button onclick="showSection('rpt_treasury')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_treasury"><i class="fas fa-vault w-5 text-center"></i> الخزينة</button>
+                    <button onclick="showSection('rpt_profits')"
+                        class="nav-btn w-full text-right pr-7 p-1.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-500 text-xs"
+                        data-target="rpt_profits"><i class="fas fa-chart-pie w-5 text-center"></i> الأرباح</button>
+                </div>
+            </div>
 
             <div class="my-2 border-t border-slate-700"></div>
 
@@ -2313,51 +2379,26 @@
             </section>
 
             <!-- فواتير نقاط البيع -->
+            <!-- inv_pos hidden - merged into inv_sales -->
             <section id="inv_pos" class="section-content">
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg text-slate-800"><i
-                                class="fas fa-cash-register text-purple-500 me-2"></i>فواتير نقاط البيع</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث برقم الفاتورة..."
-                                class="p-2 border rounded text-sm w-48 outline-none"
-                                onkeyup="filterInvTable('inv-pos-body',this.value)">
-                            <button onclick="exportTableToCSV('inv-pos-table','فواتير_نقاط_البيع')"
-                                class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
-                                    class="fas fa-file-excel me-1"></i>Excel</button>
-                            <button onclick="printSection('inv-pos-body')"
-                                class="text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded hover:bg-blue-100"><i
-                                    class="fas fa-print me-1"></i>طباعة</button>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
-                        <table id="inv-pos-table" class="w-full text-sm text-right">
-                            <thead class="bg-slate-800 text-white sticky top-0">
-                                <tr>
-                                    <th class="p-2.5">رقم الفاتورة</th>
-                                    <th class="p-2.5">التاريخ</th>
-                                    <th class="p-2.5">الوقت</th>
-                                    <th class="p-2.5">المنتجات</th>
-                                    <th class="p-2.5">الإجمالي</th>
-                                    <th class="p-2.5">الحالة</th>
-                                    <th class="p-2.5"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="inv-pos-body" class="divide-y bg-white"></tbody>
-                        </table>
-                    </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm text-center text-slate-400"><i
+                        class="fas fa-info-circle me-2"></i>تم دمج فواتير نقاط البيع مع فواتير المبيعات <button
+                        onclick="showSection('inv_sales')" class="text-blue-500 underline">عرض فواتير المبيعات</button>
                 </div>
             </section>
 
-            <!-- فواتير المبيعات -->
+            <!-- ===== فواتير المبيعات (Enhanced) ===== -->
             <section id="inv_sales" class="section-content">
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                         <h3 class="font-bold text-lg text-slate-800"><i
                                 class="fas fa-file-alt text-blue-500 me-2"></i>فواتير المبيعات</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث برقم الفاتورة أو العميل..."
-                                class="p-2 border rounded text-sm w-56 outline-none"
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="inv-sales-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvSales()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="inv-sales-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvSales()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
                                 onkeyup="filterInvTable('inv-sales-body',this.value)">
                             <button onclick="exportTableToCSV('inv-sales-table','فواتير_المبيعات')"
                                 class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
@@ -2367,6 +2408,24 @@
                                     class="fas fa-print me-1"></i>طباعة</button>
                         </div>
                     </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-blue-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-blue-600" id="inv-sales-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-indigo-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-indigo-600" id="inv-sales-total">0.00</div>
+                            <div class="text-xs text-slate-500">الإجمالي</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="inv-sales-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="inv-sales-rem">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
                     <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
                         <table id="inv-sales-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-800 text-white sticky top-0">
@@ -2374,13 +2433,11 @@
                                     <th class="p-2.5">رقم الفاتورة</th>
                                     <th class="p-2.5">التاريخ</th>
                                     <th class="p-2.5">العميل</th>
-                                    <th class="p-2.5">المنتجات</th>
-                                    <th class="p-2.5">الخصم</th>
                                     <th class="p-2.5">الإجمالي</th>
                                     <th class="p-2.5">المدفوع</th>
-                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
                                     <th class="p-2.5">الحالة</th>
-                                    <th class="p-2.5"></th>
+                                    <th class="p-2.5">إجراءات</th>
                                 </tr>
                             </thead>
                             <tbody id="inv-sales-body" class="divide-y bg-white"></tbody>
@@ -2389,15 +2446,18 @@
                 </div>
             </section>
 
-            <!-- فواتير المشتريات -->
+            <!-- ===== فواتير المشتريات (Enhanced) ===== -->
             <section id="inv_purchases" class="section-content">
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                         <h3 class="font-bold text-lg text-slate-800"><i
                                 class="fas fa-file-import text-orange-500 me-2"></i>فواتير المشتريات</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث برقم الفاتورة أو المورد..."
-                                class="p-2 border rounded text-sm w-56 outline-none"
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="inv-pur-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvPurchases()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="inv-pur-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvPurchases()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
                                 onkeyup="filterInvTable('inv-pur-body',this.value)">
                             <button onclick="exportTableToCSV('inv-pur-table','فواتير_المشتريات')"
                                 class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
@@ -2407,6 +2467,24 @@
                                     class="fas fa-print me-1"></i>طباعة</button>
                         </div>
                     </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-orange-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-orange-600" id="inv-pur-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-amber-600" id="inv-pur-total">0.00</div>
+                            <div class="text-xs text-slate-500">الإجمالي</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="inv-pur-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المدفوع</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="inv-pur-rem">0.00</div>
+                            <div class="text-xs text-slate-500">المستحق علينا</div>
+                        </div>
+                    </div>
                     <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
                         <table id="inv-pur-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-800 text-white sticky top-0">
@@ -2414,13 +2492,11 @@
                                     <th class="p-2.5">رقم الفاتورة</th>
                                     <th class="p-2.5">التاريخ</th>
                                     <th class="p-2.5">المورد</th>
-                                    <th class="p-2.5">المنتجات</th>
-                                    <th class="p-2.5">الخصم</th>
                                     <th class="p-2.5">الإجمالي</th>
                                     <th class="p-2.5">المدفوع</th>
-                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
                                     <th class="p-2.5">الحالة</th>
-                                    <th class="p-2.5"></th>
+                                    <th class="p-2.5">إجراءات</th>
                                 </tr>
                             </thead>
                             <tbody id="inv-pur-body" class="divide-y bg-white"></tbody>
@@ -2429,14 +2505,18 @@
                 </div>
             </section>
 
-            <!-- فواتير الخدمات -->
+            <!-- ===== فواتير الخدمات (Enhanced) ===== -->
             <section id="inv_services" class="section-content">
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                         <h3 class="font-bold text-lg text-slate-800"><i
                                 class="fas fa-file-medical text-teal-500 me-2"></i>فواتير الخدمات</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-48 outline-none"
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <label class="text-xs text-slate-500">من</label><input type="date" id="inv-svc-from"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvServices()">
+                            <label class="text-xs text-slate-500">إلى</label><input type="date" id="inv-svc-to"
+                                class="p-1.5 border rounded text-xs outline-none" onchange="renderInvServices()">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
                                 onkeyup="filterInvTable('inv-svc-body',this.value)">
                             <button onclick="exportTableToCSV('inv-svc-table','فواتير_الخدمات')"
                                 class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
@@ -2446,6 +2526,24 @@
                                     class="fas fa-print me-1"></i>طباعة</button>
                         </div>
                     </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-teal-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-teal-600" id="inv-svc-count">0</div>
+                            <div class="text-xs text-slate-500">عدد الفواتير</div>
+                        </div>
+                        <div class="bg-cyan-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-cyan-600" id="inv-svc-total">0.00</div>
+                            <div class="text-xs text-slate-500">الإجمالي</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="inv-svc-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="inv-svc-rem">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
                     <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
                         <table id="inv-svc-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-800 text-white sticky top-0">
@@ -2453,12 +2551,11 @@
                                     <th class="p-2.5">رقم الفاتورة</th>
                                     <th class="p-2.5">التاريخ</th>
                                     <th class="p-2.5">العميل</th>
-                                    <th class="p-2.5">الخدمات</th>
                                     <th class="p-2.5">الإجمالي</th>
                                     <th class="p-2.5">المدفوع</th>
-                                    <th class="p-2.5">المتبقي</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
                                     <th class="p-2.5">الحالة</th>
-                                    <th class="p-2.5"></th>
+                                    <th class="p-2.5">إجراءات</th>
                                 </tr>
                             </thead>
                             <tbody id="inv-svc-body" class="divide-y bg-white"></tbody>
@@ -2467,14 +2564,14 @@
                 </div>
             </section>
 
-            <!-- فواتير التقسيط -->
+            <!-- ===== فواتير التقسيط (Enhanced) ===== -->
             <section id="inv_installments" class="section-content">
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                         <h3 class="font-bold text-lg text-slate-800"><i
                                 class="fas fa-file-contract text-indigo-500 me-2"></i>فواتير التقسيط</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-48 outline-none"
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <input type="text" placeholder="بحث..." class="p-2 border rounded text-sm w-40 outline-none"
                                 onkeyup="filterInvTable('inv-inst-body',this.value)">
                             <button onclick="exportTableToCSV('inv-inst-table','فواتير_التقسيط')"
                                 class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-100"><i
@@ -2484,18 +2581,37 @@
                                     class="fas fa-print me-1"></i>طباعة</button>
                         </div>
                     </div>
+                    <div class="grid grid-cols-4 gap-3 mb-4">
+                        <div class="bg-indigo-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-indigo-600" id="inv-inst-count">0</div>
+                            <div class="text-xs text-slate-500">عدد العقود</div>
+                        </div>
+                        <div class="bg-violet-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-violet-600" id="inv-inst-total">0.00</div>
+                            <div class="text-xs text-slate-500">الإجمالي</div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-emerald-600" id="inv-inst-paid">0.00</div>
+                            <div class="text-xs text-slate-500">المحصّل</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg text-center">
+                            <div class="text-lg font-bold text-red-600" id="inv-inst-rem">0.00</div>
+                            <div class="text-xs text-slate-500">المتبقي</div>
+                        </div>
+                    </div>
                     <div class="overflow-x-auto border rounded-lg max-h-[500px] overflow-y-auto">
                         <table id="inv-inst-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-800 text-white sticky top-0">
                                 <tr>
-                                    <th class="p-2.5">رقم الفاتورة</th>
+                                    <th class="p-2.5">رقم العقد</th>
                                     <th class="p-2.5">التاريخ</th>
                                     <th class="p-2.5">العميل</th>
                                     <th class="p-2.5">الإجمالي</th>
                                     <th class="p-2.5">المقدم</th>
-                                    <th class="p-2.5">عدد الأقساط</th>
+                                    <th class="p-2.5">المحصّل</th>
+                                    <th class="p-2.5 text-red-400">المتبقي</th>
                                     <th class="p-2.5">الحالة</th>
-                                    <th class="p-2.5"></th>
+                                    <th class="p-2.5">إجراءات</th>
                                 </tr>
                             </thead>
                             <tbody id="inv-inst-body" class="divide-y bg-white"></tbody>
@@ -4938,6 +5054,14 @@
             if (sb.classList.contains('translate-x-full')) { sb.classList.remove('translate-x-full'); ov.classList.remove('hidden'); setTimeout(() => ov.classList.remove('opacity-0'), 10); }
             else { sb.classList.add('translate-x-full'); ov.classList.add('opacity-0'); setTimeout(() => ov.classList.add('hidden'), 300); }
         }
+        function toggleSubMenu(btn) {
+            const submenu = btn.nextElementSibling;
+            const arrow = btn.querySelector('.submenu-arrow');
+            if (submenu) {
+                submenu.classList.toggle('hidden');
+                if (arrow) arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
         function showSection(id) {
             document.querySelectorAll('.section-content').forEach(e => e.classList.remove('active'));
             const section = document.getElementById(id);
@@ -5205,27 +5329,25 @@
         function postServiceBill() {
             if (currentSrvCart.length === 0) return showToast('الفاتورة فارغة', 'error');
             const total = currentSrvCart.reduce((sum, item) => sum + item.price, 0);
-            const method = document.getElementById('srv-method').value;
+            const method = document.getElementById('srv-method')?.value || '1101';
+            const custName = document.getElementById('srv-customer')?.value || 'عميل خدمات';
+            const paid = parseFloat(document.getElementById('srv-paid')?.value) || total;
+            const remaining = total - paid;
             const date = new Date().toISOString().split('T')[0];
-
-            // Journal: Dr Cash, Cr Services Revenue (4102 maybe? or just 4101)
-            // Let's assume generic Revenue 4101 for now, or create new. 
-            // Better: Add 4102 Services Revenue dynamically if possible, or just use 4101.
-            // Using 4101 for simplicity.
+            const saleId = Date.now();
+            const invoiceNo = 'SVC-' + String(saleId).slice(-6);
 
             const lines = [
-                { code: method || '1101', dr: total, cr: 0 },
+                { code: method || '1101', dr: paid, cr: 0 },
                 { code: '4101', dr: 0, cr: total }
             ];
+            if (remaining > 0) lines.push({ code: '1201', dr: remaining, cr: 0 }); // Receivable
 
-            if (addJournalEntry(date, `فاتورة خدمات - ${method}`, lines)) {
-                // We can add a sales record too if we want to track it in sales list, or separate list.
-                // For now, just journal is enough for financial. 
-                // BUT user might want to see it in a list.
-                // Let's add to Sales with type 'service'
-                db.sales.push({ id: Date.now(), date, customer: 'عميل خدمات', total, paid: total, remaining: 0, method, type: 'service', items: [...currentSrvCart] });
-
-                showToast('تم حفظ الفاتورة');
+            if (addJournalEntry(date, `فاتورة خدمات - ${custName}`, lines)) {
+                if (!db.serviceInvoices) db.serviceInvoices = [];
+                const invObj = { id: saleId, invoiceNo, date, customer: custName, total, paid, remaining, method, type: 'service', items: [...currentSrvCart] };
+                db.serviceInvoices.push(invObj);
+                showToast('تم حفظ فاتورة الخدمة ✅');
                 currentSrvCart = []; renderServiceCart(); save(); renderAll();
             }
         }
@@ -5406,9 +5528,12 @@
             if (addJournalEntry(date, `بيع كاشير - ${custName}`, lines)) {
                 // Stock Update
                 posCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
-
-                db.sales.push({ id: saleId, date, customer: custName, total, paid: total, remaining: 0, method, type: 'pos', items: [...posCart] });
-                showToast('تمت عملية البيع');
+                const invoiceNo = 'POS-' + String(saleId).slice(-6);
+                const saleObj = { id: saleId, invoiceNo, date, time: new Date().toLocaleTimeString('ar'), customer: custName, total, paid: total, remaining: 0, method, type: 'pos', items: [...posCart] };
+                db.sales.push(saleObj);
+                showToast('تمت عملية البيع ✅');
+                // Print POS receipt
+                printPOSReceipt(saleObj);
                 clearPOSCart();
                 save(); renderAll();
             }
@@ -6113,14 +6238,8 @@
             });
         }
 
-        // ===== INVOICES DASHBOARD =====
-        function renderInvoicesDashboard() {
-            const el = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-            el('inv-count-pos', (db.posInvoices || []).length);
-            el('inv-count-sales', (db.sales || []).length);
-            el('inv-count-pur', (db.purchases || []).length);
-            el('inv-count-svc', (db.serviceInvoices || []).length);
-        }
+
+
 
         // ===== Invoice view helper =====
         function openInvoiceWindow(title, invNo, date, party, items, totals) {
@@ -6146,76 +6265,207 @@
         }
 
         // ===== Render Invoice Sub-Modules =====
-        function renderInvPOS() {
-            const tbody = document.getElementById('inv-pos-body'); if (!tbody) return;
-            const inv = [...(db.posInvoices || [])].reverse();
-            tbody.innerHTML = inv.length ? inv.map(s => {
-                const items = (s.items || []).map(i => i.name).join(', ');
-                return `<tr class="hover:bg-purple-50"><td class="p-2 font-mono text-purple-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2">${s.time || '-'}</td><td class="p-2 text-xs">${items}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2"><span class="text-emerald-600">مكتمل</span></td><td class="p-2"><button onclick="viewPOSInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
-        }
-        function viewPOSInvoice(id) {
-            const s = (db.posInvoices || []).find(x => x.id == id); if (!s) return;
-            openInvoiceWindow('إيصال POS', s.invoiceNo || 'POS-' + s.id, s.date, { label: 'الكاشير', name: s.cashier || '-' }, s.items || [],
-                `<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+        function renderInvPOS() { showSection('inv_sales'); } // Redirect
+
+        // -- POS Receipt Print --
+        function printPOSReceipt(sale) {
+            const w = window.open('', 'receipt', 'width=350,height=600');
+            const itemsHTML = (sale.items || []).map(it => `<tr><td style="padding:3px">${it.name}</td><td style="padding:3px;text-align:center">${it.qty}</td><td style="padding:3px;text-align:left">${(it.total || it.price || 0).toFixed(2)}</td></tr>`).join('');
+            w.document.write(`<html dir="rtl"><head><style>body{font-family:monospace,Arial;width:280px;margin:0 auto;padding:10px;font-size:12px}h2{text-align:center;margin:5px 0;font-size:14px}p{text-align:center;margin:2px 0;font-size:10px;color:#666}.line{border-top:1px dashed #000;margin:5px 0}table{width:100%;border-collapse:collapse}th{border-bottom:1px solid #000;padding:3px;font-size:11px;text-align:right}td{font-size:11px}.total{font-weight:bold;font-size:14px;text-align:center;margin:5px 0}.footer{text-align:center;font-size:10px;color:#666;margin-top:10px}@media print{.no-print{display:none}}</style></head><body>
+            <h2>${db.settings.companyName || 'نظام ERP'}</h2>
+            <p>${db.settings.address || ''}</p><p>${db.settings.phone || ''}</p>
+            <div class="line"></div>
+            <p style="text-align:right"><strong>رقم:</strong> ${sale.invoiceNo || sale.id} | <strong>التاريخ:</strong> ${sale.date} ${sale.time || ''}</p>
+            <p style="text-align:right"><strong>العميل:</strong> ${sale.customer}</p>
+            <div class="line"></div>
+            <table><thead><tr><th>الصنف</th><th style="text-align:center">الكمية</th><th style="text-align:left">المبلغ</th></tr></thead><tbody>${itemsHTML}</tbody></table>
+            <div class="line"></div>
+            <div class="total">الإجمالي: ${(sale.total || 0).toFixed(2)}</div>
+            <div class="line"></div>
+            <div class="footer">شكراً لزيارتكم ❤️</div>
+            <div class="no-print" style="text-align:center;margin-top:15px"><button onclick="window.print()" style="padding:8px 25px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer">طباعة</button></div>
+            </body></html>`);
+            w.document.close();
+            setTimeout(() => { try { w.print(); } catch (e) { } }, 300);
         }
 
+        // -- Sales Invoices (includes POS) with date filter + stats + actions --
         function renderInvSales() {
             const tbody = document.getElementById('inv-sales-body'); if (!tbody) return;
-            const inv = [...(db.sales || [])].reverse();
-            tbody.innerHTML = inv.length ? inv.map((s, i) => {
-                const invNo = s.invoiceNo || 'INV-SALE-' + String(inv.length - i).padStart(4, '0');
-                const items = (s.items || []).map(i => i.name).join(', ');
+            const from = document.getElementById('inv-sales-from')?.value;
+            const to = document.getElementById('inv-sales-to')?.value;
+            let inv = [...(db.sales || [])].reverse();
+            if (from) inv = inv.filter(s => s.date >= from);
+            if (to) inv = inv.filter(s => s.date <= to);
+            let totalAll = 0, paidAll = 0, remAll = 0;
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const invNo = s.invoiceNo || 'INV-' + String(s.id).slice(-6);
+                totalAll += s.total || 0; paidAll += s.paid || 0; remAll += s.remaining || 0;
                 const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
-                return `<tr class="hover:bg-blue-50"><td class="p-2 font-mono text-blue-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 text-xs">${items}</td><td class="p-2">${(s.discount || 0).toFixed(2)}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewSaleInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="10" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+                let actions = `<button onclick="viewSaleInvoice(${s.id})" class="text-blue-500 text-xs me-1" title="عرض"><i class="fas fa-eye"></i></button>`;
+                if ((s.remaining || 0) > 0) {
+                    actions += `<button onclick="payPartialInvoice('sales',${s.id})" class="text-amber-500 text-xs me-1" title="دفع جزئي"><i class="fas fa-money-bill"></i></button>`;
+                    actions += `<button onclick="closeInvoice('sales',${s.id})" class="text-emerald-500 text-xs" title="إقفال كامل"><i class="fas fa-check-circle"></i></button>`;
+                }
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-mono text-blue-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${actions}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+            _el('inv-sales-count', inv.length); _el('inv-sales-total', totalAll.toFixed(2)); _el('inv-sales-paid', paidAll.toFixed(2)); _el('inv-sales-rem', remAll.toFixed(2));
         }
 
+        // -- Purchase Invoices with date filter + stats + actions --
         function renderInvPurchases() {
             const tbody = document.getElementById('inv-pur-body'); if (!tbody) return;
-            const inv = [...(db.purchases || [])].reverse();
-            tbody.innerHTML = inv.length ? inv.map((s, i) => {
-                const invNo = s.invoiceNo || 'INV-PUR-' + String(inv.length - i).padStart(4, '0');
-                const items = (s.items || []).map(i => i.name).join(', ');
+            const from = document.getElementById('inv-pur-from')?.value;
+            const to = document.getElementById('inv-pur-to')?.value;
+            let inv = [...(db.purchases || [])].reverse();
+            if (from) inv = inv.filter(s => s.date >= from);
+            if (to) inv = inv.filter(s => s.date <= to);
+            let totalAll = 0, paidAll = 0, remAll = 0;
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const invNo = s.invoiceNo || 'PUR-' + String(s.id).slice(-6);
+                totalAll += s.total || 0; paidAll += s.paid || 0; remAll += s.remaining || 0;
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">مستحق</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                let actions = `<button onclick="viewPurchaseInvoice(${s.id})" class="text-blue-500 text-xs me-1" title="عرض"><i class="fas fa-eye"></i></button>`;
+                if ((s.remaining || 0) > 0) {
+                    actions += `<button onclick="payPartialInvoice('purchases',${s.id})" class="text-amber-500 text-xs me-1" title="دفع جزئي"><i class="fas fa-money-bill"></i></button>`;
+                    actions += `<button onclick="closeInvoice('purchases',${s.id})" class="text-emerald-500 text-xs" title="إقفال كامل"><i class="fas fa-check-circle"></i></button>`;
+                }
+                return `<tr class="hover:bg-orange-50"><td class="p-2 font-mono text-orange-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.supplier}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${actions}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+            _el('inv-pur-count', inv.length); _el('inv-pur-total', totalAll.toFixed(2)); _el('inv-pur-paid', paidAll.toFixed(2)); _el('inv-pur-rem', remAll.toFixed(2));
+        }
+
+        // -- Service Invoices with date filter + stats + actions --
+        function renderInvServices() {
+            const tbody = document.getElementById('inv-svc-body'); if (!tbody) return;
+            if (!db.serviceInvoices) db.serviceInvoices = [];
+            const from = document.getElementById('inv-svc-from')?.value;
+            const to = document.getElementById('inv-svc-to')?.value;
+            let inv = [...db.serviceInvoices].reverse();
+            if (from) inv = inv.filter(s => s.date >= from);
+            if (to) inv = inv.filter(s => s.date <= to);
+            let totalAll = 0, paidAll = 0, remAll = 0;
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const invNo = s.invoiceNo || 'SVC-' + String(s.id).slice(-6);
+                totalAll += s.total || 0; paidAll += s.paid || 0; remAll += s.remaining || 0;
                 const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
-                return `<tr class="hover:bg-orange-50"><td class="p-2 font-mono text-orange-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.supplier}</td><td class="p-2 text-xs">${items}</td><td class="p-2">${(s.discount || 0).toFixed(2)}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewPurchaseInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="10" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+                let actions = `<button onclick="viewServiceInvoice(${s.id})" class="text-blue-500 text-xs me-1" title="عرض"><i class="fas fa-eye"></i></button>`;
+                if ((s.remaining || 0) > 0) {
+                    actions += `<button onclick="payPartialInvoice('services',${s.id})" class="text-amber-500 text-xs me-1" title="دفع جزئي"><i class="fas fa-money-bill"></i></button>`;
+                    actions += `<button onclick="closeInvoice('services',${s.id})" class="text-emerald-500 text-xs" title="إقفال كامل"><i class="fas fa-check-circle"></i></button>`;
+                }
+                return `<tr class="hover:bg-teal-50"><td class="p-2 font-mono text-teal-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${actions}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+            _el('inv-svc-count', inv.length); _el('inv-svc-total', totalAll.toFixed(2)); _el('inv-svc-paid', paidAll.toFixed(2)); _el('inv-svc-rem', remAll.toFixed(2));
+        }
+
+        // -- Installment Invoices with stats + actions --
+        function renderInvInstallments() {
+            const tbody = document.getElementById('inv-inst-body'); if (!tbody) return;
+            if (!db.installmentInvoices) db.installmentInvoices = [];
+            const inv = [...db.installmentInvoices].reverse();
+            let totalAll = 0, paidAll = 0, remAll = 0;
+            tbody.innerHTML = inv.length ? inv.map(s => {
+                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
+                const rem = (s.total || 0) - paid;
+                totalAll += s.total || 0; paidAll += paid; remAll += rem;
+                const status = rem <= 0 ? '<span class="text-emerald-600">مكتمل</span>' : '<span class="text-amber-600">جاري</span>';
+                let actions = `<button onclick="viewInstInvoice(${s.id})" class="text-blue-500 text-xs me-1" title="عرض"><i class="fas fa-eye"></i></button>`;
+                if (rem > 0) actions += `<button onclick="payPartialInvoice('installments',${s.id})" class="text-amber-500 text-xs" title="دفع قسط"><i class="fas fa-money-bill"></i></button>`;
+                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-mono text-indigo-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2">${(s.downPayment || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${rem.toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${actions}</td></tr>`;
+            }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+            _el('inv-inst-count', inv.length); _el('inv-inst-total', totalAll.toFixed(2)); _el('inv-inst-paid', paidAll.toFixed(2)); _el('inv-inst-rem', remAll.toFixed(2));
+        }
+
+        // ===== PARTIAL PAY (Universal for all invoice types) =====
+        function payPartialInvoice(source, id) {
+            let inv;
+            if (source === 'sales') inv = (db.sales || []).find(x => x.id == id);
+            else if (source === 'purchases') inv = (db.purchases || []).find(x => x.id == id);
+            else if (source === 'services') inv = (db.serviceInvoices || []).find(x => x.id == id);
+            else if (source === 'installments') {
+                inv = (db.installmentInvoices || []).find(x => x.id == id);
+                if (inv) { payInstallmentPartial(inv); return; }
+            }
+            if (!inv) return showToast('لم يتم العثور على الفاتورة', 'error');
+            const remaining = (inv.total || 0) - (inv.paid || 0);
+            const val = prompt(`المتبقي: ${remaining.toFixed(2)}\nأدخل المبلغ المراد تسديده:`);
+            if (val === null) return;
+            const amount = parseFloat(val);
+            if (isNaN(amount) || amount <= 0) return showToast('مبلغ غير صحيح', 'error');
+            if (amount > remaining + 0.01) return showToast('المبلغ أكبر من المتبقي', 'error');
+            inv.paid = (inv.paid || 0) + amount;
+            inv.remaining = (inv.total || 0) - inv.paid;
+            if (inv.remaining < 0.01) inv.remaining = 0;
+            const date = new Date().toISOString().split('T')[0];
+            if (source === 'purchases') {
+                addJournalEntry(date, `سداد فاتورة مشتريات #${inv.invoiceNo || inv.id}`, [{ code: '2101', dr: amount, cr: 0 }, { code: '1101', dr: 0, cr: amount }]);
+            } else {
+                addJournalEntry(date, `تحصيل فاتورة #${inv.invoiceNo || inv.id}`, [{ code: '1101', dr: amount, cr: 0 }, { code: '1201', dr: 0, cr: amount }]);
+            }
+            showToast(`تم تسجيل دفعة ${amount.toFixed(2)} ✅`); save();
+            if (source === 'sales') renderInvSales();
+            else if (source === 'purchases') renderInvPurchases();
+            else if (source === 'services') renderInvServices();
+            renderCustStatementFull(); renderSuppStatementFull();
+        }
+
+        // ===== Pay installment partial =====
+        function payInstallmentPartial(inv) {
+            const next = (inv.schedule || []).find(p => !p.paid);
+            if (!next) return showToast('كل الأقساط مدفوعة', 'error');
+            if (confirm(`هل تريد تسجيل دفع القسط #${(inv.schedule || []).indexOf(next) + 1} بمبلغ ${next.amount.toFixed(2)}؟`)) {
+                next.paid = true;
+                next.paidDate = new Date().toISOString().split('T')[0];
+                addJournalEntry(next.paidDate, `تحصيل قسط #${(inv.schedule || []).indexOf(next) + 1} - ${inv.customer}`, [{ code: '1101', dr: next.amount, cr: 0 }, { code: '1201', dr: 0, cr: next.amount }]);
+                showToast('تم تسجيل القسط ✅'); save();
+                renderInvInstallments(); renderCustStatementFull();
+            }
+        }
+
+        // ===== CLOSE INVOICE (Mark as fully paid) =====
+        function closeInvoice(source, id) {
+            let inv;
+            if (source === 'sales') inv = (db.sales || []).find(x => x.id == id);
+            else if (source === 'purchases') inv = (db.purchases || []).find(x => x.id == id);
+            else if (source === 'services') inv = (db.serviceInvoices || []).find(x => x.id == id);
+            if (!inv) return showToast('لم يتم العثور على الفاتورة', 'error');
+            const remaining = (inv.total || 0) - (inv.paid || 0);
+            if (remaining <= 0) return showToast('الفاتورة مقفلة بالفعل');
+            if (!confirm(`إقفال الفاتورة وتسجيل المبلغ المتبقي ${remaining.toFixed(2)} في الخزينة؟`)) return;
+            inv.paid = inv.total;
+            inv.remaining = 0;
+            const date = new Date().toISOString().split('T')[0];
+            if (source === 'purchases') {
+                addJournalEntry(date, `إقفال فاتورة مشتريات #${inv.invoiceNo || inv.id}`, [{ code: '2101', dr: remaining, cr: 0 }, { code: '1101', dr: 0, cr: remaining }]);
+            } else {
+                addJournalEntry(date, `إقفال فاتورة #${inv.invoiceNo || inv.id} - ${inv.customer || ''}`, [{ code: '1101', dr: remaining, cr: 0 }, { code: '1201', dr: 0, cr: remaining }]);
+            }
+            showToast('تم إقفال الفاتورة ✅'); save();
+            if (source === 'sales') renderInvSales();
+            else if (source === 'purchases') renderInvPurchases();
+            else if (source === 'services') renderInvServices();
+            renderCustStatementFull(); renderSuppStatementFull();
+        }
+
+        // ===== View Invoice Full (with print/PDF) =====
+        function viewSaleInvoice(id) {
+            const s = (db.sales || []).find(x => x.id == id); if (!s) return;
+            const invNo = s.invoiceNo || 'INV-' + String(s.id).slice(-6);
+            const items = (s.items || []).map(it => ({ name: it.name, qty: it.qty || 1, price: it.price || 0, total: (it.total || it.price || 0) }));
+            openInvoiceWindow(s.type === 'pos' ? 'إيصال نقطة بيع' : 'فاتورة مبيعات', invNo, s.date, { label: 'العميل', name: s.customer }, items,
+                `${(s.discount || 0) > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
         }
         function viewPurchaseInvoice(id) {
             const s = (db.purchases || []).find(x => x.id == id); if (!s) return;
-            const invNo = s.invoiceNo || 'INV-PUR-' + String(s.id).slice(-4);
+            const invNo = s.invoiceNo || 'PUR-' + String(s.id).slice(-6);
             openInvoiceWindow('فاتورة مشتريات', invNo, s.date, { label: 'المورد', name: s.supplier }, s.items || [],
-                `${s.discount > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}
-                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
-                ${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}
-                <div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
-        }
-
-        function renderInvServices() {
-            const tbody = document.getElementById('inv-svc-body'); if (!tbody) return;
-            const inv = [...(db.serviceInvoices || [])].reverse();
-            tbody.innerHTML = inv.length ? inv.map((s, i) => {
-                const invNo = s.invoiceNo || 'INV-SVC-' + String(inv.length - i).padStart(4, '0');
-                const items = (s.items || []).map(i => i.name).join(', ');
-                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
-                return `<tr class="hover:bg-teal-50"><td class="p-2 font-mono text-teal-600">${invNo}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 text-xs">${items}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+                `${(s.discount || 0) > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
         }
         function viewServiceInvoice(id) {
             const s = (db.serviceInvoices || []).find(x => x.id == id); if (!s) return;
             openInvoiceWindow('فاتورة خدمات', s.invoiceNo || 'SVC-' + s.id, s.date, { label: 'العميل', name: s.customer }, s.items || [],
-                `<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
-                <div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
-        }
-
-        function renderInvInstallments() {
-            const tbody = document.getElementById('inv-inst-body'); if (!tbody) return;
-            const inv = [...(db.installmentInvoices || [])].reverse();
-            tbody.innerHTML = inv.length ? inv.map(s => {
-                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
-                const status = paid >= s.total ? '<span class="text-emerald-600">مكتمل</span>' : '<span class="text-amber-600">جاري</span>';
-                return `<tr class="hover:bg-indigo-50"><td class="p-2 font-mono text-indigo-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2">${(s.downPayment || 0).toFixed(2)}</td><td class="p-2">${(s.schedule || []).length}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewInstInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد فواتير</td></tr>';
+                `<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${(s.remaining || 0).toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
         }
         function viewInstInvoice(id) {
             const s = (db.installmentInvoices || []).find(x => x.id == id); if (!s) return;
@@ -6223,6 +6473,14 @@
             openInvoiceWindow('فاتورة تقسيط', s.invoiceNo, s.date, { label: 'العميل', name: s.customer }, s.items || [],
                 `<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>
                 <table style="margin-top:15px"><thead><tr><th>#</th><th>تاريخ الاستحقاق</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>${schedHTML}</tbody></table>`);
+        }
+
+        // Dashboard
+        function renderInvoicesDashboard() {
+            _el('inv-count-pos', (db.sales || []).filter(s => s.type === 'pos').length);
+            _el('inv-count-sales', (db.sales || []).length);
+            _el('inv-count-pur', (db.purchases || []).length);
+            _el('inv-count-svc', (db.serviceInvoices || []).length);
         }
 
         // ===== CUSTOMER STATEMENT (Full - All Invoices) =====
@@ -6235,32 +6493,32 @@
             const sel = document.getElementById('cust-stmt-filter');
             if (sel && sel.options.length <= 1) {
                 const names = new Set();
-                (db.sales||[]).forEach(s => names.add(s.customer));
-                (db.serviceInvoices||[]).forEach(s => names.add(s.customer));
-                (db.installmentInvoices||[]).forEach(s => names.add(s.customer));
-                (db.customers||[]).forEach(c => names.add(c.name));
+                (db.sales || []).forEach(s => names.add(s.customer));
+                (db.serviceInvoices || []).forEach(s => names.add(s.customer));
+                (db.installmentInvoices || []).forEach(s => names.add(s.customer));
+                (db.customers || []).forEach(c => names.add(c.name));
                 [...names].sort().forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; sel.appendChild(o); });
             }
             // Aggregate all customer invoices
             let rows = [];
-            (db.sales||[]).forEach(s => rows.push({src:'sales',type:'مبيعات',id:s.id,customer:s.customer,invNo:s.invoiceNo||'INV-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
-            (db.serviceInvoices||[]).forEach(s => rows.push({src:'services',type:'خدمات',id:s.id,customer:s.customer,invNo:s.invoiceNo||'SVC-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
-            (db.installmentInvoices||[]).forEach(s => {
-                const paid = (s.schedule||[]).filter(p=>p.paid).reduce((a,b)=>a+b.amount,0);
-                rows.push({src:'installments',type:'تقسيط',id:s.id,customer:s.customer,invNo:s.invoiceNo||'INST-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:paid,remaining:(s.total||0)-paid});
+            (db.sales || []).forEach(s => rows.push({ src: 'sales', type: 'مبيعات', id: s.id, customer: s.customer, invNo: s.invoiceNo || 'INV-' + String(s.id).slice(-4), date: s.date, total: s.total || 0, paid: s.paid || 0, remaining: s.remaining || 0 }));
+            (db.serviceInvoices || []).forEach(s => rows.push({ src: 'services', type: 'خدمات', id: s.id, customer: s.customer, invNo: s.invoiceNo || 'SVC-' + String(s.id).slice(-4), date: s.date, total: s.total || 0, paid: s.paid || 0, remaining: s.remaining || 0 }));
+            (db.installmentInvoices || []).forEach(s => {
+                const paid = (s.schedule || []).filter(p => p.paid).reduce((a, b) => a + b.amount, 0);
+                rows.push({ src: 'installments', type: 'تقسيط', id: s.id, customer: s.customer, invNo: s.invoiceNo || 'INST-' + String(s.id).slice(-4), date: s.date, total: s.total || 0, paid: paid, remaining: (s.total || 0) - paid });
             });
             if (filterCust) rows = rows.filter(r => r.customer === filterCust);
             if (from) rows = rows.filter(r => r.date >= from);
             if (to) rows = rows.filter(r => r.date <= to);
-            rows.sort((a,b) => b.date.localeCompare(a.date));
-            let totalAll=0, paidAll=0, remAll=0;
-            const typeColors = {مبيعات:'bg-blue-100 text-blue-700', خدمات:'bg-teal-100 text-teal-700', تقسيط:'bg-indigo-100 text-indigo-700'};
+            rows.sort((a, b) => b.date.localeCompare(a.date));
+            let totalAll = 0, paidAll = 0, remAll = 0;
+            const typeColors = { مبيعات: 'bg-blue-100 text-blue-700', خدمات: 'bg-teal-100 text-teal-700', تقسيط: 'bg-indigo-100 text-indigo-700' };
             tbody.innerHTML = rows.length ? rows.map(r => {
                 totalAll += r.total; paidAll += r.paid; remAll += r.remaining;
                 const status = r.remaining > 0 ? '<span class="text-red-600 font-bold">مستحق</span>' : '<span class="text-emerald-600">تم السداد</span>';
-                const viewFn = r.src==='sales'?`viewSaleInvoice(${r.id})`:r.src==='services'?`viewServiceInvoice(${r.id})`:`viewInstInvoice(${r.id})`;
+                const viewFn = r.src === 'sales' ? `viewSaleInvoice(${r.id})` : r.src === 'services' ? `viewServiceInvoice(${r.id})` : `viewInstInvoice(${r.id})`;
                 const editBtn = r.remaining > 0 ? `<button onclick="editInvoicePaid('${r.src}',${r.id})" class="text-amber-500 text-xs me-1" title="تعديل المدفوع"><i class="fas fa-edit"></i></button>` : '';
-                return `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${r.customer}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-xs ${typeColors[r.type]||''}">${r.type}</span></td><td class="p-2 font-mono text-blue-600">${r.invNo}</td><td class="p-2">${r.date}</td><td class="p-2 font-bold">${r.total.toFixed(2)}</td><td class="p-2 text-emerald-600">${r.paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${r.remaining.toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${editBtn}<button onclick="${viewFn}" class="text-blue-500 text-xs"><i class="fas fa-eye"></i></button></td></tr>`;
+                return `<tr class="hover:bg-blue-50"><td class="p-2 font-bold">${r.customer}</td><td class="p-2"><span class="px-2 py-0.5 rounded text-xs ${typeColors[r.type] || ''}">${r.type}</span></td><td class="p-2 font-mono text-blue-600">${r.invNo}</td><td class="p-2">${r.date}</td><td class="p-2 font-bold">${r.total.toFixed(2)}</td><td class="p-2 text-emerald-600">${r.paid.toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${r.remaining.toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2">${editBtn}<button onclick="${viewFn}" class="text-blue-500 text-xs"><i class="fas fa-eye"></i></button></td></tr>`;
             }).join('') : '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
             _el('cust-stmt-count', rows.length); _el('cust-stmt-total', totalAll.toFixed(2)); _el('cust-stmt-paid', paidAll.toFixed(2)); _el('cust-stmt-remaining', remAll.toFixed(2));
         }
@@ -6275,17 +6533,17 @@
             const sel = document.getElementById('supp-stmt-filter');
             if (sel && sel.options.length <= 1) {
                 const names = new Set();
-                (db.purchases||[]).forEach(s => names.add(s.supplier));
-                (db.suppliers||[]).forEach(c => names.add(c.name));
+                (db.purchases || []).forEach(s => names.add(s.supplier));
+                (db.suppliers || []).forEach(c => names.add(c.name));
                 [...names].sort().forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; sel.appendChild(o); });
             }
             let rows = [];
-            (db.purchases||[]).forEach(s => rows.push({src:'purchases',id:s.id,supplier:s.supplier,invNo:s.invoiceNo||'PUR-'+String(s.id).slice(-4),date:s.date,total:s.total||0,paid:s.paid||0,remaining:s.remaining||0}));
+            (db.purchases || []).forEach(s => rows.push({ src: 'purchases', id: s.id, supplier: s.supplier, invNo: s.invoiceNo || 'PUR-' + String(s.id).slice(-4), date: s.date, total: s.total || 0, paid: s.paid || 0, remaining: s.remaining || 0 }));
             if (filterSupp) rows = rows.filter(r => r.supplier === filterSupp);
             if (from) rows = rows.filter(r => r.date >= from);
             if (to) rows = rows.filter(r => r.date <= to);
-            rows.sort((a,b) => b.date.localeCompare(a.date));
-            let totalAll=0, paidAll=0, remAll=0;
+            rows.sort((a, b) => b.date.localeCompare(a.date));
+            let totalAll = 0, paidAll = 0, remAll = 0;
             tbody.innerHTML = rows.length ? rows.map(r => {
                 totalAll += r.total; paidAll += r.paid; remAll += r.remaining;
                 const status = r.remaining > 0 ? '<span class="text-red-600 font-bold">مستحق</span>' : '<span class="text-emerald-600">تم السداد</span>';
@@ -6298,25 +6556,25 @@
         // ===== EDIT INVOICE PAID (Universal) =====
         function editInvoicePaid(source, id) {
             let inv, arr;
-            if (source === 'sales') { arr = db.sales||[]; inv = arr.find(x => x.id == id); }
-            else if (source === 'purchases') { arr = db.purchases||[]; inv = arr.find(x => x.id == id); }
-            else if (source === 'services') { arr = db.serviceInvoices||[]; inv = arr.find(x => x.id == id); }
+            if (source === 'sales') { arr = db.sales || []; inv = arr.find(x => x.id == id); }
+            else if (source === 'purchases') { arr = db.purchases || []; inv = arr.find(x => x.id == id); }
+            else if (source === 'services') { arr = db.serviceInvoices || []; inv = arr.find(x => x.id == id); }
             else if (source === 'installments') { showToast('التقسيط يُعدَّل من صفحة التقسيط', 'error'); return; }
             if (!inv) return showToast('لم يتم العثور على الفاتورة', 'error');
-            const remaining = (inv.total||0) - (inv.paid||0);
+            const remaining = (inv.total || 0) - (inv.paid || 0);
             const val = prompt(`المتبقي: ${remaining.toFixed(2)}\nأدخل المبلغ المراد تسديده:`);
             if (val === null) return;
             const amount = parseFloat(val);
             if (isNaN(amount) || amount <= 0) return showToast('مبلغ غير صحيح', 'error');
             if (amount > remaining + 0.01) return showToast('المبلغ أكبر من المتبقي', 'error');
-            inv.paid = (inv.paid||0) + amount;
-            inv.remaining = (inv.total||0) - inv.paid;
+            inv.paid = (inv.paid || 0) + amount;
+            inv.remaining = (inv.total || 0) - inv.paid;
             if (inv.remaining < 0.01) inv.remaining = 0;
             // Journal entry for payment
             const date = new Date().toISOString().split('T')[0];
-            const desc = source === 'purchases' ? `سداد فاتورة مشتريات: ${inv.supplier||''} #${inv.invoiceNo||inv.id}` : `تحصيل فاتورة: ${inv.customer||''} #${inv.invoiceNo||inv.id}`;
-            if (source === 'purchases') { addJournalEntry(date, desc, [{code:'2101',dr:amount,cr:0},{code:'1101',dr:0,cr:amount}]); }
-            else { addJournalEntry(date, desc, [{code:'1101',dr:amount,cr:0},{code:'1201',dr:0,cr:amount}]); }
+            const desc = source === 'purchases' ? `سداد فاتورة مشتريات: ${inv.supplier || ''} #${inv.invoiceNo || inv.id}` : `تحصيل فاتورة: ${inv.customer || ''} #${inv.invoiceNo || inv.id}`;
+            if (source === 'purchases') { addJournalEntry(date, desc, [{ code: '2101', dr: amount, cr: 0 }, { code: '1101', dr: 0, cr: amount }]); }
+            else { addJournalEntry(date, desc, [{ code: '1101', dr: amount, cr: 0 }, { code: '1201', dr: 0, cr: amount }]); }
             showToast('تم تسجيل الدفعة ✅'); save();
             renderCustStatementFull(); renderSuppStatementFull();
         }
