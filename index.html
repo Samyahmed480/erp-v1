@@ -2094,7 +2094,7 @@
                             </div>
                             <button onclick="createInstallmentPlan()"
                                 class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 shadow-lg mt-2 transition transform active:scale-95">إنشاء
-                                عقد التقسيط</button>
+                                فاتورة التقسيط</button>
                         </div>
                     </div>
 
@@ -2117,21 +2117,63 @@
                                 onkeyup="filterInstallments(this.value)">
                         </div>
                         <div class="flex-1 overflow-y-auto border rounded-lg bg-slate-50">
-                            <table id="installments-table" class="w-full text-sm text-right relative border-collapse">
+                            <table id="installments-summary-table"
+                                class="w-full text-sm text-right relative border-collapse">
                                 <thead class="bg-indigo-100 text-indigo-900 sticky top-0 font-bold">
                                     <tr>
                                         <th class="p-3">العميل</th>
-                                        <th class="p-3">المبلغ</th>
-                                        <th class="p-3">تاريخ الاستحقاق</th>
-                                        <th class="p-3 text-center">الحالة</th>
+                                        <th class="p-3">التلفون</th>
+                                        <th class="p-3">رقم الفاتورة</th>
+                                        <th class="p-3">إجمالي الفاتورة</th>
+                                        <th class="p-3">عدد الأقساط</th>
+                                        <th class="p-3 text-emerald-600">المدفوع</th>
+                                        <th class="p-3 text-red-600">المتبقي</th>
+                                        <th class="p-3">القسط القادم</th>
+                                        <th class="p-3 text-center">إجراء</th>
                                     </tr>
                                 </thead>
-                                <tbody id="installments-list" class="divide-y divide-slate-200 bg-white"></tbody>
+                                <tbody id="installments-summary-list" class="divide-y divide-slate-200 bg-white">
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Installment Details Modal -->
+            <div id="inst-details-modal"
+                class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[60] flex items-center justify-center p-4">
+                <div
+                    class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-slide-up">
+                    <div class="bg-indigo-600 p-4 text-white flex justify-between items-center">
+                        <h3 class="font-bold" id="inst-details-title">تفاصيل الأقساط</h3>
+                        <button onclick="document.getElementById('inst-details-modal').classList.add('hidden')"
+                            class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="p-4 overflow-y-auto flex-1">
+                        <div id="inst-details-info"
+                            class="grid grid-cols-2 gap-4 mb-4 bg-slate-50 p-3 rounded-lg text-sm"></div>
+                        <div class="border rounded-lg overflow-hidden">
+                            <table class="w-full text-sm text-right">
+                                <thead class="bg-slate-100 font-bold">
+                                    <tr>
+                                        <th class="p-2.5">رقم القسط</th>
+                                        <th class="p-2.5">تاريخ الاستحقاق</th>
+                                        <th class="p-2.5">المبلغ</th>
+                                        <th class="p-2.5">الحالة</th>
+                                        <th class="p-2.5 text-center">إجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inst-details-list" class="divide-y"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-50 border-t flex justify-end">
+                        <button onclick="document.getElementById('inst-details-modal').classList.add('hidden')"
+                            class="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg font-bold">إغلاق</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Installment Customers Sub-Module -->
             <section id="installment_customers" class="section-content">
@@ -2843,7 +2885,7 @@
                         <table id="inv-inst-table" class="w-full text-sm text-right">
                             <thead class="bg-slate-800 text-white sticky top-0">
                                 <tr>
-                                    <th class="p-2.5">رقم العقد</th>
+                                    <th class="p-2.5">رقم الفاتورة</th>
                                     <th class="p-2.5">التاريخ</th>
                                     <th class="p-2.5">العميل</th>
                                     <th class="p-2.5">الإجمالي</th>
@@ -3014,6 +3056,7 @@
                                     <th class="p-2.5">الإجمالي</th>
                                     <th class="p-2.5">المدفوع</th>
                                     <th class="p-2.5 text-red-400">المتبقي</th>
+                                    <th class="p-2.5">الحالة</th>
                                     <th class="p-2.5"></th>
                                 </tr>
                             </thead>
@@ -4451,7 +4494,7 @@
             document.getElementById('sale-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}">${p.name} (${p.price})</option>`).join('');
             document.getElementById('sale-customer').innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             document.getElementById('inst-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}">${p.name} (${p.price})</option>`).join('');
-            document.getElementById('inst-customer').innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            document.getElementById('inst-customer').innerHTML = (db.installmentCustomers || []).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             document.getElementById('inst-method').innerHTML = (db.settings.paymentMethods || ['Cash']).map(m => `<option value="${m}">${m}</option>`).join('');
             document.getElementById('pur-supplier').innerHTML = db.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             // pur-product is now a combobox — just reset input
@@ -5247,62 +5290,45 @@
         }
 
         // --- 10. Rendering ---
-        function renderAll() {
-            // Balances
-            const getBal = code => getAccountBalance(code);
-            document.getElementById('dash-cash').innerText = (getBal('1101') + getBal('1102')).toFixed(2);
-            document.getElementById('dash-sales').innerText = getBal('4101').toFixed(2);
-            const exp = getBal('5'), rev = getBal('4');
-            document.getElementById('dash-expenses').innerText = exp.toFixed(2);
-            document.getElementById('dash-net-profit').innerText = (rev - exp).toFixed(2);
-
-            renderJournal();
-            renderInstallments();
-            renderInstallments();
-            renderServices();
-            renderExpenses();
-            renderPOSProducts();
-            renderEmployees();
-            updateChart();
-            document.getElementById('dash-net-profit').innerText = (rev - exp).toFixed(2);
-
-            // Lists
-            document.getElementById('dash-journal-list').innerHTML = db.journal.slice().reverse().slice(0, 5).map(e => `<tr><td class="p-2">#${e.id}</td><td class="p-2">${e.date}</td><td class="p-2">${e.desc}</td><td class="p-2 font-bold">${(e.lines[0].dr || e.lines[0].cr).toFixed(2)}</td></tr>`).join('');
-
-            document.getElementById('inventory-list').innerHTML = db.products.map(p => `
+        function renderInventoryTable() {
+            const list = document.getElementById('inventory-list');
+            if (list) list.innerHTML = db.products.map(p => `
                 <tr class="hover:bg-slate-50 border-b">
                     <td class="p-3 font-bold">${p.name}</td><td class="p-3 text-emerald-600">${p.price}</td><td class="p-3 text-slate-500">${p.cost}</td><td class="p-3 font-bold">${p.stock}</td>
                     <td class="p-3 flex gap-2"><button onclick="editProduct(${p.id})" class="text-blue-500"><i class="fas fa-edit"></i></button><button onclick="deleteProduct(${p.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
                 </tr>`).join('');
+        }
 
-            document.getElementById('recent-invoices').innerHTML = db.sales.slice().reverse().slice(0, 10).map(inv => `
+        function renderRecentSales() {
+            const container = document.getElementById('recent-invoices');
+            if (container) container.innerHTML = db.sales.slice().reverse().slice(0, 10).map(inv => `
                 <div class="p-2 bg-slate-50 rounded border text-xs cursor-pointer hover:bg-blue-50" onclick="viewInvoice(${inv.id})">
                     <div class="flex justify-between font-bold"><span>#${inv.id}</span><span>${inv.total.toFixed(2)}</span></div>
                     <div class="text-slate-500">${inv.customer}</div>
                 </div>`).join('');
+        }
 
-            // Render recent purchases as a proper table (like sales)
+        function renderRecentPurchases() {
             const purTbody = document.getElementById('recent-pur-body');
             if (purTbody) {
                 const purchases = [...db.purchases].reverse();
                 purTbody.innerHTML = purchases.length ? purchases.map((p, i) => {
-                    const purNo = p.invoiceNo || ('PUR-' + String(purchases.length - i).padStart(4, '0'));
-                    const status = (p.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                    const status = (p.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">\u0622\u062c\u0644</span>' : '<span class="text-emerald-600">\u0645\u062f\u0641\u0648\u0639</span>';
                     return `<tr class="hover:bg-orange-50 cursor-pointer" ondblclick="viewPurchaseInvoice(${p.id})">
-                        <td class="p-1.5 font-mono text-orange-600">${purNo}</td>
+                        <td class="p-1.5 font-mono text-orange-600">${p.invoiceNo || 'PUR-' + p.id}</td>
                         <td class="p-1.5">${p.date}</td>
                         <td class="p-1.5 font-bold">${p.supplier}</td>
                         <td class="p-1.5 font-bold">${(p.total || 0).toFixed(2)}</td>
                         <td class="p-1.5">${status}</td>
-                        <td class="p-1.5"><button onclick="viewPurchaseInvoice(${p.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
+                        <td class="p-1.5"><button onclick="viewPurchaseInvoice(${p.id})" class="text-blue-500 hover:text-blue-700"><i class="fas fa-eye"></i></button></td>
                     </tr>`;
-                }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
+                }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد بيانات</td></tr>';
             }
+        }
 
-            document.getElementById('coa-body').innerHTML = db.chartOfAccounts.map(a => `<tr class="border-b"><td class="p-3 font-mono level-${a.level}">${a.code}</td><td class="p-3 level-${a.level}">${a.name}</td><td class="p-3 text-xs">${a.type}</td><td class="p-3 font-bold ${getAccountBalance(a.code) < 0 ? 'text-red-500' : 'text-emerald-600'}">${getAccountBalance(a.code).toFixed(2)}</td></tr>`).join('');
-
-            renderSalesChart();
-            renderReports(); // Initial render with date filter
+        function renderCOATable() {
+            const tbody = document.getElementById('coa-body');
+            if (tbody) tbody.innerHTML = db.chartOfAccounts.map(a => `<tr class="border-b"><td class="p-3 font-mono level-${a.level}">${a.code}</td><td class="p-3 level-${a.level}">${a.name}</td><td class="p-3 text-xs">${a.type}</td><td class="p-3 font-bold ${getAccountBalance(a.code) < 0 ? 'text-red-500' : 'text-emerald-600'}">${getAccountBalance(a.code).toFixed(2)}</td></tr>`).join('');
         }
 
         function renderReports() {
@@ -5388,37 +5414,43 @@
         }
 
         function renderAll() {
-            // Dashboard Counters - always run these first
+            // Dashboard Counters
             try {
                 const cash = getAccountBalance('1101') + getAccountBalance('1102');
                 if (document.getElementById('dash-cash')) document.getElementById('dash-cash').innerText = cash.toFixed(2);
-                const salesTotal = db.sales.reduce((sum, s) => sum + s.total, 0);
-                if (document.getElementById('dash-sales')) document.getElementById('dash-sales').innerText = salesTotal.toFixed(2);
-                const expTotal = getAccountBalance('5');
-                if (document.getElementById('dash-expenses')) document.getElementById('dash-expenses').innerText = expTotal.toFixed(2);
-                const income = getAccountBalance('4') - getAccountBalance('5');
-                if (document.getElementById('dash-net-profit')) document.getElementById('dash-net-profit').innerText = income.toFixed(2);
-            } catch (e) { console.error('Dashboard counter error:', e); }
 
-            // Render each component independently
-            try { renderUsersTable(); } catch (e) { console.error('renderUsersTable error:', e); }
-            try { renderSuppliersTable(); } catch (e) { console.error('renderSuppliersTable error:', e); }
-            try { renderCustomersTable(); } catch (e) { console.error('renderCustomersTable error:', e); }
-            try { if (typeof updateLogoView === 'function') updateLogoView(); } catch (e) { console.error('updateLogoView error:', e); }
-            try { renderSalesChart(); } catch (e) { console.error('renderSalesChart error:', e); }
-            try { renderReports(); } catch (e) { console.error('renderReports error:', e); }
-            try { if (typeof renderExpenses === 'function') renderExpenses(); } catch (e) { console.error('renderExpenses error:', e); }
-            try { if (typeof filterInventory === 'function') filterInventory(''); } catch (e) { console.error('filterInventory error:', e); }
-            try { if (typeof renderPOSProducts === 'function') renderPOSProducts(); } catch (e) { console.error('renderPOSProducts error:', e); }
-            try { if (typeof renderServiceCart === 'function') renderServiceCart(); } catch (e) { console.error('renderServiceCart error:', e); }
-            try { if (typeof renderServices === 'function') renderServices(); } catch (e) { console.error('renderServices error:', e); }
-            try { if (typeof renderEmployees === 'function') renderEmployees(); } catch (e) { console.error('renderEmployees error:', e); }
-            try { if (typeof renderPayrollHistory === 'function') renderPayrollHistory(); } catch (e) { console.error('renderPayrollHistory error:', e); }
-            try { if (typeof renderInstallments === 'function') renderInstallments(); } catch (e) { console.error('renderInstallments error:', e); }
-            try { if (typeof renderPaymentMethods === 'function') renderPaymentMethods(); } catch (e) { console.error('renderPaymentMethods error:', e); }
-            try { renderPurchaseInvoices(); } catch (e) { console.error('renderPurchaseInvoices error:', e); }
-            try { renderSalesInvoices(); } catch (e) { console.error('renderSalesInvoices error:', e); }
-            try { renderServiceInvoices(); } catch (e) { console.error('renderServiceInvoices error:', e); }
+                // Revenue account (includes sales, services, and installment collections)
+                const revenue = getAccountBalance('4');
+                if (document.getElementById('dash-sales')) document.getElementById('dash-sales').innerText = revenue.toFixed(2);
+
+                const expenses = getAccountBalance('5');
+                if (document.getElementById('dash-expenses')) document.getElementById('dash-expenses').innerText = expenses.toFixed(2);
+
+                const netProfit = revenue - expenses;
+                if (document.getElementById('dash-net-profit')) document.getElementById('dash-net-profit').innerText = netProfit.toFixed(2);
+            } catch (e) { console.error('Dashboard error:', e); }
+
+            // Table Renders
+            try { renderInventoryTable(); } catch (e) { }
+            try { renderRecentSales(); } catch (e) { }
+            try { renderRecentPurchases(); } catch (e) { }
+            try { renderCOATable(); } catch (e) { }
+            try { renderUsersTable(); } catch (e) { }
+            try { renderSuppliersTable(); } catch (e) { }
+            try { renderCustomersTable(); } catch (e) { }
+            try { renderSalesChart(); } catch (e) { }
+            try { renderReports(); } catch (e) { }
+            try { renderExpenses(); } catch (e) { }
+            try { renderPOSProducts(); } catch (e) { }
+            try { renderServiceCart(); } catch (e) { }
+            try { renderServices(); } catch (e) { }
+            try { renderEmployees(); } catch (e) { }
+            try { renderPayrollHistory(); } catch (e) { }
+            try { renderInstallments(); } catch (e) { }
+            try { renderPaymentMethods(); } catch (e) { }
+            try { renderPurchaseInvoices(); } catch (e) { }
+            try { renderSalesInvoices(); } catch (e) { }
+            try { renderServiceInvoices(); } catch (e) { }
 
             // Update header
             try {
@@ -5542,47 +5574,70 @@
 
             if (!custId || !prodId || !price) return showToast('بيانات ناقصة', 'error');
 
-            const customer = db.customers.find(c => c.id == custId);
+            const customer = (db.installmentCustomers || []).find(c => c.id == custId);
             const product = db.products.find(p => p.id == prodId);
             const monthly = parseFloat(document.getElementById('inst-monthly').value);
-            const date = new Date();
-
-            // Assume Price is GROSS (Inclusive of VAT)
-            const netSale = price / (1 + (db.settings.vatRate / 100));
-            const vat = price - netSale;
-            const formattedDate = date.toISOString().split('T')[0];
+            const date = new Date().toISOString().split('T')[0];
             const remaining = price - down;
 
-            const lines = [];
-            if (down > 0) lines.push({ code: method || '1101', dr: down, cr: 0 });
-            if (remaining > 0) lines.push({ code: '1103', dr: remaining, cr: 0 });
-            lines.push({ code: '4101', dr: 0, cr: netSale });
-            lines.push({ code: '2102', dr: 0, cr: vat });
-            lines.push({ code: '5101', dr: product.cost, cr: 0 });
-            lines.push({ code: '1104', dr: 0, cr: product.cost });
+            // Sequential invoice number
+            if (!db.installmentInvoices) db.installmentInvoices = [];
+            const nextNum = db.installmentInvoices.length + 1;
+            const invoiceNo = 'INST-' + String(nextNum).padStart(4, '0');
 
-            if (addJournalEntry(formattedDate, `عقد تقسيط - ${customer.name} (${product.name})`, lines)) {
+            const lines = [];
+            // Down payment is Revenue + Cash/Bank
+            if (down > 0) {
+                const payCode = method === 'Cash' || method === '1101' ? '1101' : '1102';
+                lines.push({ code: payCode, dr: down, cr: 0 });
+                lines.push({ code: '4101', dr: 0, cr: down });
+            }
+            // The remaining amount is Receivable (1103) vs Deferred/Stock cleanup
+            // For simplicity in this ERP, we'll track the balance in 1103
+            if (remaining > 0) {
+                lines.push({ code: '1103', dr: remaining, cr: 0 });
+                // We don't credit Revenue (4101) yet for the remaining part!
+            }
+
+            // Stock reduction logic
+            lines.push({ code: '5101', dr: product.cost, cr: 0 }); // COGS
+            lines.push({ code: '1104', dr: 0, cr: product.cost }); // Inventory
+
+            if (addJournalEntry(date, `فاتورة تقسيط ${invoiceNo} - ${customer.name} (${product.name})`, lines)) {
                 // Generate Installments
-                const saleId = Date.now();
+                const schedule = [];
                 for (let i = 0; i < count; i++) {
-                    const d = new Date(date);
-                    d.setMonth(d.getMonth() + i + 1); // Next month
-                    db.installments.push({
-                        id: Date.now() + i,
-                        saleId,
-                        customerId: custId,
-                        customerName: customer.name,
-                        amount: monthly,
+                    const d = new Date();
+                    d.setMonth(d.getMonth() + i + 1);
+                    schedule.push({
+                        num: i + 1,
                         dueDate: d.toISOString().split('T')[0],
+                        amount: monthly,
                         status: 'pending'
                     });
                 }
 
+                const invObj = {
+                    id: Date.now(),
+                    invoiceNo,
+                    date,
+                    customerId: custId,
+                    customer: customer.name,
+                    phone: customer.phone || '-',
+                    total: price,
+                    down,
+                    remaining,
+                    paid: down,
+                    count,
+                    schedule,
+                    items: [{ ...product, qty: 1, price: price, total: price }]
+                };
+                db.installmentInvoices.push(invObj);
+
                 // Reduce Stock
                 product.stock -= 1;
-                db.sales.push({ id: saleId, date: formattedDate, customer: customer.name, total: price, paid: down, remaining: remaining, type: 'installment', items: [{ ...product, qty: 1, price: price, total: price }] });
 
-                showToast('تم إنشاء عقد التقسيط');
+                showToast(`تم إنشاء فاتورة التقسيط ${invoiceNo} ✅`);
                 save(); renderInstallments(); renderAll();
                 document.getElementById('inst-price').value = '';
                 document.getElementById('inst-down').value = '';
@@ -5590,49 +5645,99 @@
         }
 
         function renderInstallments() {
-            if (!db.installments) db.installments = [];
-            const list = document.getElementById('installments-list');
-            if (list) list.innerHTML = db.installments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).map(inst => {
-                const isLate = new Date(inst.dueDate) < new Date() && inst.status === 'pending';
-                const statusClass = inst.status === 'paid' ? 'text-emerald-600 bg-emerald-50' : (isLate ? 'text-red-600 bg-red-50' : 'text-slate-600');
-                const statusText = inst.status === 'paid' ? 'مدفوع' : (isLate ? 'متأخر' : 'مستحق');
+            if (!db.installmentInvoices) db.installmentInvoices = [];
+            const tbody = document.getElementById('installments-summary-list');
+            if (!tbody) return;
 
-                return `
-                    <tr class="hover:bg-slate-50 border-b">
-                        <td class="p-3 font-bold">${inst.customerName}</td>
-                        <td class="p-3 font-mono">${inst.amount.toFixed(2)}</td>
-                        <td class="p-3 ${isLate ? 'text-red-600 font-bold' : ''}">${inst.dueDate}</td>
-                        <td class="p-3 text-center">
-                            ${inst.status === 'pending' ?
-                        `<button onclick="payInstallment(${inst.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 shadow">تحصيل</button>` :
-                        `<span class="px-2 py-1 rounded text-xs font-bold ${statusClass}">${statusText}</span>`
-                    }
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            tbody.innerHTML = db.installmentInvoices.map(inv => {
+                const nextInst = (inv.schedule || []).find(s => s.status === 'pending');
+                const nextDue = nextInst ? nextInst.dueDate : '-';
+
+                return `<tr class="hover:bg-slate-50 border-b">
+                    <td class="p-3 font-bold">${inv.customer}</td>
+                    <td class="p-3">${inv.phone || '-'}</td>
+                    <td class="p-3 font-mono text-indigo-600">${inv.invoiceNo}</td>
+                    <td class="p-3 font-bold">${inv.total.toFixed(2)}</td>
+                    <td class="p-3">${inv.count}</td>
+                    <td class="p-3 text-emerald-600 font-bold">${(inv.paid || 0).toFixed(2)}</td>
+                    <td class="p-3 text-red-600 font-bold">${(inv.remaining || 0).toFixed(2)}</td>
+                    <td class="p-3 ${nextInst && new Date(nextDue) < new Date() ? 'text-red-600 font-bold' : ''}">${nextDue}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="viewInstDetails('${inv.invoiceNo}')" class="bg-indigo-600 text-white px-3 py-1 rounded text-xs hover:bg-indigo-700 shadow">عرض \u0631\u0624\u064a\u0629</button>
+                    </td>
+                </tr>`;
+            }).join('') || '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد فواتير تقسيط</td></tr>';
+
+            // Update summary counters
+            if (document.getElementById('inv-inst-count')) document.getElementById('inv-inst-count').innerText = db.installmentInvoices.length;
+            if (document.getElementById('inv-inst-total')) document.getElementById('inv-inst-total').innerText = db.installmentInvoices.reduce((a, b) => a + b.total, 0).toFixed(2);
+            if (document.getElementById('inv-inst-paid')) document.getElementById('inv-inst-paid').innerText = db.installmentInvoices.reduce((a, b) => a + (b.paid || 0), 0).toFixed(2);
+            if (document.getElementById('inv-inst-rem')) document.getElementById('inv-inst-rem').innerText = db.installmentInvoices.reduce((a, b) => a + (b.remaining || 0), 0).toFixed(2);
         }
 
-        function payInstallment(id) {
-            if (!confirm('تأكيد تحصيل القسط؟')) return;
-            const inst = db.installments.find(i => i.id == id);
+        function viewInstDetails(invoiceNo) {
+            const inv = db.installmentInvoices.find(i => i.invoiceNo === invoiceNo);
+            if (!inv) return;
+
+            document.getElementById('inst-details-title').innerText = `\u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0623\u0642\u0633\u0627\u0637 - ${inv.invoiceNo}`;
+            document.getElementById('inst-details-info').innerHTML = `
+                <div><strong>\u0627\u0644\u0639\u0645\u064a\u0644:</strong> ${inv.customer}</div>
+                <div><strong>\u0627\u0644\u0647\u0627\u062a\u0641:</strong> ${inv.phone}</div>
+                <div><strong>\u0627\u0644\u0625\u062c\u0645\u0627\u0644\u064a:</strong> ${inv.total.toFixed(2)}</div>
+                <div><strong>\u0627\u0644\u0645\u062a\u0628\u0642\u064a:</strong> <span class="text-red-600 font-bold">${inv.remaining.toFixed(2)}</span></div>
+            `;
+
+            const tbody = document.getElementById('inst-details-list');
+            tbody.innerHTML = (inv.schedule || []).map(s => {
+                const isLate = s.status === 'pending' && new Date(s.dueDate) < new Date();
+                const statusText = s.status === 'paid' ? 'مدفوع' : (isLate ? 'متأخر' : 'مستحق');
+                const statusClass = s.status === 'paid' ? 'text-emerald-600 bg-emerald-50' : (isLate ? 'text-red-600 bg-red-50' : 'text-slate-600');
+
+                return `<tr>
+                    <td class="p-2.5 font-bold">#${s.num}</td>
+                    <td class="p-2.5 ${isLate ? 'text-red-600 font-bold' : ''}">${s.dueDate}</td>
+                    <td class="p-2.5 font-bold">${s.amount.toFixed(2)}</td>
+                    <td class="p-2.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${statusClass}">${statusText}</span></td>
+                    <td class="p-2.5 text-center">
+                        ${s.status === 'pending' ? `<button onclick="payInstallment('${inv.invoiceNo}', ${s.num})" class="bg-blue-600 text-white px-3 py-1 rounded text-[10px] shadow">تحصيل</button>` : '✅'}
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('inst-details-modal').classList.remove('hidden');
+        }
+
+        function payInstallment(invoiceNo, num) {
+            if (!confirm('\u062a\u0623\u0643\u064a\u062f \u062a\u062d\u0635\u064a\u0644 \u0627\u0644\u0642\u0633\u0637\u061f')) return;
+            const inv = db.installmentInvoices.find(i => i.invoiceNo === invoiceNo);
+            if (!inv) return;
+
+            const inst = inv.schedule.find(s => s.num === num);
             if (inst && inst.status === 'pending') {
                 const date = new Date().toISOString().split('T')[0];
                 const lines = [
-                    { code: '1101', dr: inst.amount, cr: 0 },
-                    { code: '1103', dr: 0, cr: inst.amount }
+                    { code: '1101', dr: inst.amount, cr: 0 },    // Cash
+                    { code: '4101', dr: 0, cr: inst.amount },   // Revenue
+                    { code: '1103', dr: 0, cr: inst.amount }    // Decrease Receivable
                 ];
-                if (addJournalEntry(date, `تحصيل قسط - ${inst.customerName}`, lines)) {
+
+                if (addJournalEntry(date, `تحصيل قسط #${num} - ${inv.invoiceNo} (${inv.customer})`, lines)) {
                     inst.status = 'paid';
                     inst.paidDate = date;
-                    save(); renderInstallments(); renderAll();
-                    showToast('تم التحصيل');
+                    inv.paid = (inv.paid || 0) + inst.amount;
+                    inv.remaining = Math.max(0, inv.total - inv.paid);
+
+                    save();
+                    renderInstallments();
+                    viewInstDetails(invoiceNo); // Refresh details modal
+                    renderAll();
+                    showToast('\u062a\u0645 \u0627\u0644\u062a\u062d\u0635\u064a\u0644 \u0648\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0625\u064a\u0631\u0627\u062f \u2705');
                 }
             }
         }
 
         function filterInstallments(q) {
-            const rows = document.querySelectorAll('#installments-list tr');
+            const rows = document.querySelectorAll('#installments-summary-list tr');
             rows.forEach(r => {
                 r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
             });
@@ -5660,6 +5765,11 @@
             // Set date
             const dateEl = document.getElementById('srv-date');
             if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+
+            // Set next invoice number
+            if (!db.serviceInvoices) db.serviceInvoices = [];
+            const srvNumEl = document.getElementById('srv-num');
+            if (srvNumEl) srvNumEl.innerText = String(db.serviceInvoices.length + 1).padStart(4, '0');
         }
 
         function saveService(e) {
@@ -5806,7 +5916,7 @@
             if (srvIdVal && srvIdVal !== '__new__') {
                 const serv = db.services.find(s => s.id == srvIdVal);
                 if (serv) {
-                    item = { id: serv.id, name: serv.name, price, qty, total: price * qty };
+                    item = { id: serv.id, name: serv.name, cost: serv.cost || 0, price, qty, total: price * qty };
                 }
             }
 
@@ -6040,7 +6150,9 @@
                 <tbody>${inv.items.map(i => `<tr><td>${i.name}</td><td>${i.qty || 1}</td><td>${(i.price || 0).toFixed(2)}</td><td>${((i.price || 0) * (i.qty || 1)).toFixed(2)}</td></tr>`).join('')}</tbody>
             </table>
             <div class="totals">
-                <div class="row"><span>الإجمالي:</span><span>${(inv.total || 0).toFixed(2)}</span></div>
+                <div class="row"><span>المجموع:</span><span>${(inv.subtotal || 0).toFixed(2)}</span></div>
+                ${(inv.vat || 0) > 0 ? `<div class="row"><span>الضريبة (${inv.vatRate || 15}%):</span><span>${inv.vat.toFixed(2)}</span></div>` : ''}
+                ${(inv.discount || 0) > 0 ? `<div class="row" style="color:red"><span>الخصم:</span><span>-${inv.discount.toFixed(2)}</span></div>` : ''}
                 <div class="row"><span>المدفوع:</span><span>${(inv.paid || 0).toFixed(2)}</span></div>
                 ${(inv.remaining || 0) > 0 ? `<div class="row" style="color:red"><span>المتبقي:</span><span>${inv.remaining.toFixed(2)}</span></div>` : ''}
                 <div class="row grand"><span>صافي الفاتورة:</span><span>${(inv.total || 0).toFixed(2)} ${db.settings.currency || 'ر.س'}</span></div>
@@ -7186,11 +7298,7 @@
             openInvoiceWindow('فاتورة مشتريات', invNo, s.date, { label: 'المورد', name: s.supplier }, s.items || [],
                 `${(s.discount || 0) > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
         }
-        function viewServiceInvoice(id) {
-            const s = (db.serviceInvoices || []).find(x => x.id == id); if (!s) return;
-            openInvoiceWindow('فاتورة خدمات', s.invoiceNo || 'SVC-' + s.id, s.date, { label: 'العميل', name: s.customer }, s.items || [],
-                `<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${(s.remaining || 0).toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
-        }
+
         function viewInstInvoice(id) {
             const s = (db.installmentInvoices || []).find(x => x.id == id); if (!s) return;
             const schedHTML = (s.schedule || []).map((p, i) => `<tr><td>${i + 1}</td><td>${p.dueDate}</td><td>${p.amount.toFixed(2)}</td><td>${p.paid ? '✅ مدفوع' : '⏳ قادم'}</td></tr>`).join('');
@@ -7306,10 +7414,11 @@
         // ===== SERVICE STATEMENT =====
         function renderSvcStatement() {
             const tbody = document.getElementById('svc-stmt-body'); if (!tbody) return;
-            const inv = (db.serviceInvoices || []).filter(s => (s.remaining || 0) > 0);
+            const inv = (db.serviceInvoices || []);
             tbody.innerHTML = inv.length ? inv.map(s => {
-                return `<tr class="hover:bg-teal-50"><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-mono text-teal-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
-            }).join('') : '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد حسابات آجلة</td></tr>';
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-teal-50"><td class="p-2 font-bold">${s.customer}</td><td class="p-2 font-mono text-teal-600">${s.invoiceNo || '-'}</td><td class="p-2">${s.date}</td><td class="p-2 font-bold">${(s.total || 0).toFixed(2)}</td><td class="p-2 text-emerald-600">${(s.paid || 0).toFixed(2)}</td><td class="p-2 text-red-600 font-bold">${(s.remaining || 0).toFixed(2)}</td><td class="p-2">${status}</td><td class="p-2"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500"><i class="fas fa-eye"></i></button></td></tr>`;
+            }).join('') : '<tr><td colspan="8" class="p-4 text-center text-slate-400">لا توجد بيانات</td></tr>';
         }
 
         // ===== INSTALLMENT COLLECTION =====
