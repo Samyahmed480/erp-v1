@@ -4793,6 +4793,7 @@
         // --- 7.2 Suppliers Logic ---
         function saveSupplier(e) {
             e.preventDefault();
+            const id = document.getElementById('supp-id').value;
             const name = document.getElementById('supp-name').value;
             const company = document.getElementById('supp-company').value;
             const address = document.getElementById('supp-address').value;
@@ -4802,8 +4803,10 @@
             if (id) {
                 const s = db.suppliers.find(x => x.id == id);
                 if (s) { s.name = name; s.company = company; s.address = address; s.phone = phone; s.vat = vat; }
+                showToast('تم تعديل المورد');
             } else {
                 db.suppliers.push({ id: Date.now(), name, company, address, phone, vat });
+                showToast('تم إضافة المورد');
             }
             save(); renderSuppliersTable(); populateSelects(); resetSupplierForm();
         }
