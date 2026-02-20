@@ -223,6 +223,106 @@
                 display: none !important;
             }
         }
+
+        /* Combobox Styles */
+        .pur-combobox-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .pur-combobox-wrapper input {
+            width: 100%;
+            padding: 10px 14px;
+            padding-left: 36px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .pur-combobox-wrapper input:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        .pur-combobox-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            pointer-events: none;
+            font-size: 13px;
+        }
+
+        .pur-suggestions {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            left: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 60;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            display: none;
+        }
+
+        .pur-suggestions.open {
+            display: block;
+        }
+
+        .pur-suggestion-item {
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .pur-suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .pur-suggestion-item:hover,
+        .pur-suggestion-item.active {
+            background: #fff7ed;
+        }
+
+        .pur-suggestion-item .item-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .pur-suggestion-item .item-meta {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .pur-suggestion-new {
+            background: #fffbeb;
+            color: #d97706;
+            font-weight: 700;
+            border-top: 2px solid #fde68a;
+        }
+
+        .pur-suggestion-new i {
+            margin-left: 6px;
+            color: #f59e0b;
+        }
+
+        .pur-suggestion-new:hover {
+            background: #fef3c7;
+        }
     </style>
 </head>
 
@@ -1351,9 +1451,15 @@
                                 class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
                         </div>
                         <div class="flex gap-2 mb-3">
-                            <select id="pur-product"
-                                class="flex-1 p-2.5 border rounded-lg text-sm bg-white outline-none shadow-sm"
-                                onchange="updatePurCost(this)"></select>
+                            <div class="pur-combobox-wrapper">
+                                <input type="text" id="pur-product-input"
+                                    placeholder="اكتب اسم المنتج أو اختر من القائمة..." autocomplete="off"
+                                    onfocus="onPurProductFocus()" oninput="onPurProductInput(this.value)"
+                                    onkeydown="onPurProductKeydown(event)">
+                                <i class="fas fa-search pur-combobox-icon"></i>
+                                <input type="hidden" id="pur-product-id" value="">
+                                <div id="pur-suggestions" class="pur-suggestions"></div>
+                            </div>
                             <input type="number" id="pur-cost" placeholder="التكلفة"
                                 class="w-24 p-2.5 border rounded-lg text-center outline-none">
                             <input type="number" id="pur-qty" value="1"
@@ -1437,17 +1543,35 @@
                     <div class="lg:col-span-1 flex flex-col gap-4">
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800">آخر المشتريات</h3>
+                                <h3 class="font-bold text-sm text-slate-800"><i
+                                        class="fas fa-file-import text-orange-500 me-1"></i>سجل فواتير المشتريات</h3>
                                 <div class="flex gap-1">
+                                    <input type="text" placeholder="بحث..."
+                                        class="p-1 border rounded text-[10px] w-24 outline-none"
+                                        onkeyup="filterPurchaseInvoiceList(this.value)">
                                     <button onclick="exportTableToCSV('recent-pur-table','فواتير_المشتريات')"
                                         class="text-[10px] bg-orange-50 text-orange-600 px-2 py-1 rounded hover:bg-orange-100"
                                         title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('recent-purchases')"
+                                    <button onclick="printSection('recent-pur-body')"
                                         class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
                                         title="طباعة"><i class="fas fa-print"></i></button>
                                 </div>
                             </div>
-                            <div id="recent-purchases" class="overflow-y-auto max-h-[200px] space-y-2 pr-1"></div>
+                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
+                                <table id="recent-pur-table" class="w-full text-[10px] text-right">
+                                    <thead class="bg-slate-800 text-white sticky top-0">
+                                        <tr>
+                                            <th class="p-1.5">#</th>
+                                            <th class="p-1.5">التاريخ</th>
+                                            <th class="p-1.5">المورد</th>
+                                            <th class="p-1.5">الإجمالي</th>
+                                            <th class="p-1.5">الحالة</th>
+                                            <th class="p-1.5"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-pur-body" class="bg-white divide-y"></tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
                             <div class="flex justify-between items-center mb-3">
@@ -4214,7 +4338,9 @@
             document.getElementById('inst-customer').innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             document.getElementById('inst-method').innerHTML = (db.settings.paymentMethods || ['Cash']).map(m => `<option value="${m}">${m}</option>`).join('');
             document.getElementById('pur-supplier').innerHTML = db.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            document.getElementById('pur-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}" data-cost="${p.cost}">${p.name}</option>`).join('');
+            // pur-product is now a combobox — just reset input
+            document.getElementById('pur-product-input').value = '';
+            document.getElementById('pur-product-id').value = '';
         }
 
         function addToCart() {
@@ -4394,7 +4520,18 @@
                 if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
 
                 if (addJournalEntry(date, `فاتورة مشتريات - ${supplier.name} (${method})`, lines)) {
-                    currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) { p.stock += i.qty; p.cost = i.cost; } });
+                    currentPurCart.forEach(i => {
+                        if (i.isNew) {
+                            // Create new product in db
+                            const newProd = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, price: i.cost, cost: i.cost, stock: i.qty };
+                            db.products.push(newProd);
+                            i.id = newProd.id; // update reference
+                            delete i.isNew;
+                        } else {
+                            const p = db.products.find(x => x.id == i.id);
+                            if (p) { p.stock += i.qty; p.cost = i.cost; }
+                        }
+                    });
                     db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart] });
                     showToast('تم حفظ المشتريات');
                 }
@@ -4443,16 +4580,128 @@
             if (opt && opt.dataset.cost) document.getElementById('pur-cost').value = opt.dataset.cost;
         }
 
+        // --- Purchase Combobox Logic ---
+        let purComboActive = -1;
+
+        function onPurProductFocus() {
+            onPurProductInput(document.getElementById('pur-product-input').value);
+        }
+
+        function onPurProductInput(query) {
+            const container = document.getElementById('pur-suggestions');
+            const q = query.trim().toLowerCase();
+            let html = '';
+            purComboActive = -1;
+
+            const filtered = db.products.filter(p => p.name.toLowerCase().includes(q));
+
+            if (q === '') {
+                // show all products
+                html = db.products.map((p, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id})">
+                        <span class="item-name">${p.name}</span>
+                        <span class="item-meta">تكلفة: ${p.cost || 0} | مخزون: ${p.stock || 0}</span>
+                    </div>`).join('');
+            } else {
+                html = filtered.map((p, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id})">
+                        <span class="item-name">${p.name}</span>
+                        <span class="item-meta">تكلفة: ${p.cost || 0} | مخزون: ${p.stock || 0}</span>
+                    </div>`).join('');
+
+                // If no exact match, show "add new product" option
+                const exactMatch = db.products.some(p => p.name.toLowerCase() === q);
+                if (!exactMatch && q.length > 0) {
+                    const newIdx = filtered.length;
+                    html += `
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx}" onclick="selectNewPurProduct('${query.replace(/'/g, "\\'")}')"> 
+                        <span><i class="fas fa-plus-circle"></i> إضافة منتج جديد: "${query}"</span>
+                    </div>`;
+                }
+            }
+
+            container.innerHTML = html;
+            container.classList.toggle('open', html.length > 0);
+        }
+
+        function selectPurProduct(productId) {
+            const prod = db.products.find(p => p.id == productId);
+            if (!prod) return;
+            document.getElementById('pur-product-input').value = prod.name;
+            document.getElementById('pur-product-id').value = prod.id;
+            document.getElementById('pur-cost').value = prod.cost || '';
+            document.getElementById('pur-suggestions').classList.remove('open');
+        }
+
+        function selectNewPurProduct(name) {
+            document.getElementById('pur-product-input').value = name;
+            document.getElementById('pur-product-id').value = '__new__';
+            document.getElementById('pur-cost').value = '';
+            document.getElementById('pur-cost').focus();
+            document.getElementById('pur-suggestions').classList.remove('open');
+        }
+
+        function onPurProductKeydown(e) {
+            const container = document.getElementById('pur-suggestions');
+            const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                purComboActive = Math.min(purComboActive + 1, items.length - 1);
+                updatePurComboHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                purComboActive = Math.max(purComboActive - 1, 0);
+                updatePurComboHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (purComboActive >= 0 && items[purComboActive]) {
+                    items[purComboActive].click();
+                }
+            } else if (e.key === 'Escape') {
+                container.classList.remove('open');
+            }
+        }
+
+        function updatePurComboHighlight(items) {
+            items.forEach((el, i) => {
+                el.classList.toggle('active', i === purComboActive);
+            });
+            if (items[purComboActive]) items[purComboActive].scrollIntoView({ block: 'nearest' });
+        }
+
+        // Close suggestions on outside click
+        document.addEventListener('click', function (e) {
+            const wrapper = document.querySelector('.pur-combobox-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                document.getElementById('pur-suggestions').classList.remove('open');
+            }
+        });
+
         function addToPurCart() {
-            const prodId = document.getElementById('pur-product').value;
+            const prodIdVal = document.getElementById('pur-product-id').value;
+            const prodName = document.getElementById('pur-product-input').value.trim();
             const qty = parseFloat(document.getElementById('pur-qty').value);
             const cost = parseFloat(document.getElementById('pur-cost').value);
-            const prod = db.products.find(p => p.id == prodId);
 
-            if (!prod || !qty || !cost) return showToast('بيانات ناقصة', 'error');
+            if (!prodName || !qty || !cost) return showToast('بيانات ناقصة', 'error');
 
-            const item = { ...prod, qty, cost, total: cost * qty };
+            let item;
+            if (prodIdVal && prodIdVal !== '__new__') {
+                // Existing product
+                const prod = db.products.find(p => p.id == prodIdVal);
+                if (!prod) return showToast('منتج غير موجود', 'error');
+                item = { ...prod, qty, cost, total: cost * qty };
+            } else {
+                // New product — mark with __new__ flag
+                item = { id: '__new_' + Date.now(), name: prodName, price: cost, cost: cost, stock: 0, qty, total: cost * qty, isNew: true };
+            }
+
             currentPurCart.push(item);
+            document.getElementById('pur-product-input').value = '';
+            document.getElementById('pur-product-id').value = '';
+            document.getElementById('pur-cost').value = '';
             renderPurCart();
         }
 
@@ -4913,11 +5162,23 @@
                     <div class="text-slate-500">${inv.customer}</div>
                 </div>`).join('');
 
-            document.getElementById('recent-purchases').innerHTML = db.purchases.slice().reverse().slice(0, 10).map(p => `
-                <div class="p-2 bg-slate-50 rounded border text-xs mb-2">
-                    <div class="flex justify-between font-bold"><span>${p.supplier}</span><span>${p.total.toFixed(2)}</span></div>
-                    <div class="text-slate-400 text-[10px]">${p.date}</div>
-                </div>`).join('');
+            // Render recent purchases as a proper table (like sales)
+            const purTbody = document.getElementById('recent-pur-body');
+            if (purTbody) {
+                const purchases = [...db.purchases].reverse();
+                purTbody.innerHTML = purchases.length ? purchases.map((p, i) => {
+                    const purNo = p.invoiceNo || ('PUR-' + String(purchases.length - i).padStart(4, '0'));
+                    const status = (p.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                    return `<tr class="hover:bg-orange-50 cursor-pointer" ondblclick="viewPurchaseInvoice(${p.id})">
+                        <td class="p-1.5 font-mono text-orange-600">${purNo}</td>
+                        <td class="p-1.5">${p.date}</td>
+                        <td class="p-1.5 font-bold">${p.supplier}</td>
+                        <td class="p-1.5 font-bold">${(p.total || 0).toFixed(2)}</td>
+                        <td class="p-1.5">${status}</td>
+                        <td class="p-1.5"><button onclick="viewPurchaseInvoice(${p.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
+                    </tr>`;
+                }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
+            }
 
             document.getElementById('coa-body').innerHTML = db.chartOfAccounts.map(a => `<tr class="border-b"><td class="p-3 font-mono level-${a.level}">${a.code}</td><td class="p-3 level-${a.level}">${a.name}</td><td class="p-3 text-xs">${a.type}</td><td class="p-3 font-bold ${getAccountBalance(a.code) < 0 ? 'text-red-500' : 'text-emerald-600'}">${getAccountBalance(a.code).toFixed(2)}</td></tr>`).join('');
 
@@ -6068,6 +6329,12 @@
 
         function filterSalesInvoiceList(q) {
             document.querySelectorAll('#recent-inv-body tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        function filterPurchaseInvoiceList(q) {
+            document.querySelectorAll('#recent-pur-body tr').forEach(r => {
                 r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
             });
         }
