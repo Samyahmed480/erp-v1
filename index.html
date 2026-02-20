@@ -1662,38 +1662,195 @@
 
             <!-- 14. Services Module (New) -->
             <section id="services" class="section-content">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
-                    <!-- Service Management -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold text-lg text-slate-800">إدارة الخدمات</h3>
-                            <button
-                                onclick="document.getElementById('serv-id').value='';document.getElementById('serv-form').reset();"
-                                class="text-blue-600 text-xs"><i class="fas fa-plus"></i> جديد</button>
-                        </div>
-                        <form id="serv-form" onsubmit="saveService(event)" class="space-y-3 mb-6">
-                            <input type="hidden" id="serv-id">
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">اسم الخدمة</label><input
-                                    type="text" id="serv-name" required class="w-full p-2 border rounded outline-none">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+                    <!-- الفاتورة -->
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm flex flex-col">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                                <span>فاتورة خدمات</span>
+                            </h3>
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-100">
+                                    SRV-<span id="srv-num">Auto</span></div>
                             </div>
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">السعر</label><input
-                                    type="number" id="serv-price" required
-                                    class="w-full p-2 border rounded outline-none"></div>
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">الوصف</label><input
-                                    type="text" id="serv-desc" class="w-full p-2 border rounded outline-none"></div>
-                            <button type="submit"
-                                class="w-full bg-blue-600 text-white py-2 rounded font-bold hover:bg-blue-700 shadow">حفظ
-                                الخدمة</button>
-                        </form>
-                        <div class="border-t pt-4">
-                            <h4 class="font-bold text-sm text-slate-700 mb-2">قائمة الخدمات</h4>
-                            <div class="overflow-y-auto max-h-[300px] border rounded bg-slate-50">
-                                <table class="w-full text-xs text-right">
+                        </div>
+
+                        <!-- بيانات العميل والتاريخ -->
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <input type="text" id="srv-customer" placeholder="اسم العميل (اختياري)"
+                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
+                            <input type="date" id="srv-date"
+                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
+                        </div>
+
+                        <!-- اختيار خدمة -->
+                        <div class="flex gap-2 mb-3">
+                            <div class="srv-combobox-wrapper" style="position:relative;flex:1;">
+                                <input type="text" id="srv-product-input"
+                                    placeholder="اكتب اسم الخدمة أو اختر من القائمة..." autocomplete="off"
+                                    onfocus="onSrvProductFocus()" oninput="onSrvProductInput(this.value)"
+                                    onkeydown="onSrvProductKeydown(event)"
+                                    class="w-full p-2.5 border rounded-lg text-sm bg-white outline-none shadow-sm"
+                                    style="padding-left:36px;">
+                                <i class="fas fa-search"
+                                    style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;pointer-events:none;font-size:13px;"></i>
+                                <input type="hidden" id="srv-product-id" value="">
+                                <div id="srv-suggestions" class="pur-suggestions"></div>
+                            </div>
+                            <input type="number" id="srv-price-input" placeholder="السعر"
+                                class="w-24 p-2.5 border rounded-lg text-center outline-none">
+                            <input type="number" id="srv-qty" value="1"
+                                class="w-20 p-2.5 border rounded-lg text-center outline-none" min="1">
+                            <button onclick="addToServiceCart()"
+                                class="bg-purple-600 text-white px-4 rounded-lg hover:bg-purple-700 transition shadow"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
+
+                        <!-- جدول السلة -->
+                        <div class="flex-1 border rounded-lg overflow-y-auto mb-3 bg-slate-50">
+                            <table class="w-full text-sm text-center relative">
+                                <thead class="bg-slate-200 text-slate-700 sticky top-0">
+                                    <tr>
+                                        <th class="p-2">الخدمة</th>
+                                        <th class="p-2">الكمية</th>
+                                        <th class="p-2">السعر</th>
+                                        <th class="p-2">الإجمالي</th>
+                                        <th class="p-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="srv-cart-body" class="divide-y divide-slate-200 bg-white"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- التوتالات والدفع -->
+                        <div class="bg-slate-800 text-white p-4 rounded-xl shadow-lg">
+                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>المجموع:</span><span
+                                    id="srv-subtotal">0.00</span></div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>الضريبة (<span
+                                        id="srv-vat-rate">15</span>%):</span><span id="srv-vat">0.00</span></div>
+
+                            <!-- الخصم المسموح به -->
+                            <div class="flex items-center gap-2 mb-1 text-xs text-slate-400">
+                                <label class="flex items-center gap-1 cursor-pointer">
+                                    <input type="checkbox" id="srv-disc-toggle"
+                                        onchange="document.getElementById('srv-disc-area').classList.toggle('hidden');renderServiceCart()">
+                                    <span>الخصم المسموح به</span>
+                                </label>
+                            </div>
+                            <div id="srv-disc-area" class="hidden mb-2 flex gap-1 items-center">
+                                <select id="srv-disc-type" class="p-1 text-black rounded text-[10px] w-16"
+                                    onchange="renderServiceCart()">
+                                    <option value="amount">مبلغ</option>
+                                    <option value="percent">نسبة%</option>
+                                </select>
+                                <input type="number" id="srv-discount"
+                                    class="w-16 p-1 text-black rounded text-center text-xs font-bold" value="0" min="0"
+                                    onchange="renderServiceCart()">
+                            </div>
+
+                            <div class="flex justify-between items-center border-t border-slate-700 pt-2 mb-2">
+                                <span class="text-slate-400 text-xs">الإجمالي:</span>
+                                <div class="text-xl font-bold text-purple-400" id="srv-total">0.00</div>
+                            </div>
+
+                            <!-- نوع الدفع -->
+                            <div class="flex gap-2 mb-2">
+                                <button type="button" onclick="setSrvPayType('cash')" id="srv-pay-cash-btn"
+                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-purple-600 text-white">كاش</button>
+                                <button type="button" onclick="setSrvPayType('credit')" id="srv-pay-credit-btn"
+                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300">آجل</button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 mb-2">
+                                <div><label class="text-[10px] text-slate-400 block mb-1">طريقة الدفع</label>
+                                    <select id="srv-method" class="w-full p-1.5 text-black rounded text-sm"></select>
+                                </div>
+                                <div id="srv-credit-area" class="hidden">
+                                    <label class="text-[10px] text-slate-400 block mb-1">المدفوع</label>
+                                    <input type="number" id="srv-paid"
+                                        class="w-full p-1.5 text-black rounded text-sm font-bold" placeholder="0.00"
+                                        oninput="calcSrvRemaining()">
+                                </div>
+                            </div>
+                            <div id="srv-remaining-row"
+                                class="hidden flex justify-between text-xs text-yellow-400 mb-2">
+                                <span>المتبقي:</span><span id="srv-remaining">0.00</span>
+                            </div>
+                            <button onclick="postServiceBill()"
+                                class="w-full bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-lg font-bold shadow-lg transition">حفظ
+                                الفاتورة</button>
+                        </div>
+                    </div>
+
+                    <!-- الشريط الجانبي -->
+                    <div class="lg:col-span-1 flex flex-col gap-4">
+                        <!-- سجل فواتير الخدمات -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-sm text-slate-800"><i
+                                        class="fas fa-file-medical text-purple-500 me-1"></i>سجل فواتير الخدمات</h3>
+                                <div class="flex gap-1">
+                                    <input type="text" placeholder="بحث..."
+                                        class="p-1 border rounded text-[10px] w-24 outline-none"
+                                        onkeyup="filterServiceInvoiceList(this.value)">
+                                    <button onclick="exportTableToCSV('recent-srv-table','فواتير_الخدمات')"
+                                        class="text-[10px] bg-purple-50 text-purple-600 px-2 py-1 rounded hover:bg-purple-100"
+                                        title="Excel"><i class="fas fa-file-excel"></i></button>
+                                    <button onclick="printSection('recent-srv-body')"
+                                        class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
+                                        title="طباعة"><i class="fas fa-print"></i></button>
+                                </div>
+                            </div>
+                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
+                                <table id="recent-srv-table" class="w-full text-[10px] text-right">
+                                    <thead class="bg-slate-800 text-white sticky top-0">
+                                        <tr>
+                                            <th class="p-1.5">#</th>
+                                            <th class="p-1.5">التاريخ</th>
+                                            <th class="p-1.5">العميل</th>
+                                            <th class="p-1.5">الإجمالي</th>
+                                            <th class="p-1.5">الحالة</th>
+                                            <th class="p-1.5"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-srv-body" class="bg-white divide-y"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- إدارة الخدمات -->
+                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
+                            <div class="flex justify-between items-center mb-3 border-b pb-2">
+                                <h3 class="font-bold text-sm text-slate-800"><i
+                                        class="fas fa-tools text-indigo-500 me-1"></i>إدارة الخدمات</h3>
+                                <button
+                                    onclick="document.getElementById('serv-id').value='';document.getElementById('serv-form').reset();"
+                                    class="text-blue-600 text-xs"><i class="fas fa-plus"></i> جديد</button>
+                            </div>
+                            <form id="serv-form" onsubmit="saveService(event)" class="space-y-2 mb-3">
+                                <input type="hidden" id="serv-id">
+                                <input type="text" id="serv-name" required placeholder="اسم الخدمة *"
+                                    class="w-full p-2 border rounded text-xs outline-none">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" id="serv-cost" placeholder="التكلفة"
+                                        class="w-full p-2 border rounded text-xs outline-none">
+                                    <input type="number" id="serv-price" required placeholder="سعر البيع *"
+                                        class="w-full p-2 border rounded text-xs outline-none">
+                                </div>
+                                <input type="text" id="serv-desc" placeholder="الوصف"
+                                    class="w-full p-2 border rounded text-xs outline-none">
+                                <button type="submit"
+                                    class="w-full bg-indigo-600 text-white py-1.5 rounded text-xs font-bold hover:bg-indigo-700 shadow">حفظ
+                                    الخدمة</button>
+                            </form>
+                            <div class="overflow-y-auto max-h-[180px] border rounded bg-slate-50">
+                                <table class="w-full text-[10px] text-right">
                                     <thead class="bg-indigo-50 font-bold sticky top-0">
                                         <tr>
-                                            <th class="p-2">الخدمة</th>
-                                            <th class="p-2">السعر</th>
-                                            <th class="p-2">إجراء</th>
+                                            <th class="p-1.5">الخدمة</th>
+                                            <th class="p-1.5">التكلفة</th>
+                                            <th class="p-1.5">البيع</th>
+                                            <th class="p-1.5">إجراء</th>
                                         </tr>
                                     </thead>
                                     <tbody id="services-list" class="divide-y divide-slate-200 bg-white"></tbody>
@@ -1701,48 +1858,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Service Invoice -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm flex flex-col h-full">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold text-lg text-slate-800">فاتورة خدمات</h3>
-                            <div
-                                class="text-xs font-mono bg-purple-50 text-purple-700 px-2 py-1 rounded border border-purple-100">
-                                SRV-<span id="srv-num">Auto</span></div>
-                        </div>
-                        <div class="flex gap-2 mb-3">
-                            <select id="srv-list"
-                                class="flex-1 p-2 border rounded outline-none bg-slate-50 focus:bg-white"></select>
-                            <button onclick="addToServiceCart()"
-                                class="bg-purple-600 text-white px-4 rounded hover:bg-purple-700"><i
-                                    class="fas fa-plus"></i></button>
-                        </div>
-                        <div class="flex-1 overflow-y-auto border rounded-lg bg-slate-50 mb-3">
-                            <table class="w-full text-sm text-right">
-                                <thead class="bg-slate-100 font-bold sticky top-0">
-                                    <tr>
-                                        <th class="p-2">الخدمة</th>
-                                        <th class="p-2">السعر</th>
-                                        <th class="p-2">حذف</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="srv-cart-body" class="divide-y divide-slate-200 bg-white"></tbody>
-                            </table>
-                        </div>
-                        <div class="border-t pt-3 space-y-2">
-                            <div class="flex justify-between items-center font-bold text-lg"><span>الإجمالي</span><span
-                                    id="srv-total" class="text-purple-700">0.00</span></div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <select id="srv-method" class="p-2 border rounded outline-none bg-slate-50"></select>
-                                <button onclick="postServiceBill()"
-                                    class="bg-indigo-600 text-white py-2 rounded font-bold hover:bg-indigo-700 shadow">حفظ
-                                    الفاتورة</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </section>
-
             </section>
 
             <!-- 15. Expenses Module (New) -->
@@ -5302,6 +5418,7 @@
             try { if (typeof renderPaymentMethods === 'function') renderPaymentMethods(); } catch (e) { console.error('renderPaymentMethods error:', e); }
             try { renderPurchaseInvoices(); } catch (e) { console.error('renderPurchaseInvoices error:', e); }
             try { renderSalesInvoices(); } catch (e) { console.error('renderSalesInvoices error:', e); }
+            try { renderServiceInvoices(); } catch (e) { console.error('renderServiceInvoices error:', e); }
 
             // Update header
             try {
@@ -5523,37 +5640,41 @@
 
         // --- 12. Services Module Logic ---
         let currentSrvCart = [];
+        let srvComboActive = -1;
 
         function renderServices() {
             if (!db.services) db.services = [];
             const list = document.getElementById('services-list');
             if (list) list.innerHTML = db.services.map(s => `
                 <tr class="hover:bg-slate-50">
-                    <td class="p-2 font-bold">${s.name}</td>
-                    <td class="p-2 font-mono text-emerald-600">${s.price}</td>
-                    <td class="p-2"><button onclick="editService(${s.id})" class="text-blue-500"><i class="fas fa-edit"></i></button></td>
+                    <td class="p-1.5 font-bold">${s.name}</td>
+                    <td class="p-1.5 font-mono text-red-500">${s.cost || 0}</td>
+                    <td class="p-1.5 font-mono text-emerald-600">${s.price}</td>
+                    <td class="p-1.5"><button onclick="editService(${s.id})" class="text-blue-500"><i class="fas fa-edit"></i></button></td>
                 </tr>
             `).join('');
 
-            const sel = document.getElementById('srv-list');
-            if (sel) sel.innerHTML = '<option value="">اختر خدمة...</option>' + db.services.map(s => `<option value="${s.id}">${s.name} (${s.price})</option>`).join('');
-
             const methodSel = document.getElementById('srv-method');
             if (methodSel && db.settings.paymentMethods) methodSel.innerHTML = db.settings.paymentMethods.map(m => `<option value="${m}">${m}</option>`).join('');
+
+            // Set date
+            const dateEl = document.getElementById('srv-date');
+            if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
         }
 
         function saveService(e) {
             e.preventDefault();
             const id = document.getElementById('serv-id').value;
             const name = document.getElementById('serv-name').value;
+            const cost = parseFloat(document.getElementById('serv-cost').value) || 0;
             const price = parseFloat(document.getElementById('serv-price').value);
             const desc = document.getElementById('serv-desc').value;
 
             if (id) {
                 const s = db.services.find(x => x.id == id);
-                if (s) { s.name = name; s.price = price; s.description = desc; }
+                if (s) { s.name = name; s.cost = cost; s.price = price; s.description = desc; }
             } else {
-                db.services.push({ id: Date.now(), name, price, description: desc });
+                db.services.push({ id: Date.now(), name, cost, price, description: desc });
             }
             save(); renderServices();
             document.getElementById('serv-id').value = '';
@@ -5566,56 +5687,367 @@
             if (s) {
                 document.getElementById('serv-id').value = s.id;
                 document.getElementById('serv-name').value = s.name;
+                document.getElementById('serv-cost').value = s.cost || 0;
                 document.getElementById('serv-price').value = s.price;
                 document.getElementById('serv-desc').value = s.description || '';
             }
         }
 
-        function addToServiceCart() {
-            const id = document.getElementById('srv-list').value;
-            const serv = db.services.find(x => x.id == id);
-            if (serv) {
-                currentSrvCart.push({ ...serv });
-                renderServiceCart();
+        // --- Service Combobox Logic ---
+        function onSrvProductFocus() {
+            onSrvProductInput(document.getElementById('srv-product-input').value);
+        }
+
+        function onSrvProductInput(query) {
+            const container = document.getElementById('srv-suggestions');
+            if (!db.services) db.services = [];
+            const q = query.trim().toLowerCase();
+            let html = '';
+            srvComboActive = -1;
+
+            const filtered = db.services.filter(s => s.name.toLowerCase().includes(q));
+
+            if (q === '') {
+                html = db.services.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectSrvProduct(${s.id})">
+                        <span class="item-name">${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
+            } else {
+                html = filtered.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectSrvProduct(${s.id})">
+                        <span class="item-name">${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
+
+                const exactMatch = db.services.some(s => s.name.toLowerCase() === q);
+                if (!exactMatch && q.length > 0) {
+                    const newIdx = filtered.length;
+                    html += `
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx}" onclick="selectNewSrvProduct('${query.replace(/'/g, "\\'")}')">
+                        <span><i class="fas fa-plus-circle"></i> إضافة خدمة جديدة: "${query}"</span>
+                    </div>`;
+                }
             }
+
+            container.innerHTML = html;
+            container.classList.toggle('open', html.length > 0);
+        }
+
+        function selectSrvProduct(id) {
+            const serv = db.services.find(s => s.id == id);
+            if (serv) {
+                document.getElementById('srv-product-input').value = serv.name;
+                document.getElementById('srv-product-id').value = serv.id;
+                document.getElementById('srv-price-input').value = serv.price;
+            }
+            document.getElementById('srv-suggestions').classList.remove('open');
+            document.getElementById('srv-suggestions').innerHTML = '';
+        }
+
+        function selectNewSrvProduct(name) {
+            document.getElementById('srv-product-input').value = name;
+            document.getElementById('srv-product-id').value = '__new__';
+            document.getElementById('srv-price-input').value = '';
+            document.getElementById('srv-price-input').focus();
+            document.getElementById('srv-suggestions').classList.remove('open');
+            document.getElementById('srv-suggestions').innerHTML = '';
+        }
+
+        function onSrvProductKeydown(e) {
+            const container = document.getElementById('srv-suggestions');
+            const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                srvComboActive = Math.min(srvComboActive + 1, items.length - 1);
+                updateSrvComboHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                srvComboActive = Math.max(srvComboActive - 1, 0);
+                updateSrvComboHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (srvComboActive >= 0 && srvComboActive < items.length) {
+                    items[srvComboActive].click();
+                }
+            } else if (e.key === 'Escape') {
+                container.classList.remove('open');
+                container.innerHTML = '';
+            }
+        }
+
+        function updateSrvComboHighlight(items) {
+            items.forEach((el, i) => {
+                el.style.background = i === srvComboActive ? '#e2e8f0' : '';
+            });
+            if (srvComboActive >= 0 && items[srvComboActive]) items[srvComboActive].scrollIntoView({ block: 'nearest' });
+        }
+
+        // Close suggestions on outside click
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.srv-combobox-wrapper')) {
+                const s = document.getElementById('srv-suggestions');
+                if (s) { s.classList.remove('open'); s.innerHTML = ''; }
+            }
+        });
+
+        function addToServiceCart() {
+            const srvIdVal = document.getElementById('srv-product-id').value;
+            const srvName = document.getElementById('srv-product-input').value.trim();
+            const price = parseFloat(document.getElementById('srv-price-input').value);
+            const qty = parseInt(document.getElementById('srv-qty').value) || 1;
+
+            if (!srvName) return showToast('اختر خدمة أو اكتب اسم خدمة', 'error');
+            if (!price || price <= 0) return showToast('أدخل سعر الخدمة', 'error');
+
+            let item;
+            if (srvIdVal && srvIdVal !== '__new__') {
+                const serv = db.services.find(s => s.id == srvIdVal);
+                if (serv) {
+                    item = { id: serv.id, name: serv.name, price, qty, total: price * qty };
+                }
+            }
+
+            if (!item) {
+                item = { id: '__new_' + Date.now(), name: srvName, price, qty, total: price * qty, isNew: true };
+            }
+
+            currentSrvCart.push(item);
+            renderServiceCart();
+
+            document.getElementById('srv-product-input').value = '';
+            document.getElementById('srv-product-id').value = '';
+            document.getElementById('srv-price-input').value = '';
+            document.getElementById('srv-qty').value = '1';
         }
 
         function renderServiceCart() {
             const tbody = document.getElementById('srv-cart-body');
-            let total = 0;
+            let subtotal = 0;
             if (tbody) {
                 tbody.innerHTML = currentSrvCart.map((item, idx) => {
-                    total += item.price;
-                    return `<tr><td class="p-2">${item.name}</td><td class="p-2 font-mono">${item.price}</td><td class="p-2"><button onclick="currentSrvCart.splice(${idx},1);renderServiceCart()" class="text-red-500"><i class="fas fa-times"></i></button></td></tr>`;
+                    const lineTotal = item.price * item.qty;
+                    subtotal += lineTotal;
+                    return `<tr>
+                        <td class="p-2">${item.name}</td>
+                        <td class="p-2">${item.qty}</td>
+                        <td class="p-2 font-mono">${item.price.toFixed(2)}</td>
+                        <td class="p-2 font-bold">${lineTotal.toFixed(2)}</td>
+                        <td class="p-2"><button onclick="currentSrvCart.splice(${idx},1);renderServiceCart()" class="text-red-500"><i class="fas fa-times"></i></button></td>
+                    </tr>`;
                 }).join('');
-                document.getElementById('srv-total').innerText = total.toFixed(2);
+
+                // VAT
+                const vatRate = db.settings.vatRate || 15;
+                const vatRateEl = document.getElementById('srv-vat-rate');
+                if (vatRateEl) vatRateEl.innerText = vatRate;
+                const vat = subtotal * (vatRate / 100);
+
+                // Discount
+                let discount = 0;
+                const discToggle = document.getElementById('srv-disc-toggle');
+                if (discToggle && discToggle.checked) {
+                    const discType = document.getElementById('srv-disc-type').value;
+                    const discVal = parseFloat(document.getElementById('srv-discount').value) || 0;
+                    discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
+                }
+
+                const grandTotal = subtotal + vat - discount;
+
+                const subtotalEl = document.getElementById('srv-subtotal');
+                if (subtotalEl) subtotalEl.innerText = subtotal.toFixed(2);
+                const vatEl = document.getElementById('srv-vat');
+                if (vatEl) vatEl.innerText = vat.toFixed(2);
+                document.getElementById('srv-total').innerText = grandTotal.toFixed(2);
+
+                // Update remaining if credit
+                calcSrvRemaining();
             }
         }
 
-        function postServiceBill() {
-            if (currentSrvCart.length === 0) return showToast('الفاتورة فارغة', 'error');
-            const total = currentSrvCart.reduce((sum, item) => sum + item.price, 0);
-            const method = document.getElementById('srv-method')?.value || '1101';
-            const custName = document.getElementById('srv-customer')?.value || 'عميل خدمات';
-            const paid = parseFloat(document.getElementById('srv-paid')?.value) || total;
-            const remaining = total - paid;
-            const date = new Date().toISOString().split('T')[0];
-            const saleId = Date.now();
-            const invoiceNo = 'SVC-' + String(saleId).slice(-6);
+        // --- Service Payment Helpers ---
+        let srvPayType = 'cash';
+        function setSrvPayType(type) {
+            srvPayType = type;
+            document.getElementById('srv-pay-cash-btn').className = 'flex-1 py-1.5 rounded text-xs font-bold ' + (type === 'cash' ? 'bg-purple-600 text-white' : 'bg-slate-700 text-slate-300');
+            document.getElementById('srv-pay-credit-btn').className = 'flex-1 py-1.5 rounded text-xs font-bold ' + (type === 'credit' ? 'bg-purple-600 text-white' : 'bg-slate-700 text-slate-300');
+            const creditArea = document.getElementById('srv-credit-area');
+            const remainRow = document.getElementById('srv-remaining-row');
+            if (type === 'credit') { creditArea.classList.remove('hidden'); remainRow.classList.remove('hidden'); }
+            else { creditArea.classList.add('hidden'); remainRow.classList.add('hidden'); }
+        }
 
+        function calcSrvRemaining() {
+            const subtotal = currentSrvCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            const vatRate = db.settings.vatRate || 15;
+            const vat = subtotal * (vatRate / 100);
+            let discount = 0;
+            const discToggle = document.getElementById('srv-disc-toggle');
+            if (discToggle && discToggle.checked) {
+                const discType = document.getElementById('srv-disc-type').value;
+                const discVal = parseFloat(document.getElementById('srv-discount').value) || 0;
+                discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
+            }
+            const grandTotal = subtotal + vat - discount;
+            const paid = parseFloat(document.getElementById('srv-paid')?.value) || 0;
+            const rem = grandTotal - paid;
+            const remEl = document.getElementById('srv-remaining');
+            if (remEl) remEl.innerText = rem.toFixed(2);
+        }
+
+        function postServiceBill() {
+            if (currentSrvCart.length === 0) return showToast('\u0627\u0644\u0641\u0627\u062a\u0648\u0631\u0629 \u0641\u0627\u0631\u063a\u0629', 'error');
+            const subtotal = currentSrvCart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            const vatRate = db.settings.vatRate || 15;
+            const vat = subtotal * (vatRate / 100);
+
+            // Discount
+            let discount = 0;
+            const discToggle = document.getElementById('srv-disc-toggle');
+            if (discToggle && discToggle.checked) {
+                const discType = document.getElementById('srv-disc-type').value;
+                const discVal = parseFloat(document.getElementById('srv-discount').value) || 0;
+                discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
+            }
+
+            const grandTotal = subtotal + vat - discount;
+            const method = document.getElementById('srv-method')?.value || 'Cash';
+            const custName = document.getElementById('srv-customer')?.value || '\u0639\u0645\u064a\u0644 \u062e\u062f\u0645\u0627\u062a';
+            const date = document.getElementById('srv-date')?.value || new Date().toISOString().split('T')[0];
+            let paid, remaining;
+
+            if (srvPayType === 'cash') {
+                paid = grandTotal;
+                remaining = 0;
+            } else {
+                paid = parseFloat(document.getElementById('srv-paid')?.value) || 0;
+                remaining = grandTotal - paid;
+            }
+
+            // Sequential invoice number
+            if (!db.serviceInvoices) db.serviceInvoices = [];
+            const nextNum = db.serviceInvoices.length + 1;
+            const invoiceNo = 'SVC-' + String(nextNum).padStart(4, '0');
+
+            // Journal entries
+            const payCode = method === 'Cash' || method === '1101' ? '1101' : '1102';
             const lines = [
-                { code: method || '1101', dr: paid, cr: 0 },
-                { code: '4101', dr: 0, cr: total }
+                { code: payCode, dr: paid, cr: 0 },
+                { code: '4101', dr: 0, cr: subtotal }  // Revenue
             ];
+            if (vat > 0) lines.push({ code: '2102', dr: 0, cr: vat }); // VAT Payable
+            if (discount > 0) lines.push({ code: '4201', dr: discount, cr: 0 }); // Discount Allowed
             if (remaining > 0) lines.push({ code: '1201', dr: remaining, cr: 0 }); // Receivable
 
-            if (addJournalEntry(date, `فاتورة خدمات - ${custName}`, lines)) {
-                if (!db.serviceInvoices) db.serviceInvoices = [];
-                const invObj = { id: saleId, invoiceNo, date, customer: custName, total, paid, remaining, method, type: 'service', items: [...currentSrvCart] };
+            if (addJournalEntry(date, `\u0641\u0627\u062a\u0648\u0631\u0629 \u062e\u062f\u0645\u0627\u062a ${invoiceNo} - ${custName}`, lines)) {
+                // Auto-create new services
+                currentSrvCart.forEach(i => {
+                    if (i.isNew) {
+                        if (!db.services) db.services = [];
+                        const newSrv = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, cost: 0, price: i.price, description: '' };
+                        db.services.push(newSrv);
+                        i.id = newSrv.id;
+                        delete i.isNew;
+                    }
+                });
+
+                const invObj = {
+                    id: Date.now(), invoiceNo, date, customer: custName,
+                    subtotal, vat, vatRate, discount, total: grandTotal,
+                    paid, remaining, method, type: 'service',
+                    items: [...currentSrvCart]
+                };
                 db.serviceInvoices.push(invObj);
-                showToast('تم حفظ فاتورة الخدمة ✅');
-                currentSrvCart = []; renderServiceCart(); save(); renderAll();
+                showToast(`\u062a\u0645 \u062d\u0641\u0638 \u0641\u0627\u062a\u0648\u0631\u0629 \u0627\u0644\u062e\u062f\u0645\u0629 ${invoiceNo} \u2705`);
+
+                // Update invoice number display
+                const srvNumEl = document.getElementById('srv-num');
+                if (srvNumEl) srvNumEl.innerText = String(db.serviceInvoices.length + 1).padStart(4, '0');
+
+                // Reset form
+                currentSrvCart = [];
+                renderServiceCart();
+                document.getElementById('srv-customer').value = '';
+                document.getElementById('srv-paid') && (document.getElementById('srv-paid').value = '');
+                if (discToggle) { discToggle.checked = false; document.getElementById('srv-disc-area').classList.add('hidden'); }
+                document.getElementById('srv-discount') && (document.getElementById('srv-discount').value = '0');
+                setSrvPayType('cash');
+                save();
+                renderAll();
             }
+        }
+
+        // --- Service Invoice Sidebar ---
+        function renderServiceInvoices() {
+            if (!db.serviceInvoices) db.serviceInvoices = [];
+            const tbody = document.getElementById('recent-srv-body');
+            if (!tbody) return;
+            const invoices = [...db.serviceInvoices].reverse();
+            tbody.innerHTML = invoices.length ? invoices.map((s, i) => {
+                const invNo = s.invoiceNo || ('SVC-' + String(invoices.length - i).padStart(4, '0'));
+                const status = (s.remaining || 0) > 0 ? '<span class="text-red-600 font-bold">آجل</span>' : '<span class="text-emerald-600">مدفوع</span>';
+                return `<tr class="hover:bg-purple-50 cursor-pointer" ondblclick="viewServiceInvoice(${s.id})">
+                    <td class="p-1.5 font-mono text-purple-600">${invNo}</td>
+                    <td class="p-1.5">${s.date}</td>
+                    <td class="p-1.5 font-bold">${s.customer}</td>
+                    <td class="p-1.5 font-bold">${(s.total || 0).toFixed(2)}</td>
+                    <td class="p-1.5">${status}</td>
+                    <td class="p-1.5"><button onclick="viewServiceInvoice(${s.id})" class="text-blue-500 hover:text-blue-700" title="عرض الفاتورة"><i class="fas fa-eye"></i></button></td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="6" class="p-3 text-center text-slate-400">لا توجد فواتير</td></tr>';
+        }
+
+        function filterServiceInvoiceList(q) {
+            document.querySelectorAll('#recent-srv-body tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        function viewServiceInvoice(id) {
+            if (!db.serviceInvoices) return;
+            const inv = db.serviceInvoices.find(s => s.id == id);
+            if (!inv) return showToast('فاتورة غير موجودة', 'error');
+            const w = window.open('', 'srv_invoice', 'width=700,height=800');
+            w.document.write(`<html dir="rtl"><head><style>
+                body { font-family: 'Cairo', sans-serif; max-width: 650px; margin: 20px auto; padding: 20px; font-size: 13px; }
+                .header { text-align: center; margin-bottom: 20px; }
+                .header h1 { font-size: 18px; margin: 0; } .header p { color: #666; font-size: 11px; margin: 2px 0; }
+                .info { display: flex; justify-content: space-between; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px; }
+                .info div { font-size: 12px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+                th { background: #1e293b; color: white; padding: 8px; text-align: right; font-size: 12px; }
+                td { padding: 8px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 12px; }
+                .totals { background: #f1f5f9; padding: 15px; border-radius: 8px; }
+                .totals .row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+                .totals .grand { font-size: 18px; font-weight: bold; color: #7c3aed; border-top: 2px solid #cbd5e1; padding-top: 8px; margin-top: 8px; }
+                .print-btn { display: block; margin: 20px auto; padding: 10px 40px; background: #7c3aed; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+                @media print { .print-btn { display: none; } }
+            </style></head><body>
+            <div class="header">
+                ${db.settings.logo ? `<img src="${db.settings.logo}" style="height: 60px; margin: 0 auto 8px; display: block;">` : ''}
+                <h1>${db.settings.companyName}</h1>
+                <p>${db.settings.address || ''} - ${db.settings.phone || ''}</p>
+                <p>فاتورة خدمات</p>
+            </div>
+            <div class="info">
+                <div><strong>العميل:</strong> ${inv.customer}<br><strong>التاريخ:</strong> ${inv.date}</div>
+                <div><strong>رقم الفاتورة:</strong> ${inv.invoiceNo}<br><strong>طريقة الدفع:</strong> ${inv.method || 'كاش'}</div>
+            </div>
+            <table>
+                <thead><tr><th>الخدمة</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+                <tbody>${inv.items.map(i => `<tr><td>${i.name}</td><td>${i.qty || 1}</td><td>${(i.price || 0).toFixed(2)}</td><td>${((i.price || 0) * (i.qty || 1)).toFixed(2)}</td></tr>`).join('')}</tbody>
+            </table>
+            <div class="totals">
+                <div class="row"><span>الإجمالي:</span><span>${(inv.total || 0).toFixed(2)}</span></div>
+                <div class="row"><span>المدفوع:</span><span>${(inv.paid || 0).toFixed(2)}</span></div>
+                ${(inv.remaining || 0) > 0 ? `<div class="row" style="color:red"><span>المتبقي:</span><span>${inv.remaining.toFixed(2)}</span></div>` : ''}
+                <div class="row grand"><span>صافي الفاتورة:</span><span>${(inv.total || 0).toFixed(2)} ${db.settings.currency || 'ر.س'}</span></div>
+            </div>
+            <button class="print-btn" onclick="window.print()">🖨️ طباعة</button>
+            </body></html>`);
+            w.document.close();
         }
 
         // --- 13. Expenses Module Logic ---
@@ -6273,6 +6705,7 @@
                 if (id === 'installment_payments') renderInstPayments();
                 if (id === 'sales') { renderCustStatement(); renderSalesInvoices(); }
                 if (id === 'purchases') { renderSuppStatement(); renderPurchaseInvoices(); }
+                if (id === 'services') { renderServiceInvoices(); renderServices(); }
                 if (id === 'pos_products') { renderPOSProductsList(); }
                 if (id === 'pos') { setTimeout(() => document.getElementById('pos-barcode-input')?.focus(), 100); }
                 // Invoices Module
