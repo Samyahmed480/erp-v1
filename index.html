@@ -5727,18 +5727,29 @@
             return true;
         }
 
+        function getMethodAccount(name) {
+            if (!name) return '1101';
+            if (name === 'Bank' || name === '1102' || name === 'بنك' || name === 'شبكة') return '1102';
+            if (/^\d{4}$/.test(name)) return name;
+            return '1101';
+        }
+
         // --- 7. Operations ---
         function populateSelects() {
             const accounts = db.chartOfAccounts.filter(a => !a.isGroup);
             const salesAccs = accounts.filter(a => ['1101', '1102'].includes(a.code) || a.parent === '11').map(a => `<option value="${a.code}">${a.name}</option>`).join('');
             document.getElementById('sale-account').innerHTML = salesAccs;
-            document.getElementById('sale-method').innerHTML = (db.settings.paymentMethods || ['Cash']).map(m => `<option value="${m}">${m}</option>`).join('');
-            document.getElementById('pur-method').innerHTML = (db.settings.paymentMethods || ['Cash']).map(m => `<option value="${m}">${m}</option>`).join('');
+
+            const methods = (db.settings.paymentMethods || ['Cash', 'Bank']).map(m => `<option value="${m}">${m}</option>`).join('');
+            ['sale-method', 'pur-method', 'inst-method', 'quote-method', 'po-method', 'srv-method', 'exp-method', 'payroll-method'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = methods;
+            });
+
             document.getElementById('sale-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}">${p.name} (${p.price})</option>`).join('');
             document.getElementById('sale-customer').innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             document.getElementById('inst-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}">${p.name} (${p.price})</option>`).join('');
             document.getElementById('inst-customer').innerHTML = (db.installmentCustomers || []).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            document.getElementById('inst-method').innerHTML = (db.settings.paymentMethods || ['Cash']).map(m => `<option value="${m}">${m}</option>`).join('');
             document.getElementById('pur-supplier').innerHTML = db.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
             // pur-product is now a combobox — just reset input
             document.getElementById('pur-product-input').value = '';
@@ -5843,7 +5854,7 @@
                 }
             } else {
                 // Sale Logic
-                if (paid > 0) lines.push({ code: method, dr: paid, cr: 0 }); // Dr Cash/Bank
+                if (paid > 0) lines.push({ code: getMethodAccount(method), dr: paid, cr: 0 }); // Dr Cash/Bank
                 if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 }); // Dr Customer Account
                 if (discount > 0) lines.push({ code: '5208', dr: discount, cr: 0 }); // Dr Discount Allowed
 
@@ -7123,8 +7134,7 @@
             const lines = [];
             // Down payment is Revenue + Cash/Bank
             if (down > 0) {
-                const payCode = method === 'Cash' || method === '1101' ? '1101' : '1102';
-                lines.push({ code: payCode, dr: down, cr: 0 });
+                lines.push({ code: getMethodAccount(method), dr: down, cr: 0 });
                 lines.push({ code: '4101', dr: 0, cr: down });
             }
             // The remaining amount is Receivable (1103) vs Deferred/Stock cleanup
@@ -7578,9 +7588,8 @@
             const invoiceNo = 'SVC-' + String(nextNum).padStart(4, '0');
 
             // Journal entries
-            const payCode = method === 'Cash' || method === '1101' ? '1101' : '1102';
             const lines = [
-                { code: payCode, dr: paid, cr: 0 },
+                { code: getMethodAccount(method), dr: paid, cr: 0 },
                 { code: '4101', dr: 0, cr: subtotal }  // Revenue
             ];
             if (vat > 0) lines.push({ code: '2102', dr: 0, cr: vat }); // VAT Payable
@@ -7747,7 +7756,7 @@
 
             const lines = [
                 { code: catId, dr: amount, cr: 0 },
-                { code: method || '1101', dr: 0, cr: amount }
+                { code: getMethodAccount(method), dr: 0, cr: amount }
             ];
 
             if (addJournalEntry(date, `مصروف - ${desc}`, lines)) {
@@ -7925,7 +7934,7 @@
             posCart.forEach(i => { const p = db.products.find(x => x.id == i.id); totalCost += (p?.cost || 0) * i.qty; });
 
             const lines = [
-                { code: method === 'Cash' ? '1101' : '1102', dr: total, cr: 0 }, // Asset Up
+                { code: getMethodAccount(method), dr: total, cr: 0 }, // Asset Up
                 { code: '5101', dr: totalCost, cr: 0 }, // COGS
                 { code: '4101', dr: 0, cr: netSale }, // Revenue
                 { code: '1104', dr: 0, cr: totalCost }, // Inventory Down
@@ -9329,7 +9338,8 @@
             const gross = basic + allowance + bonus;
             const lines = [
                 { code: '5204', dr: gross, cr: 0 }, // Dr Salaries Expense (Gross)
-                { code: method, dr: 0, cr: net }    // Cr Cash/Bank (Net)
+                { code: getMethodAccount(method), dr: 0, cr: net }, // Asset Down
+                // Cr Cash/Bank (Net)
             ];
             if (deduction > 0) {
                 lines.push({ code: '4201', dr: 0, cr: deduction }); // Cr Fines/Penalties Revenue
@@ -9928,7 +9938,7 @@
             const totalCost = q.items.reduce((s, i) => s + (i.cost * i.qty), 0);
 
             const lines = [
-                { code: method, dr: paid, cr: 0 },
+                { code: getMethodAccount(method), dr: paid, cr: 0 },
                 { code: '5101', dr: totalCost, cr: 0 },
                 { code: '4101', dr: 0, cr: subtotal },
                 { code: '2102', dr: 0, cr: vatAmount },
@@ -10239,7 +10249,7 @@
                 { code: '1104', dr: subtotal, cr: 0 },
                 { code: '2102', dr: vatAmount, cr: 0 }
             ];
-            if (paid > 0) lines.push({ code: method, dr: 0, cr: paid });
+            if (paid > 0) lines.push({ code: getMethodAccount(method), dr: 0, cr: paid });
             if (discount > 0) lines.push({ code: '4201', dr: 0, cr: discount }); // Discount Received
             if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
 
