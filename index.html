@@ -1498,202 +1498,263 @@
                 </div>
             </section>
 
+            <!-- 9. Sales Quotations -->
             <section id="quotations" class="section-content">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
-                    <!-- الفاتورة -->
-                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm flex flex-col">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-                                <span id="quote-title">عرض سعر</span>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+                    <!-- عرض السعر (الجانب العملي) -->
+                    <div
+                        class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4">
+                        <div class="flex justify-between items-center pb-4 border-b border-slate-50">
+                            <h3 class="font-bold text-xl text-slate-800 flex items-center gap-2">
+                                <i class="fas fa-file-invoice text-blue-500"></i>
+                                <span id="quote-title">عرض سعر جديد</span>
                                 <span id="quote-mode-badge"
-                                    class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
+                                    class="hidden text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full border border-red-200">وضع
+                                    المرتجع</span>
                             </h3>
                             <div class="flex items-center gap-4">
-                                <label class="flex items-center gap-2 cursor-pointer text-sm select-none">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-500 hover:text-red-600 transition">
                                     <input type="checkbox" id="is-return-quote"
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500"
+                                        class="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500"
                                         onchange="toggleQuoteMode()">
                                     <span>وضع المرتجع</span>
                                 </label>
                                 <div
-                                    class="text-xs font-mono bg-blue-50 text-blue-700 px-2 py-1 rounded border border-blue-100">
-                                    QT-<span id="QT-num">Auto</span></div>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-                            <select id="quote-customer"
-                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none"></select>
-                            <select id="quote-account"
-                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none"></select>
-                        </div>
-                        <div class="flex gap-2 mb-3">
-                            <select id="quote-product"
-                                class="flex-1 p-2.5 border rounded-lg text-sm bg-white outline-none shadow-sm"></select>
-                            <input type="number" id="quote-qty" value="1"
-                                class="w-20 p-2.5 border rounded-lg text-center outline-none" min="1">
-                            <button onclick="addToQuoteCart()"
-                                class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 transition shadow"><i
-                                    class="fas fa-plus"></i></button>
-                        </div>
-
-                        <!-- جدول السلة -->
-                        <div class="flex-1 border rounded-lg overflow-y-auto mb-3 bg-slate-50">
-                            <table class="w-full text-sm text-center relative">
-                                <thead class="bg-slate-200 text-slate-700 sticky top-0">
-                                    <tr>
-                                        <th class="p-2">الصنف</th>
-                                        <th class="p-2">الكمية</th>
-                                        <th class="p-2">السعر</th>
-                                        <th class="p-2">الإجمالي</th>
-                                        <th class="p-2"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="quote-cart-body" class="divide-y divide-slate-200 bg-white"></tbody>
-                            </table>
-                            <div id="quote-cart-empty" class="text-center text-slate-400 py-10 text-sm">ابدأ بإضافة
-                                المنتجات
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-900 text-white p-4 rounded-xl shadow-lg">
-                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>المجموع:</span><span
-                                    id="quote-cart-subtotal">0.00</span></div>
-                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>الضريبة (<span
-                                        id="quote-cart-vat-rate">15</span>%):</span><span
-                                    id="quote-cart-vat">0.00</span></div>
-
-                            <!-- الخصم المسموح به -->
-                            <div class="flex items-center gap-2 mb-1 text-xs text-slate-400">
-                                <label class="flex items-center gap-1 cursor-pointer">
-                                    <input type="checkbox" id="quote-disc-toggle"
-                                        onchange="document.getElementById('quote-disc-area').classList.toggle('hidden');renderQuoteCart()">
-                                    <span>الخصم المسموح به</span>
-                                </label>
-                            </div>
-                            <div id="quote-disc-area" class="hidden mb-2 flex gap-1 items-center">
-                                <select id="quote-disc-type" class="p-1 text-black rounded text-[10px] w-16"
-                                    onchange="renderQuoteCart()">
-                                    <option value="amount">مبلغ</option>
-                                    <option value="percent">نسبة%</option>
-                                </select>
-                                <input type="number" id="quote-discount"
-                                    class="w-16 p-1 text-black rounded text-center text-xs font-bold" value="0" min="0"
-                                    onchange="renderQuoteCart()">
-                            </div>
-
-                            <div class="flex justify-between items-center border-t border-slate-700 pt-2 mb-2">
-                                <span class="text-slate-400 text-xs">الإجمالي:</span>
-                                <div class="text-xl font-bold text-emerald-400" id="quote-total">0.00</div>
-                            </div>
-
-                            <!-- نوع الدفع -->
-                            <div class="flex gap-2 mb-2">
-                                <button type="button" onclick="setQuotePayType('cash')" id="quote-pay-cash-btn"
-                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white">كاش</button>
-                                <button type="button" onclick="setQuotePayType('credit')" id="quote-pay-credit-btn"
-                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300">آجل</button>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2 mb-2">
-                                <div><label class="text-[10px] text-slate-400 block mb-1">طريقة الدفع</label>
-                                    <select id="quote-method" class="w-full p-1.5 text-black rounded text-sm"></select>
-                                </div>
-                                <div id="quote-credit-area" class="hidden">
-                                    <label class="text-[10px] text-slate-400 block mb-1">المدفوع</label>
-                                    <input type="number" id="quote-paid"
-                                        class="w-full p-1.5 text-black rounded text-sm font-bold" placeholder="0.00"
-                                        oninput="calcQuoteRemaining()">
+                                    class="text-xs font-mono bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-100 font-black shadow-sm">
+                                    QT-<span id="QT-num">AUTO</span>
                                 </div>
                             </div>
-                            <div id="quote-remaining-row"
-                                class="hidden flex justify-between text-xs text-yellow-400 mb-2">
-                                <span>المتبقي على العميل:</span><span id="quote-remaining">0.00</span>
+                        </div>
+
+                        <input type="hidden" id="quote-edit-id">
+
+                        <!-- الحقول الأساسية -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label
+                                    class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">اختيار
+                                    العميل</label>
+                                <select id="quote-customer"
+                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"></select>
                             </div>
-                            <!-- أزرار الإجراءات المنفصلة -->
-                            <div class="grid grid-cols-2 gap-2">
-                                <button onclick="postQuotation()"
-                                    class="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg font-bold shadow transition active:scale-95 text-sm">
-                                    <i class="fas fa-save me-1"></i>حفظ الفاتورة
-                                </button>
-                                <button onclick="printLastQuotation()"
-                                    class="bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg font-bold shadow transition active:scale-95 text-sm">
-                                    <i class="fas fa-print me-1"></i>طباعة آخر فاتورة
-                                </button>
-                                <button onclick="exportLastQuotationPDF()"
-                                    class="bg-red-600 hover:bg-red-500 text-white py-1.5 rounded-lg font-bold text-xs">
-                                    <i class="fas fa-file-pdf me-1"></i>تصدير PDF
-                                </button>
-                                <button onclick="exportTableToCSV('recent-QT-table','فواتير_المبيعات')"
-                                    class="bg-green-700 hover:bg-green-600 text-white py-1.5 rounded-lg font-bold text-xs">
-                                    <i class="fas fa-file-excel me-1"></i>تصدير Excel
-                                </button>
+                            <div class="space-y-1">
+                                <label
+                                    class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">الحساب
+                                    المحاسبي</label>
+                                <select id="quote-account"
+                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"></select>
+                            </div>
+                        </div>
+
+                        <!-- إدخال المنتجات -->
+                        <div class="p-4 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                            <div class="flex flex-wrap md:flex-nowrap gap-3">
+                                <div class="flex-1 min-w-[200px]">
+                                    <label class="text-[10px] font-black text-slate-400 block mb-1">المنتج /
+                                        الصنف</label>
+                                    <select id="quote-product"
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm"></select>
+                                </div>
+                                <div class="w-24">
+                                    <label class="text-[10px] font-black text-slate-400 block mb-1">الكمية</label>
+                                    <input type="number" id="quote-qty" value="1" min="1"
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-center text-sm font-bold bg-white outline-none focus:ring-4 focus:ring-blue-500/10">
+                                </div>
+                                <div class="flex items-end">
+                                    <button onclick="addToQuoteCart()"
+                                        class="h-[46px] w-[46px] bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-100 flex items-center justify-center active:scale-95">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- جدول العناصر -->
+                        <div class="flex-1 border border-slate-100 rounded-2xl overflow-hidden bg-white shadow-inner">
+                            <div class="max-h-[350px] overflow-y-auto">
+                                <table class="w-full text-sm text-center">
+                                    <thead class="bg-slate-800 text-slate-300 sticky top-0 z-10">
+                                        <tr>
+                                            <th class="p-4 font-black">الصنف</th>
+                                            <th class="p-4 font-black">الكمية</th>
+                                            <th class="p-4 font-black">السعر</th>
+                                            <th class="p-4 font-black">الإجمالي</th>
+                                            <th class="p-4 w-12"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="quote-cart-body" class="divide-y divide-slate-50"></tbody>
+                                </table>
+                                <div id="quote-cart-empty" class="p-16 text-center text-slate-300">
+                                    <i class="fas fa-folder-open text-4xl mb-3 block opacity-20"></i>
+                                    <p class="text-[10px] italic">ابدأ بإضافة المنتجات لعرض السعر</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- خلاصة الفاتورة والدفع -->
+                        <div
+                            class="bg-slate-900 border border-slate-800 text-white p-6 rounded-3xl shadow-2xl mt-auto relative overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -mr-16 -mt-16 blur-3xl">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center text-slate-400 text-xs">
+                                        <span>المجموع الفرعي:</span>
+                                        <span id="quote-cart-subtotal"
+                                            class="font-mono font-bold text-white">0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-slate-400 text-xs">
+                                        <span>ضريبة القيمة المضافة (15%):</span>
+                                        <span id="quote-cart-vat" class="font-mono font-bold text-blue-400">0.00</span>
+                                    </div>
+                                    <div class="pt-2 border-t border-slate-800">
+                                        <label
+                                            class="flex items-center gap-2 cursor-pointer text-[10px] text-slate-500 mb-2 hover:text-blue-400 transition">
+                                            <input type="checkbox" id="quote-disc-toggle"
+                                                class="w-3 h-3 rounded bg-transparent border-slate-700"
+                                                onchange="document.getElementById('quote-disc-area').classList.toggle('hidden');renderQuoteCart()">
+                                            <span>تطبيق خصم؟</span>
+                                        </label>
+                                        <div id="quote-disc-area" class="hidden flex gap-2 animate-fadeIn">
+                                            <select id="quote-disc-type"
+                                                class="bg-slate-800 text-[10px] p-2 rounded-lg border-none outline-none"
+                                                onchange="renderQuoteCart()">
+                                                <option value="amount">مبلغ ثابت</option>
+                                                <option value="percent">نسبة %</option>
+                                            </select>
+                                            <input type="number" id="quote-discount"
+                                                class="bg-slate-800 text-sm p-2 rounded-lg border-none w-20 text-center font-bold outline-none ring-1 ring-slate-700"
+                                                value="0" onchange="renderQuoteCart()">
+                                        </div>
+                                    </div>
+                                    <div class="pt-4 flex justify-between items-end">
+                                        <span class="text-lg font-bold">المبلغ الإجمالي:</span>
+                                        <span id="quote-total" class="text-4xl font-black text-emerald-400">0.00</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 border-r border-slate-800 pr-8">
+                                    <div class="flex p-1 bg-slate-800 rounded-xl mb-4">
+                                        <button onclick="setQuotePayType('cash')" id="quote-pay-cash-btn"
+                                            class="flex-1 py-2.5 rounded-lg text-[10px] font-black bg-blue-600 text-white shadow-lg transition transform active:scale-95">كاش</button>
+                                        <button onclick="setQuotePayType('credit')" id="quote-pay-credit-btn"
+                                            class="flex-1 py-2.5 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition transform active:scale-95">آجل
+                                            / دفعات</button>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <div class="space-y-1">
+                                            <label
+                                                class="text-[10px] text-slate-500 font-bold uppercase block ml-1">طريقة
+                                                التحصيل</label>
+                                            <select id="quote-method"
+                                                class="w-full bg-slate-800 text-white p-2.5 rounded-xl border-none text-sm font-bold outline-none ring-1 ring-slate-700 focus:ring-blue-500 transition"></select>
+                                        </div>
+                                        <div id="quote-credit-area" class="hidden space-y-1 animate-slideDown">
+                                            <label
+                                                class="text-[10px] text-slate-500 font-bold uppercase block ml-1">المبلغ
+                                                المحصل</label>
+                                            <input type="number" id="quote-paid"
+                                                class="w-full bg-slate-800 p-2.5 rounded-xl border-none text-emerald-400 text-xl font-black outline-none ring-1 ring-slate-700 focus:ring-blue-500 transition"
+                                                placeholder="0.00" oninput="calcQuoteRemaining()">
+                                        </div>
+                                    </div>
+                                    <div id="quote-remaining-row"
+                                        class="hidden flex justify-between items-center text-xs p-4 bg-yellow-500/10 rounded-2xl border border-yellow-500/10 animate-pulse">
+                                        <span class="text-yellow-400 font-bold">باقي على العميل:</span>
+                                        <span id="quote-remaining"
+                                            class="text-2xl font-black text-yellow-500">0.00</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button onclick="postQuotation()"
+                                            class="bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-black text-xs shadow-xl shadow-blue-900/40 transition active:scale-95 flex items-center justify-center gap-2">
+                                            <i class="fas fa-save"></i> حفظ
+                                        </button>
+                                        <button onclick="printLastQuotation()"
+                                            class="bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-black text-xs shadow-xl transition active:scale-95 flex items-center justify-center gap-2">
+                                            <i class="fas fa-print"></i> طباعة
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- الشريط الجانبي: فواتير + كشف حساب عملاء -->
-                    <div class="lg:col-span-1 flex flex-col gap-4">
-                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800"><i
-                                        class="fas fa-file-alt text-blue-500 me-1"></i>سجل الفواتير</h3>
+                    <!-- سجلات العملاء (الجانب المعلوماتي) -->
+                    <div class="lg:col-span-1 flex flex-col gap-6">
+                        <!-- سجل العروض -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col h-[450px]">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-50">
+                                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                    <i class="fas fa-history text-blue-500"></i>
+                                    سجل عروض الأسعار
+                                </h3>
                                 <div class="flex gap-1">
                                     <input type="text" placeholder="بحث..."
-                                        class="p-1 border rounded text-[10px] w-24 outline-none"
+                                        class="p-1.5 px-3 border border-slate-200 rounded-lg text-[10px] w-28 outline-none focus:border-blue-500 transition"
                                         onkeyup="filterQuotationList(this.value)">
-                                    <button onclick="exportTableToCSV('recent-QT-table','فواتير_المبيعات')"
-                                        class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded hover:bg-emerald-100"
-                                        title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('recent-QT-body')"
-                                        class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
-                                        title="طباعة"><i class="fas fa-print"></i></button>
                                 </div>
                             </div>
-                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
-                                <table id="recent-QT-table" class="w-full text-[10px] text-right">
-                                    <thead class="bg-slate-800 text-white sticky top-0">
+                            <div class="flex-1 overflow-y-auto custom-scrollbar">
+                                <table class="w-full text-[10px] text-center">
+                                    <thead class="bg-slate-50 text-slate-500 sticky top-0 z-10">
                                         <tr>
-                                            <th class="p-1.5">#</th>
-                                            <th class="p-1.5">التاريخ</th>
-                                            <th class="p-1.5">العميل</th>
-                                            <th class="p-1.5">الإجمالي</th>
-                                            <th class="p-1.5">الحالة</th>
-                                            <th class="p-1.5"></th>
+                                            <th class="p-3 text-right">العرض</th>
+                                            <th class="p-3">العميل</th>
+                                            <th class="p-3">الإجمالي</th>
+                                            <th class="p-3"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="recent-QT-body" class="bg-white divide-y"></tbody>
+                                    <tbody id="recent-QT-body" class="divide-y divide-slate-50 bg-white"></tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800"><i
-                                        class="fas fa-file-invoice-dollar text-blue-500 me-1"></i>كشف حساب العملاء</h3>
-                                <div class="flex gap-1">
-                                    <button onclick="exportTableToCSV('cust-statement-table','كشف_حساب_العملاء')"
-                                        class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded hover:bg-emerald-100"
-                                        title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('cust-statement-body')"
-                                        class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
-                                        title="طباعة"><i class="fas fa-print"></i></button>
-                                </div>
+
+                        <!-- مديونيات العملاء -->
+                        <div
+                            class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-3xl shadow-2xl text-white relative overflow-hidden group">
+                            <div
+                                class="absolute -bottom-4 -right-4 w-24 h-24 bg-blue-500 opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition">
                             </div>
-                            <input type="text" placeholder="بحث بالكود أو الاسم..."
-                                class="w-full p-1.5 border rounded text-xs mb-2 outline-none"
-                                onkeyup="filterCustStatement(this.value)">
-                            <div class="overflow-y-auto max-h-[200px] border rounded bg-slate-50">
+
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-sm flex items-center gap-2">
+                                    <i class="fas fa-users-cog text-blue-400"></i>
+                                    كشف حساب العملاء
+                                </h3>
+                                <button onclick="showSection('customers')"
+                                    class="text-[9px] bg-white/10 text-white px-3 py-1.5 rounded-full hover:bg-white/20 transition backdrop-blur-sm border border-white/5">إدارة
+                                    العملاء</button>
+                            </div>
+
+                            <div class="relative mb-4">
+                                <input type="text" placeholder="ابحث عن عميل..."
+                                    class="w-full bg-white/5 border border-white/10 text-white p-2.5 rounded-xl text-[10px] outline-none focus:ring-2 focus:ring-blue-500/30 transition placeholder:text-slate-500"
+                                    onkeyup="filterCustStatement(this.value)">
+                                <i
+                                    class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-[10px]"></i>
+                            </div>
+
+                            <div
+                                class="max-h-[250px] overflow-y-auto mb-4 bg-black/20 rounded-2xl border border-white/5 custom-scrollbar-light">
                                 <table id="cust-statement-table" class="w-full text-[10px] text-right">
-                                    <thead class="bg-slate-200 sticky top-0">
+                                    <thead class="bg-white/5 text-slate-400 sticky top-0 z-10">
                                         <tr>
-                                            <th class="p-1.5">الكود</th>
-                                            <th class="p-1.5">العميل</th>
-                                            <th class="p-1.5">الإجمالي</th>
-                                            <th class="p-1.5">المدفوع</th>
-                                            <th class="p-1.5 text-red-600">المتبقي</th>
+                                            <th class="p-3">العميل</th>
+                                            <th class="p-3">المدفوع</th>
+                                            <th class="p-3 text-emerald-400">الباقي</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="cust-statement-body" class="bg-white divide-y"></tbody>
+                                    <tbody id="cust-statement-body" class="divide-y divide-white/5"></tbody>
                                 </table>
+                            </div>
+                            <div
+                                class="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20 flex flex-col items-center">
+                                <p class="text-[9px] text-blue-200/50 uppercase tracking-widest mb-1 font-bold">إجمالي
+                                    مستحقاتنا لدى العملاء</p>
+                                <p id="total-customer-receivable"
+                                    class="text-3xl font-black text-blue-400 leading-none">0.00</p>
                             </div>
                         </div>
                     </div>
@@ -2073,185 +2134,267 @@
                 </div>
             </section>
 
-            <!-- 10. Suppliers (New) -->
+            <!-- 10. Purchase Orders -->
             <section id="purchase-orders" class="section-content">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
-                    <div class="lg:col-span-2 bg-white p-5 rounded-xl shadow-sm flex flex-col">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-                                <span id="po-title">أمر شراء</span>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+                    <!-- الفاتورة (الجانب العملي) -->
+                    <div
+                        class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col gap-4">
+                        <div class="flex justify-between items-center pb-4 border-b border-slate-50">
+                            <h3 class="font-bold text-xl text-slate-800 flex items-center gap-2">
+                                <i class="fas fa-shopping-bag text-orange-500"></i>
+                                <span id="po-title">طلب شراء جديد</span>
                                 <span id="po-mode-badge"
-                                    class="hidden text-xs bg-red-100 text-red-800 px-2 py-1 rounded border border-red-200">مرتجع</span>
+                                    class="hidden text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full border border-red-200">مرتجع</span>
                             </h3>
                             <div class="flex items-center gap-4">
-                                <label class="flex items-center gap-2 cursor-pointer text-sm select-none">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-500 hover:text-red-600 transition">
                                     <input type="checkbox" id="is-return-po"
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500"
+                                        class="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500"
                                         onchange="togglePOMode()">
                                     <span>وضع المرتجع</span>
                                 </label>
                                 <div
-                                    class="text-xs font-mono bg-orange-50 text-orange-700 px-2 py-1 rounded border border-orange-100">
-                                    PO-<span id="po-num">Auto</span></div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3 mb-3">
-                            <select id="po-supplier"
-                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none"></select>
-                            <input type="date" id="pur-date"
-                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
-                        </div>
-                        <div class="flex gap-2 mb-3">
-                            <div class="pur-combobox-wrapper">
-                                <input type="text" id="po-product-input"
-                                    placeholder="اكتب اسم المنتج أو اختر من القائمة..." autocomplete="off"
-                                    onfocus="onPurProductFocus()" oninput="onPurProductInput(this.value)"
-                                    onkeydown="onPurProductKeydown(event)">
-                                <i class="fas fa-search pur-combobox-icon"></i>
-                                <input type="hidden" id="po-product-id" value="">
-                                <div id="pur-suggestions" class="pur-suggestions"></div>
-                            </div>
-                            <input type="number" id="pur-cost" placeholder="التكلفة"
-                                class="w-24 p-2.5 border rounded-lg text-center outline-none">
-                            <input type="number" id="po-qty" value="1"
-                                class="w-20 p-2.5 border rounded-lg text-center outline-none" min="1">
-                            <button onclick="addToPOCart()"
-                                class="bg-orange-600 text-white px-4 rounded-lg hover:bg-orange-700 transition shadow"><i
-                                    class="fas fa-plus"></i></button>
-                        </div>
-                        <div class="flex-1 border rounded-lg overflow-y-auto mb-3 bg-slate-50">
-                            <table class="w-full text-sm text-center relative">
-                                <thead class="bg-slate-200 text-slate-700 sticky top-0">
-                                    <tr>
-                                        <th class="p-2">الصنف</th>
-                                        <th class="p-2">الكمية</th>
-                                        <th class="p-2">التكلفة</th>
-                                        <th class="p-2">الإجمالي</th>
-                                        <th class="p-2"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="po-cart-body" class="divide-y divide-slate-200 bg-white"></tbody>
-                            </table>
-                        </div>
-                        <div class="bg-slate-800 text-white p-4 rounded-xl shadow-lg">
-                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>المجموع:</span><span
-                                    id="po-subtotal">0.00</span></div>
-                            <div class="flex justify-between text-xs text-slate-400 mb-1"><span>الضريبة
-                                    (15%):</span><span id="po-vat">0.00</span></div>
-
-                            <!-- الخصم المكتسب -->
-                            <div class="flex items-center gap-2 mb-1 text-xs text-slate-400">
-                                <label class="flex items-center gap-1 cursor-pointer">
-                                    <input type="checkbox" id="po-disc-toggle"
-                                        onchange="document.getElementById('po-disc-area').classList.toggle('hidden');renderPurCart()">
-                                    <span>الخصم المكتسب</span>
-                                </label>
-                            </div>
-                            <div id="po-disc-area" class="hidden mb-2 flex gap-1 items-center">
-                                <select id="po-disc-type" class="p-1 text-black rounded text-[10px] w-16"
-                                    onchange="renderPurCart()">
-                                    <option value="amount">مبلغ</option>
-                                    <option value="percent">نسبة%</option>
-                                </select>
-                                <input type="number" id="po-discount"
-                                    class="w-16 p-1 text-black rounded text-center text-xs font-bold" value="0" min="0"
-                                    onchange="renderPurCart()">
-                            </div>
-
-                            <div class="flex justify-between items-center border-t border-slate-700 pt-2 mb-2">
-                                <span class="text-slate-400 text-xs">الإجمالي:</span>
-                                <div class="text-xl font-bold text-orange-400" id="po-total">0.00</div>
-                            </div>
-
-                            <!-- نوع الدفع -->
-                            <div class="flex gap-2 mb-2">
-                                <button type="button" onclick="setPOPayType('cash')" id="po-pay-cash-btn"
-                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white">كاش</button>
-                                <button type="button" onclick="setPOPayType('credit')" id="po-pay-credit-btn"
-                                    class="flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300">آجل</button>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2 mb-2">
-                                <div><label class="text-[10px] text-slate-400 block mb-1">طريقة الدفع</label>
-                                    <select id="po-method" class="w-full p-1.5 text-black rounded text-sm"></select>
-                                </div>
-                                <div id="po-credit-area" class="hidden">
-                                    <label class="text-[10px] text-slate-400 block mb-1">المدفوع</label>
-                                    <input type="number" id="po-paid"
-                                        class="w-full p-1.5 text-black rounded text-sm font-bold" placeholder="0.00"
-                                        oninput="calcPORemaining()">
+                                    class="text-xs font-mono bg-orange-50 text-orange-700 px-3 py-1.5 rounded-lg border border-orange-100 font-black shadow-sm">
+                                    PO-<span id="po-num">AUTO</span>
                                 </div>
                             </div>
-                            <div id="po-remaining-row" class="hidden flex justify-between text-xs text-yellow-400 mb-2">
-                                <span>المتبقي للمورد:</span><span id="po-remaining">0.00</span>
+                        </div>
+
+                        <input type="hidden" id="po-edit-id">
+
+                        <!-- الحقول الأساسية -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label
+                                    class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">اختيار
+                                    المورد</label>
+                                <select id="po-supplier"
+                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"></select>
                             </div>
-                            <button onclick="postPurchaseOrder()"
-                                class="w-full bg-orange-600 hover:bg-orange-500 text-white py-2 rounded-lg font-bold shadow-lg transition">حفظ
-                                الفاتورة</button>
+                            <div class="space-y-1">
+                                <label class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">تاريخ
+                                    الأمر</label>
+                                <input type="date" id="po-date"
+                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <!-- إدخال المنتجات -->
+                        <div class="p-4 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                            <div class="flex flex-wrap md:flex-nowrap gap-3">
+                                <div class="flex-1 min-w-[200px] pur-combobox-wrapper relative">
+                                    <label class="text-[10px] font-black text-slate-400 block mb-1">ابحث عن منتج
+                                        بالاسم</label>
+                                    <div class="relative">
+                                        <input type="text" id="po-product-input"
+                                            class="w-full p-3 pr-10 border border-slate-200 rounded-xl text-sm shadow-sm outline-none focus:ring-4 focus:ring-orange-500/10 bg-white"
+                                            placeholder="اكتب للبحث..." autocomplete="off" onfocus="onPurProductFocus()"
+                                            oninput="onPurProductInput(this.value)"
+                                            onkeydown="onPurProductKeydown(event)">
+                                        <i
+                                            class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                                    </div>
+                                    <input type="hidden" id="po-product-id" value="">
+                                    <div id="pur-suggestions" class="pur-suggestions"></div>
+                                </div>
+                                <div class="w-28">
+                                    <label class="text-[10px] font-black text-slate-400 block mb-1">تكلفة الوحدة</label>
+                                    <input type="number" id="pur-cost" placeholder="0.00"
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-center text-sm font-bold bg-white outline-none focus:ring-4 focus:ring-orange-500/10">
+                                </div>
+                                <div class="w-24">
+                                    <label class="text-[10px] font-black text-slate-400 block mb-1">الكمية</label>
+                                    <input type="number" id="po-qty" value="1" min="1"
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-center text-sm font-bold bg-white outline-none focus:ring-4 focus:ring-orange-500/10">
+                                </div>
+                                <div class="flex items-end">
+                                    <button onclick="addToPOCart()"
+                                        class="h-[46px] w-[46px] bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition shadow-lg shadow-orange-100 flex items-center justify-center active:scale-90">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- جدول العناصر -->
+                        <div class="flex-1 border border-slate-100 rounded-2xl overflow-hidden bg-white shadow-inner">
+                            <div class="max-h-[350px] overflow-y-auto">
+                                <table class="w-full text-sm text-center">
+                                    <thead class="bg-slate-800 text-slate-300 sticky top-0 z-10">
+                                        <tr>
+                                            <th class="p-4 font-black">الصنف</th>
+                                            <th class="p-4 font-black">الكمية</th>
+                                            <th class="p-4 font-black">التكلفة</th>
+                                            <th class="p-4 font-black">الإجمالي</th>
+                                            <th class="p-4 w-12"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="po-cart-body" class="divide-y divide-slate-50"></tbody>
+                                </table>
+                                <div id="po-cart-empty" class="p-16 text-center text-slate-300">
+                                    <i class="fas fa-box-open text-4xl mb-3 block opacity-20"></i>
+                                    <p class="text-[10px] italic">ابدأ بإضافة المنتجات للمسودة</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- خلاصة الفاتورة والدفع -->
+                        <div
+                            class="bg-slate-900 border border-slate-800 text-white p-6 rounded-3xl shadow-2xl mt-auto relative overflow-hidden">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -mr-16 -mt-16 blur-3xl">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center text-slate-400 text-xs">
+                                        <span>المجموع الفرعي:</span>
+                                        <span id="po-subtotal" class="font-mono font-bold text-white">0.00</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-slate-400 text-xs">
+                                        <span>ضريبة القيمة المضافة (15%):</span>
+                                        <span id="po-vat" class="font-mono font-bold text-orange-400">0.00</span>
+                                    </div>
+                                    <div class="pt-2 border-t border-slate-800">
+                                        <label
+                                            class="flex items-center gap-2 cursor-pointer text-[10px] text-slate-500 mb-2 hover:text-orange-400 transition">
+                                            <input type="checkbox" id="po-disc-toggle"
+                                                class="w-3 h-3 rounded bg-transparent border-slate-700"
+                                                onchange="document.getElementById('po-disc-area').classList.toggle('hidden');renderPOCart()">
+                                            <span>هل يوجد خصم مكتسب؟</span>
+                                        </label>
+                                        <div id="po-disc-area" class="hidden flex gap-2 animate-fadeIn">
+                                            <select id="po-disc-type"
+                                                class="bg-slate-800 text-[10px] p-2 rounded-lg border-none outline-none"
+                                                onchange="renderPOCart()">
+                                                <option value="amount">مبلغ ثابت</option>
+                                                <option value="percent">نسبة %</option>
+                                            </select>
+                                            <input type="number" id="po-discount"
+                                                class="bg-slate-800 text-sm p-2 rounded-lg border-none w-20 text-center font-bold outline-none ring-1 ring-slate-700"
+                                                value="0" onchange="renderPOCart()">
+                                        </div>
+                                    </div>
+                                    <div class="pt-4 flex justify-between items-end">
+                                        <span class="text-lg font-bold">صافي القيمة:</span>
+                                        <span id="po-total" class="text-4xl font-black text-orange-500">0.00</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 border-r border-slate-800 pr-8">
+                                    <div class="flex p-1 bg-slate-800 rounded-xl mb-4">
+                                        <button onclick="setPOPayType('cash')" id="po-pay-cash-btn"
+                                            class="flex-1 py-2.5 rounded-lg text-[10px] font-black bg-orange-600 text-white shadow-lg transition transform active:scale-95">كاش</button>
+                                        <button onclick="setPOPayType('credit')" id="po-pay-credit-btn"
+                                            class="flex-1 py-2.5 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition transform active:scale-95">آجل
+                                            / ذمم</button>
+                                    </div>
+                                    <div class="grid grid-cols-1 gap-4">
+                                        <div class="space-y-1">
+                                            <label
+                                                class="text-[10px] text-slate-500 font-bold uppercase block ml-1">حساب
+                                                التحصيل/الدفع</label>
+                                            <select id="po-method"
+                                                class="w-full bg-slate-800 text-white p-2.5 rounded-xl border-none text-sm font-bold outline-none ring-1 ring-slate-700 focus:ring-orange-500 transition"></select>
+                                        </div>
+                                        <div id="po-credit-area" class="hidden space-y-1 animate-slideDown">
+                                            <label
+                                                class="text-[10px] text-slate-500 font-bold uppercase block ml-1">المبلغ
+                                                المدفوع حـالياً</label>
+                                            <input type="number" id="po-paid"
+                                                class="w-full bg-slate-800 p-2.5 rounded-xl border-none text-orange-500 text-xl font-black outline-none ring-1 ring-slate-700 focus:ring-orange-500 transition"
+                                                placeholder="0.00" oninput="calcPORemaining()">
+                                        </div>
+                                    </div>
+                                    <div id="po-remaining-row"
+                                        class="hidden flex justify-between items-center text-xs p-4 bg-red-500/10 rounded-2xl border border-red-500/10 animate-pulse">
+                                        <span class="text-red-400 font-bold">متبقي للمورد:</span>
+                                        <span id="po-remaining" class="text-2xl font-black text-red-500">0.00</span>
+                                    </div>
+                                    <button onclick="postPurchaseOrder()"
+                                        class="w-full bg-orange-600 hover:bg-orange-500 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-orange-900/40 transition-all hover:gap-4 active:scale-95 flex items-center justify-center gap-2">
+                                        <i class="fas fa-check-double"></i> حفظ أمر الشراء
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- الشريط الجانبي: مشتريات + كشف حساب موردين -->
-                    <div class="lg:col-span-1 flex flex-col gap-4">
-                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800"><i
-                                        class="fas fa-file-import text-orange-500 me-1"></i>سجل فواتير المشتريات</h3>
+
+                    <!-- سجلات الموردين (الجانب المعلوماتي) -->
+                    <div class="lg:col-span-1 flex flex-col gap-6">
+                        <!-- سجل الطلبات -->
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col h-[450px]">
+                            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-50">
+                                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                                    <i class="fas fa-history text-orange-500"></i>
+                                    سجل أوامر الشراء
+                                </h3>
                                 <div class="flex gap-1">
                                     <input type="text" placeholder="بحث..."
-                                        class="p-1 border rounded text-[10px] w-24 outline-none"
-                                        onkeyup="filterPurchaseInvoiceList(this.value)">
-                                    <button onclick="exportTableToCSV('recent-po-table','فواتير_المشتريات')"
-                                        class="text-[10px] bg-orange-50 text-orange-600 px-2 py-1 rounded hover:bg-orange-100"
-                                        title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('recent-po-body')"
-                                        class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
-                                        title="طباعة"><i class="fas fa-print"></i></button>
+                                        class="p-1.5 px-3 border border-slate-200 rounded-lg text-[10px] w-28 outline-none focus:border-orange-500 transition"
+                                        onkeyup="filterPOList(this.value)">
                                 </div>
                             </div>
-                            <div class="overflow-y-auto max-h-[250px] border rounded bg-slate-50">
-                                <table id="recent-po-table" class="w-full text-[10px] text-right">
-                                    <thead class="bg-slate-800 text-white sticky top-0">
+                            <div class="flex-1 overflow-y-auto custom-scrollbar">
+                                <table class="w-full text-[10px] text-center">
+                                    <thead class="bg-slate-50 text-slate-500 sticky top-0 z-10">
                                         <tr>
-                                            <th class="p-1.5">#</th>
-                                            <th class="p-1.5">التاريخ</th>
-                                            <th class="p-1.5">المورد</th>
-                                            <th class="p-1.5">الإجمالي</th>
-                                            <th class="p-1.5">الحالة</th>
-                                            <th class="p-1.5"></th>
+                                            <th class="p-3 text-right">الأمر</th>
+                                            <th class="p-3">المورد</th>
+                                            <th class="p-3">الإجمالي</th>
+                                            <th class="p-3"></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="recent-po-body" class="bg-white divide-y"></tbody>
+                                    <tbody id="recent-po-body" class="divide-y divide-slate-50 bg-white"></tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="bg-white p-4 rounded-xl shadow-sm flex-1">
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="font-bold text-sm text-slate-800"><i
-                                        class="fas fa-file-invoice text-orange-500 me-1"></i>كشف حساب الموردين</h3>
-                                <div class="flex gap-1">
-                                    <button onclick="exportTableToCSV('supp-statement-table','كشف_حساب_الموردين')"
-                                        class="text-[10px] bg-orange-50 text-orange-600 px-2 py-1 rounded hover:bg-orange-100"
-                                        title="Excel"><i class="fas fa-file-excel"></i></button>
-                                    <button onclick="printSection('supp-statement-body')"
-                                        class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded hover:bg-blue-100"
-                                        title="طباعة"><i class="fas fa-print"></i></button>
-                                </div>
+
+                        <!-- مديونيات الموردين -->
+                        <div
+                            class="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-3xl shadow-2xl text-white relative overflow-hidden group">
+                            <div
+                                class="absolute -bottom-4 -right-4 w-24 h-24 bg-orange-500 opacity-5 rounded-full blur-2xl group-hover:opacity-10 transition">
                             </div>
-                            <input type="text" placeholder="بحث بالكود أو الاسم..."
-                                class="w-full p-1.5 border rounded text-xs mb-2 outline-none"
-                                onkeyup="filterSuppStatement(this.value)">
-                            <div class="overflow-y-auto max-h-[200px] border rounded bg-slate-50">
+
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-sm flex items-center gap-2">
+                                    <i class="fas fa-university text-orange-400"></i>
+                                    كشف المديونيات
+                                </h3>
+                                <button onclick="showSection('suppliers')"
+                                    class="text-[9px] bg-white/10 text-white px-3 py-1.5 rounded-full hover:bg-white/20 transition backdrop-blur-sm border border-white/5">فتح
+                                    الحسابات</button>
+                            </div>
+
+                            <div class="relative mb-4">
+                                <input type="text" placeholder="ابحث عن مورد..."
+                                    class="w-full bg-white/5 border border-white/10 text-white p-2.5 rounded-xl text-[10px] outline-none focus:ring-2 focus:ring-orange-500/30 transition placeholder:text-slate-500"
+                                    onkeyup="filterSuppStatement(this.value)">
+                                <i
+                                    class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-[10px]"></i>
+                            </div>
+
+                            <div
+                                class="max-h-[250px] overflow-y-auto mb-4 bg-black/20 rounded-2xl border border-white/5 custom-scrollbar-light">
                                 <table id="supp-statement-table" class="w-full text-[10px] text-right">
-                                    <thead class="bg-slate-200 sticky top-0">
+                                    <thead class="bg-white/5 text-slate-400 sticky top-0 z-10">
                                         <tr>
-                                            <th class="p-1.5">الكود</th>
-                                            <th class="p-1.5">المورد</th>
-                                            <th class="p-1.5">الإجمالي</th>
-                                            <th class="p-1.5">المدفوع</th>
-                                            <th class="p-1.5 text-red-600">المتبقي</th>
+                                            <th class="p-3">المورد</th>
+                                            <th class="p-3">المدفوع</th>
+                                            <th class="p-3 text-red-500">الباقي</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="supp-statement-body" class="bg-white divide-y"></tbody>
+                                    <tbody id="supp-statement-body" class="divide-y divide-white/5"></tbody>
                                 </table>
+                            </div>
+                            <div
+                                class="p-4 bg-orange-500/10 rounded-2xl border border-orange-500/20 flex flex-col items-center">
+                                <p class="text-[9px] text-orange-200/50 uppercase tracking-widest mb-1 font-bold">إجمالي
+                                    مستحقات الموردين</p>
+                                <p id="total-supplier-debt" class="text-3xl font-black text-orange-500 leading-none">
+                                    0.00</p>
                             </div>
                         </div>
                     </div>
@@ -4905,40 +5048,75 @@
 
             <!-- الدعم الفني -->
             <section id="support" class="section-content">
-                <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
-                    <div class="text-center mb-8">
-                        <div
-                            class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
-                            <i class="fas fa-headset text-4xl"></i>
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <!-- Header -->
+                    <div
+                        class="bg-gradient-to-r from-slate-800 to-slate-900 p-8 rounded-2xl shadow-lg relative overflow-hidden text-white">
+                        <div class="relative z-10 flex items-center justify-between">
+                            <div class="space-y-2">
+                                <h2 class="text-3xl font-bold">مركز الدعم والمساعدة</h2>
+                                <p class="text-slate-300">نسعى دائماً لتقديم أفضل تجربة مستخدم، فريقنا جاهز للرد على
+                                    جميع استفساراتكم.</p>
+                            </div>
+                            <div class="hidden md:block opacity-20"><i class="fas fa-headset text-8xl"></i></div>
                         </div>
-                        <h2 class="text-2xl font-bold text-slate-800 mb-2">الدعم الفني والمساعدة</h2>
-                        <p class="text-slate-500">نحن هنا لمساعدتك دائماً. يمكنك التواصل مع فريق الدعم أو مبرمج النظام
-                            مباشرة عبر الواتساب للأعطال الفنية والاستفسارات.</p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- الدعم الفني -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Technical Support -->
                         <div
-                            class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
-                            <i class="fas fa-user-clock text-4xl text-slate-400 mb-4"></i>
-                            <h3 class="font-bold text-lg mb-1 text-slate-800">الدعم الفني</h3>
-                            <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01279180008</p>
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition group">
+                            <div
+                                class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition">
+                                <i class="fas fa-tools text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">الدعم الفني المباشر</h3>
+                            <p class="text-xs text-slate-500 mb-6 leading-relaxed">لحل المشكلات التقنية والأعطال وحالات
+                                الطوارئ، تواصل معنا فوراً.</p>
                             <a href="https://wa.me/201279180008" target="_blank"
-                                class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
-                                <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
+                                class="flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition shadow-md shadow-emerald-100">
+                                <i class="fab fa-whatsapp text-lg"></i>واتساب 01279180008
                             </a>
                         </div>
 
-                        <!-- المبرمج -->
+                        <!-- User Guide -->
                         <div
-                            class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
-                            <i class="fas fa-laptop-code text-4xl text-slate-400 mb-4"></i>
-                            <h3 class="font-bold text-lg mb-1 text-slate-800">مبرمج النظام</h3>
-                            <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01508090753</p>
-                            <a href="https://wa.me/201508090753" target="_blank"
-                                class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
-                                <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
-                            </a>
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-purple-200 transition group">
+                            <div
+                                class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition">
+                                <i class="fas fa-book-open text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">دليل المستخدم</h3>
+                            <p class="text-xs text-slate-500 mb-6 leading-relaxed">تعرف على كيفية استخدام النظام بالكامل
+                                من خلال الدليل الشامل والدروس المصورة.</p>
+                            <button
+                                class="w-full border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold transition">
+                                <i class="fas fa-external-link-alt me-2 text-xs"></i>فتح الدليل
+                            </button>
+                        </div>
+
+                        <!-- Suggestions -->
+                        <div
+                            class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-amber-200 transition group">
+                            <div
+                                class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 mb-6 group-hover:scale-110 transition">
+                                <i class="fas fa-lightbulb text-2xl"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">الاقتراحات والشكاوى</h3>
+                            <p class="text-xs text-slate-500 mb-6 leading-relaxed">رأيك يهمنا، شاركنا اقتراحاتك لتطوير
+                                النظام أو قدم شكوى لتحسين خدمتنا.</p>
+                            <button
+                                class="w-full border border-slate-200 hover:bg-slate-50 text-slate-700 py-3 rounded-xl font-bold transition">
+                                <i class="fas fa-paper-plane me-2 text-xs"></i>إرسال طلب
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Additional Help -->
+                    <div class="bg-blue-50 p-6 rounded-2xl flex items-center gap-4 border border-blue-100">
+                        <div class="text-blue-600"><i class="fas fa-info-circle text-2xl"></i></div>
+                        <div class="text-sm text-blue-800 font-medium">
+                            لضمان سرعة الرد، يرجى إرفاق صورة للمشكلة أو رسالة الخطأ عند التواصل مع فريق الدعم الفني.
                         </div>
                     </div>
                 </div>
@@ -5054,10 +5232,12 @@
                 { code: '3101', name: 'رأس المال', type: 'equity', level: 3, parent: '3', balance: 0 },
                 { code: '4', name: 'الإيرادات', type: 'revenue', level: 1, balance: 0, isGroup: true },
                 { code: '4101', name: 'إيرادات المبيعات', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                { code: '4201', name: 'إيرادات خصومات وجزاءات', type: 'revenue', level: 3, parent: '4', balance: 0 },
                 { code: '5', name: 'المصروفات', type: 'expense', level: 1, balance: 0, isGroup: true },
                 { code: '5101', name: 'تكلفة المبيعات', type: 'expense', level: 3, parent: '5', balance: 0 },
                 { code: '5201', name: 'مصروفات تشغيلية', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '5', balance: 0 }
+                { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', level: 3, parent: '5', balance: 0 }
             ],
             journal: [],
             products: [{ id: 1, name: 'منتج تجريبي', price: 100, cost: 80, stock: 10 }],
@@ -9083,8 +9263,28 @@
             const net = basic + allowance - deduction + bonus;
             if (net <= 0) return showToast('الصافي يجب أن يكون أكبر من صفر', 'error');
             const date = new Date().toISOString().split('T')[0];
-            const lines = [{ code: '5202', dr: net, cr: 0 }, { code: method, dr: 0, cr: net }];
-            if (addJournalEntry(date, `صرف راتب: ${empName} - ${month}`, lines)) {
+
+            // Ensure necessary accounts exist in COA
+            const requiredAccs = [
+                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', parent: '5' },
+                { code: '4201', name: 'إيرادات خصومات وجزاءات', type: 'revenue', parent: '4' }
+            ];
+            requiredAccs.forEach(r => {
+                if (!db.chartOfAccounts.find(a => a.code === r.code)) {
+                    db.chartOfAccounts.push({ ...r, level: 3, balance: 0 });
+                }
+            });
+
+            const gross = basic + allowance + bonus;
+            const lines = [
+                { code: '5204', dr: gross, cr: 0 }, // Dr Salaries Expense (Gross)
+                { code: method, dr: 0, cr: net }    // Cr Cash/Bank (Net)
+            ];
+            if (deduction > 0) {
+                lines.push({ code: '4201', dr: 0, cr: deduction }); // Cr Fines/Penalties Revenue
+            }
+
+            if (addJournalEntry(date, `صرف راتب: ${empName} - شهر ${month} (إجمالي: ${gross}, صافي: ${net})`, lines)) {
                 if (!db.salaryHistory) db.salaryHistory = [];
 
                 // Sync and Mark HR actions as processed for this month
@@ -9565,54 +9765,151 @@
 
         function postQuotation() {
             if (currentQuoteCart.length === 0) return showToast('عرض السعر فارغ', 'error');
+            const editId = document.getElementById('quote-edit-id').value;
             const custId = document.getElementById('quote-customer')?.value;
             const customer = db.customers.find(c => c.id == custId) || { name: 'عميل نقدي' };
             const total = parseFloat(document.getElementById('quote-total').innerText) || 0;
-            const isCredit = document.getElementById('quote-credit-area').style.display !== 'none';
+            const isCredit = document.getElementById('quote-pay-credit-btn').classList.contains('bg-emerald-600');
             const paid = isCredit ? (parseFloat(document.getElementById('quote-paid').value) || 0) : total;
             const remaining = total - paid;
+            const method = document.getElementById('quote-method').value;
 
-            db.quotations = db.quotations || [];
-            db.quotations.push({
-                id: Date.now(),
-                date: new Date().toISOString().split('T')[0],
-                customer: customer.name,
-                total: total,
-                paid: paid,
-                remaining: remaining,
-                items: [...currentQuoteCart],
-                status: 'draft'
-            });
+            if (editId) {
+                const q = db.quotations.find(x => x.id == editId);
+                if (q) {
+                    q.customer = customer.name;
+                    q.customerId = custId;
+                    q.total = total;
+                    q.paid = paid;
+                    q.remaining = remaining;
+                    q.items = [...currentQuoteCart];
+                    q.method = method;
+                }
+                document.getElementById('quote-edit-id').value = '';
+                showToast('تم تحديث عرض السعر');
+            } else {
+                db.quotations = db.quotations || [];
+                db.quotations.push({
+                    id: Date.now(),
+                    date: new Date().toISOString().split('T')[0],
+                    customer: customer.name,
+                    customerId: custId,
+                    total: total,
+                    paid: paid,
+                    remaining: remaining,
+                    items: [...currentQuoteCart],
+                    status: 'draft',
+                    method: method
+                });
+                showToast('تم حفظ عرض السعر');
+            }
 
-            showToast('تم حفظ عرض السعر بنجاح', 'success');
             currentQuoteCart = [];
             renderQuoteCart();
             renderRecentQuotations();
+            save();
         }
 
         function renderRecentQuotations() {
             const tbody = document.getElementById('recent-QT-body');
             if (!tbody) return;
-            const list = (db.quotations || []).slice(-5).reverse();
-            tbody.innerHTML = list.map(q => `<tr class="hover:bg-slate-50">
-                <td class="p-1">QT-`+ String(q.id).slice(-4) + `</td>
-                <td class="p-1">`+ q.date + `</td>
-                <td class="p-1">`+ q.customer + `</td>
-                <td class="p-1">`+ q.total.toFixed(2) + `</td>
-                <td class="p-1 text-blue-600">`+ (q.status === 'draft' ? 'مسودة' : 'مكتمل') + `</td>
-                <td class="p-1"><button onclick="convertQuoteToSale(`+ q.id + `)" title="تحويل لمبيعات" class="text-emerald-500"><i class="fas fa-file-invoice"></i></button></td>
-            </tr>`).join('');
+            const list = (db.quotations || []).slice(-10).reverse();
+            tbody.innerHTML = list.map(q => `
+                <tr class="hover:bg-slate-50 border-b">
+                    <td class="p-2 text-xs font-mono">QT-${String(q.id).slice(-4)}</td>
+                    <td class="p-2 text-xs">${q.date}</td>
+                    <td class="p-2 text-xs font-bold">${q.customer}</td>
+                    <td class="p-2 text-xs font-bold text-blue-600">${q.total.toFixed(2)}</td>
+                    <td class="p-2 text-[10px] text-slate-500">${q.status === 'draft' ? 'مسودة' : 'مفعّل'}</td>
+                    <td class="p-2 flex gap-1 justify-center">
+                        ${q.status === 'draft' ? `
+                            <button onclick="activateQuotation(${q.id})" title="تفعيل (تحويل لبيع)" class="text-emerald-500 hover:bg-emerald-50 p-1 rounded"><i class="fas fa-check-circle"></i></button>
+                            <button onclick="editQuotation(${q.id})" title="تعديل" class="text-blue-500 hover:bg-blue-50 p-1 rounded"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteQuotation(${q.id})" title="حذف" class="text-red-500 hover:bg-red-50 p-1 rounded"><i class="fas fa-trash"></i></button>
+                        ` : `
+                            <button disabled class="text-slate-300 p-1"><i class="fas fa-check-double"></i></button>
+                        `}
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function convertQuoteToSale(id) {
+        function editQuotation(id) {
             const q = db.quotations.find(x => x.id == id);
             if (!q) return;
-            q.status = 'converted';
-            currentCart = [...q.items];
-            renderCart();
-            showSection('sales');
-            showToast('تم تحويل عرض السعر إلى فاتورة مبيعات، يرجى مراجعتها وحفظها', 'info');
+            document.getElementById('quote-edit-id').value = q.id;
+            document.getElementById('quote-customer').value = q.customerId || '';
+            currentQuoteCart = [...q.items];
+            if (q.remaining > 0) setQuotePayType('credit'); else setQuotePayType('cash');
+            document.getElementById('quote-paid').value = q.paid;
+            document.getElementById('quote-method').value = q.method || '1101';
+            renderQuoteCart();
+            showToast('تم تحميل بيانات عرض السعر للتعديل', 'info');
+        }
+
+        function deleteQuotation(id) {
+            if (!confirm('هل أنت متأكد من حذف عرض السعر؟')) return;
+            db.quotations = db.quotations.filter(x => x.id !== id);
             renderRecentQuotations();
+            save();
+            showToast('تم الحذف بنجاح');
+        }
+
+        function activateQuotation(id) {
+            const q = db.quotations.find(x => x.id == id);
+            if (!q || q.status === 'active') return;
+
+            if (!confirm('سيتم تحويل عرض السعر إلى فاتورة مبيعات حقيقية وتسجيلها في الحسابات والمخازن. هل أنت متأكد؟')) return;
+
+            const date = new Date().toISOString().split('T')[0];
+            const subtotal = q.items.reduce((s, i) => s + (i.price * i.qty), 0);
+            const discount = q.discount || 0;
+            const netBeforeVat = subtotal - discount;
+            const vatRate = db.settings.vatRate || 15;
+            const vatAmount = netBeforeVat * (vatRate / 100);
+            const grandTotal = netBeforeVat + vatAmount;
+            const paid = q.paid || 0;
+            const remaining = grandTotal - paid;
+            const method = q.method || '1101';
+            const totalCost = q.items.reduce((s, i) => s + (i.cost * i.qty), 0);
+
+            const lines = [
+                { code: method, dr: paid, cr: 0 },
+                { code: '5101', dr: totalCost, cr: 0 },
+                { code: '4101', dr: 0, cr: subtotal },
+                { code: '2102', dr: 0, cr: vatAmount },
+                { code: '1104', dr: 0, cr: totalCost }
+            ];
+            if (discount > 0) lines.push({ code: '5201', dr: discount, cr: 0 });
+            if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 });
+
+            if (addJournalEntry(date, `تفعيل عرض سعر QT-${String(q.id).slice(-4)} - العميل: ${q.customer}`, lines)) {
+                q.status = 'active';
+                q.items.forEach(i => {
+                    const p = db.products.find(x => x.id == i.id);
+                    if (p) p.stock -= i.qty;
+                });
+                const saleId = 'INV-' + String(db.sales.length + 1).padStart(4, '0');
+                db.sales.push({
+                    id: Date.now(),
+                    invoiceNo: saleId,
+                    date,
+                    customer: q.customer,
+                    total: grandTotal,
+                    paid,
+                    discount,
+                    remaining,
+                    method,
+                    by: db.currentUser,
+                    items: [...q.items]
+                });
+
+                showToast('تم تفعيل عرض السعر وتحويله بنجاح ✅');
+                renderRecentQuotations();
+                renderSalesInvoices();
+                save();
+                renderAll();
+            }
         }
 
         function filterQuotationList(val) {
@@ -9633,28 +9930,45 @@
             if (!tbody) return;
             if (currentPOCart.length === 0) {
                 tbody.innerHTML = '';
-                empty.style.display = 'block';
+                if(empty) empty.style.display = 'block';
                 document.getElementById('po-subtotal').innerText = '0.00';
                 document.getElementById('po-vat').innerText = '0.00';
                 document.getElementById('po-total').innerText = '0.00';
                 calcPORemaining();
                 return;
             }
-            empty.style.display = 'none';
+            if(empty) empty.style.display = 'none';
             let subtotal = 0;
             tbody.innerHTML = currentPOCart.map((item, index) => {
                 const total = item.qty * item.cost;
                 subtotal += total;
-                return `<tr class="hover:bg-slate-50 transition"><td class="p-2 font-bold text-slate-700">` + item.name + `</td><td class="p-2"><input type="number" value="` + item.qty + `" class="w-16 p-1 border rounded text-center text-xs" onchange="updatePOQty(` + index + `, this.value)" min="1"></td><td class="p-2">` + item.cost.toFixed(2) + `</td><td class="p-2 font-bold text-orange-600">` + total.toFixed(2) + `</td><td class="p-2 text-left"><button onclick="removePOItem(` + index + `)" class="text-red-500 hover:bg-red-50 p-1.5 rounded transition"><i class="fas fa-trash"></i></button></td></tr>`;
+                return `<tr class="hover:bg-slate-50 border-b group transition">
+                    <td class="p-3 text-right">
+                        <div class="font-bold text-slate-700">${item.name}</div>
+                        <div class="text-[10px] text-slate-400">سعر الوحدة: ${item.cost.toFixed(2)}</div>
+                    </td>
+                    <td class="p-3">
+                        <input type="number" value="${item.qty}" class="w-16 p-1.5 border border-slate-200 rounded-lg text-center text-xs font-black focus:border-orange-500 outline-none" onchange="updatePOQty(${index}, this.value)" min="1">
+                    </td>
+                    <td class="p-3 text-xs font-mono">${item.cost.toFixed(2)}</td>
+                    <td class="p-3 font-bold text-orange-600">${total.toFixed(2)}</td>
+                    <td class="p-3 text-left">
+                        <button onclick="removePOItem(${index})" class="text-slate-300 hover:text-red-500 p-2 rounded-full hover:bg-red-50 transition"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>`;
             }).join('');
 
             document.getElementById('po-subtotal').innerText = subtotal.toFixed(2);
-            const vatRate = parseFloat(document.getElementById('po-vat-rate').innerText) || 15;
+            const vatRate = db.settings.vatRate || 15;
 
             let discVal = parseFloat(document.getElementById('po-discount').value) || 0;
             const discType = document.getElementById('po-disc-type').value;
             let discountAmount = 0;
-            if (discType === 'percent') { discountAmount = subtotal * (discVal / 100); } else { discountAmount = discVal; }
+            if (discType === 'percent') {
+                discountAmount = subtotal * (discVal / 100);
+            } else {
+                discountAmount = discVal;
+            }
 
             const netBeforeVat = subtotal - discountAmount;
             const vat = netBeforeVat * (vatRate / 100);
@@ -9664,18 +9978,35 @@
         }
 
         function addToPOCart() {
-            const prodId = document.getElementById('po-product')?.value;
+            const prodId = document.getElementById('po-product-id')?.value;
             const qty = parseFloat(document.getElementById('po-qty')?.value) || 1;
-            if (!prodId) return showToast('يرجى اختيار صنف', 'error');
+            const cost = parseFloat(document.getElementById('pur-cost')?.value);
+            if (!prodId) return showToast('يرجى اختيار صنف من القائمة', 'error');
+            
             const product = db.products.find(p => p.id == prodId);
             if (!product) return;
+            
+            const itemCost = isNaN(cost) ? product.cost : cost;
             const existing = currentPOCart.find(i => i.id == prodId);
-            if (existing) { existing.qty += qty; } else {
-                currentPOCart.push({ id: product.id, name: product.name, price: product.price, cost: product.cost, qty: qty });
+            if (existing) {
+                existing.qty += qty;
+                existing.cost = itemCost;
+            } else {
+                currentPOCart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    cost: itemCost,
+                    qty: qty
+                });
             }
+            
             document.getElementById('po-qty').value = 1;
+            document.getElementById('po-product-input').value = '';
+            document.getElementById('po-product-id').value = '';
+            document.getElementById('pur-cost').value = '';
             renderPOCart();
-            showToast('تمت الإضافة لأمر الشراء', 'success');
+            showToast('تمت الإضافة لطلب الشراء ✅');
         }
 
         function updatePOQty(index, val) {
@@ -9689,77 +10020,237 @@
         }
 
         function setPOPayType(type) {
-            document.getElementById('po-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
-            document.getElementById('po-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            const cashBtn = document.getElementById('po-pay-cash-btn');
+            const creditBtn = document.getElementById('po-pay-credit-btn');
+            
+            if (type === 'cash') {
+                cashBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black bg-orange-600 text-white shadow-lg transition';
+                creditBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition';
+            } else {
+                creditBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black bg-orange-600 text-white shadow-lg transition';
+                cashBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition';
+            }
+            
             document.getElementById('po-credit-area').style.display = type === 'credit' ? 'block' : 'none';
             document.getElementById('po-remaining-row').style.display = type === 'credit' ? 'flex' : 'none';
             if (type === 'cash') { document.getElementById('po-paid').value = ''; }
             calcPORemaining();
         }
 
-        function calcPORemaining() {
-            const total = parseFloat(document.getElementById('po-total').innerText) || 0;
-            const isCredit = document.getElementById('po-credit-area').style.display !== 'none';
-            let paid = isCredit ? (parseFloat(document.getElementById('po-paid').value) || 0) : total;
-            let rem = total - paid;
-            document.getElementById('po-remaining').innerText = rem > 0 ? rem.toFixed(2) : '0.00';
+        // Helper for PO Combobox
+        function onPurProductFocus() {
+            onPurProductInput(document.getElementById('po-product-input').value);
+        }
+
+        function onPurProductInput(val) {
+            const dropdown = document.getElementById('po-product-dropdown');
+            const list = document.getElementById('po-product-list');
+            if (!val) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+            const matches = db.products.filter(p => p.name.includes(val) || p.id.toString().includes(val)).slice(0, 10);
+            if (matches.length === 0) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+            dropdown.classList.remove('hidden');
+            list.innerHTML = matches.map(p => `
+                <div onclick="selectPurProduct(${p.id}, '${p.name}', ${p.cost})" class="p-2 hover:bg-orange-50 cursor-pointer border-b last:border-0 flex justify-between items-center transition">
+                    <span class="font-bold text-slate-700">${p.name}</span>
+                    <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">${p.cost.toFixed(2)}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectPurProduct(id, name, cost) {
+            document.getElementById('po-product-input').value = name;
+            document.getElementById('po-product-id').value = id;
+            document.getElementById('pur-cost').value = cost.toFixed(2);
+            document.getElementById('po-product-dropdown').classList.add('hidden');
+            document.getElementById('po-qty').focus();
         }
 
         function postPurchaseOrder() {
             if (currentPOCart.length === 0) return showToast('أمر الشراء فارغ', 'error');
+            const editId = document.getElementById('po-edit-id').value;
             const suppId = document.getElementById('po-supplier')?.value;
             const supp = db.suppliers.find(s => s.id == suppId) || { name: 'مورد نقدي' };
             const total = parseFloat(document.getElementById('po-total').innerText) || 0;
-            const isCredit = document.getElementById('po-credit-area').style.display !== 'none';
+            const isCredit = document.getElementById('po-pay-credit-btn').classList.contains('bg-orange-600');
             const paid = isCredit ? (parseFloat(document.getElementById('po-paid').value) || 0) : total;
             const remaining = total - paid;
+            const date = document.getElementById('po-date').value || new Date().toISOString().split('T')[0];
+            const method = document.getElementById('po-method').value || '1101';
 
-            db.purchaseOrders = db.purchaseOrders || [];
-            db.purchaseOrders.push({
-                id: Date.now(),
-                date: new Date().toISOString().split('T')[0],
-                supplier: supp.name,
-                total: total,
-                paid: paid,
-                remaining: remaining,
-                items: [...currentPOCart],
-                status: 'draft'
-            });
+            if (editId) {
+                const po = db.purchaseOrders.find(x => x.id == editId);
+                if (po) {
+                    po.supplier = supp.name;
+                    po.supplierId = suppId;
+                    po.total = total;
+                    po.paid = paid;
+                    po.remaining = remaining;
+                    po.items = [...currentPOCart];
+                    po.date = date;
+                    po.method = method;
+                }
+                document.getElementById('po-edit-id').value = '';
+                showToast('تم تحديث أمر الشراء');
+            } else {
+                db.purchaseOrders = db.purchaseOrders || [];
+                db.purchaseOrders.push({
+                    id: Date.now(),
+                    date: date,
+                    supplier: supp.name,
+                    supplierId: suppId,
+                    total: total,
+                    paid: paid,
+                    remaining: remaining,
+                    items: [...currentPOCart],
+                    status: 'draft',
+                    method: method
+                });
+                showToast('تم حفظ أمر الشراء');
+            }
 
-            showToast('تم حفظ أمر الشراء بنجاح', 'success');
             currentPOCart = [];
             renderPOCart();
             renderRecentPurchaseOrders();
+            save();
         }
 
         function renderRecentPurchaseOrders() {
             const tbody = document.getElementById('recent-po-body');
             if (!tbody) return;
-            const list = (db.purchaseOrders || []).slice(-5).reverse();
-            tbody.innerHTML = list.map(q => `<tr class="hover:bg-slate-50">
-                <td class="p-1">PO-`+ String(q.id).slice(-4) + `</td>
-                <td class="p-1">`+ q.date + `</td>
-                <td class="p-1">`+ q.supplier + `</td>
-                <td class="p-1">`+ q.total.toFixed(2) + `</td>
-                <td class="p-1 text-orange-600">`+ (q.status === 'draft' ? 'مسودة' : 'مكتمل') + `</td>
-                <td class="p-1"><button onclick="convertPOToPurchase(`+ q.id + `)" title="تحويل لمشتريات" class="text-emerald-500"><i class="fas fa-file-import"></i></button></td>
-            </tr>`).join('');
+            const list = (db.purchaseOrders || []).slice(-20).reverse();
+            tbody.innerHTML = list.map(po => `
+                <tr class="hover:bg-slate-50 border-b group">
+                    <td class="p-2 text-[10px] font-mono whitespace-nowrap">PO-${String(po.id).slice(-4)}</td>
+                    <td class="p-2 text-xs font-bold whitespace-nowrap truncate max-w-[100px]" title="${po.supplier}">${po.supplier}</td>
+                    <td class="p-2 text-xs font-bold text-orange-600">${po.total.toFixed(2)}</td>
+                    <td class="p-2 flex gap-1 justify-center opacity-70 group-hover:opacity-100 transition">
+                        ${po.status === 'draft' ? `
+                            <button onclick="activatePO(${po.id})" title="تفعيل" class="text-emerald-500 hover:bg-emerald-50 p-1 rounded transition"><i class="fas fa-check-circle"></i></button>
+                            <button onclick="editPO(${po.id})" title="تعديل" class="text-blue-500 hover:bg-blue-50 p-1 rounded transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="deletePO(${po.id})" title="حذف" class="text-red-500 hover:bg-red-50 p-1 rounded transition"><i class="fas fa-trash"></i></button>
+                        ` : `
+                            <button class="text-slate-300 p-1 cursor-not-allowed"><i class="fas fa-check-double"></i></button>
+                        `}
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function convertPOToPurchase(id) {
-            const p = db.purchaseOrders.find(x => x.id == id);
-            if (!p) return;
-            p.status = 'converted';
-            currentPurCart = [...p.items];
-            renderPurCart();
-            showSection('purchases');
-            showToast('تم تحويل أمر الشراء إلى فاتورة مشتريات، يرجى مراجعتها وحفظها', 'info');
+        function editPO(id) {
+            const po = db.purchaseOrders.find(x => x.id == id);
+            if (!po) return;
+            document.getElementById('po-edit-id').value = po.id;
+            document.getElementById('po-supplier').value = po.supplierId || '';
+            document.getElementById('po-date').value = po.date;
+            currentPOCart = [...po.items];
+            if (po.remaining > 0) setPOPayType('credit'); else setPOPayType('cash');
+            document.getElementById('po-paid').value = po.paid;
+            document.getElementById('po-method').value = po.method || '1101';
+            renderPOCart();
+            showToast('تم تحميل بيانات أمر الشراء للتعديل', 'info');
+        }
+
+        function deletePO(id) {
+            if (!confirm('حذف أمر الشراء؟')) return;
+            db.purchaseOrders = db.purchaseOrders.filter(x => x.id !== id);
             renderRecentPurchaseOrders();
+            save();
+        }
+
+        function activatePO(id) {
+            const po = db.purchaseOrders.find(x => x.id == id);
+            if (!po || po.status === 'active') return;
+
+            if (!confirm('سيتم تحويل أمر الشراء إلى فاتورة مشتريات حقيقية وتسجيلها في الحسابات والمخازن. هل أنت متأكد؟')) return;
+
+            const date = po.date || new Date().toISOString().split('T')[0];
+            const subtotal = po.items.reduce((s, i) => s + (i.cost * i.qty), 0);
+            const discount = po.discount || 0;
+            const netBeforeVat = subtotal - discount;
+            const vatRate = db.settings.vatRate || 15;
+            const vatAmount = netBeforeVat * (vatRate / 100);
+            const grandTotal = netBeforeVat + vatAmount;
+            const paid = po.paid || 0;
+            const remaining = grandTotal - paid;
+            const method = po.method || '1101';
+
+            const lines = [
+                { code: '1104', dr: subtotal, cr: 0 },
+                { code: '2102', dr: vatAmount, cr: 0 }
+            ];
+            if (paid > 0) lines.push({ code: method, dr: 0, cr: paid });
+            if (discount > 0) lines.push({ code: '5201', dr: 0, cr: discount }); // Unearned/Discount Earned
+            if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
+
+            if (addJournalEntry(date, `تفعيل أمر شراء PO-${String(po.id).slice(-4)} - المورد: ${po.supplier}`, lines)) {
+                po.status = 'active';
+                po.items.forEach(i => {
+                    const p = db.products.find(x => x.id == i.id);
+                    if (p) {
+                        p.stock += i.qty;
+                        p.cost = i.cost;
+                    }
+                });
+                db.purchases.push({
+                    id: Date.now(),
+                    date,
+                    supplier: po.supplier,
+                    total: grandTotal,
+                    paid,
+                    discount,
+                    remaining,
+                    method,
+                    items: [...po.items]
+                });
+
+                showToast('تم تحويل أمر الشراء إلى فاتورة مشتريات بنجاح ✅');
+                renderRecentPurchaseOrders();
+                save();
+                renderAll();
+            }
         }
 
         function filterPOList(val) {
             const rows = document.querySelectorAll('#recent-po-body tr');
             rows.forEach(r => r.style.display = r.innerText.includes(val) ? '' : 'none');
+        }
+
+        function filterCustStatement(val) {
+            const rows = document.querySelectorAll('#cust-statement-body tr');
+            let totalReceivable = 0;
+            rows.forEach(r => {
+                const match = r.innerText.includes(val);
+                r.style.display = match ? '' : 'none';
+                if (match) {
+                    const cells = r.querySelectorAll('td');
+                    const rem = parseFloat(cells[cells.length - 1].innerText) || 0;
+                    totalReceivable += rem;
+                }
+            });
+            const totalEl = document.getElementById('total-customer-receivable');
+            if (totalEl) totalEl.innerText = totalReceivable.toFixed(2);
+        }
+
+        function filterSuppStatement(val) {
+            const rows = document.querySelectorAll('#supp-statement-body tr');
+            let totalDebt = 0;
+            rows.forEach(r => {
+                const match = r.innerText.includes(val);
+                r.style.display = match ? '' : 'none';
+                if (match) {
+                    const cells = r.querySelectorAll('td');
+                    const rem = parseFloat(cells[cells.length - 1].innerText) || 0;
+                    totalDebt += rem;
+                }
+            });
+            const totalEl = document.getElementById('total-supplier-debt');
+            if (totalEl) totalEl.innerText = totalDebt.toFixed(2);
         }
 
         // Reporting Render Functions
