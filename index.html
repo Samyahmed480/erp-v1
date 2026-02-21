@@ -5201,9 +5201,16 @@
             },
             services: [{ id: 1, name: 'خدمة تركيب', price: 150, description: 'تركيب وصيانة' }],
             expensesCategories: [
-                { id: '5201', name: 'مصروفات تشغيلية' },
-                { id: '5202', name: 'مصروفات نثرية' }, // petty cash
-                { id: '5203', name: 'مصروفات أخرى (طارئة)' }
+                { id: '5201', name: 'مصروفات تشغيلية عامة' },
+                { id: '5202', name: 'مصروفات نثرية' },
+                { id: '5203', name: 'إيجارات' },
+                { id: '5204', name: 'رواتب وأجور' },
+                { id: '5205', name: 'كهرباء، مياه وإنترنت' },
+                { id: '5206', name: 'تسويق وإعلانات' },
+                { id: '5207', name: 'صيانة وإصلاحات' },
+                { id: '5208', name: 'خصم مسموح به' },
+                { id: '5209', name: 'مصاريف حكومية ورخص' },
+                { id: '5210', name: 'مصاريف بنكية وعمولات' }
             ],
             expenses: [],
 
@@ -5224,20 +5231,37 @@
                 { code: '1102', name: 'البنك ', type: 'asset', level: 3, parent: '11', balance: 0 },
                 { code: '1103', name: 'العملاء', type: 'asset', level: 3, parent: '11', balance: 0 },
                 { code: '1104', name: 'المخزون', type: 'asset', level: 3, parent: '11', balance: 0 },
+                { code: '1105', name: 'أقساط مستحقة (مدينو تقسيط)', type: 'asset', level: 3, parent: '11', balance: 0 },
+                { code: '1106', name: 'سلف وعُهد موظفين', type: 'asset', level: 3, parent: '11', balance: 0 },
+                { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 1, balance: 0, isGroup: true },
+                { code: '1201', name: 'أثاث ومعدات مكتبية', type: 'asset', level: 3, parent: '12', balance: 0 },
+                { code: '1202', name: 'أجهزة إلكترونية وحاسب', type: 'asset', level: 3, parent: '12', balance: 0 },
                 { code: '2', name: 'الالتزامات', type: 'liability', level: 1, balance: 0, isGroup: true },
                 { code: '2101', name: 'الموردين (الدائنون)', type: 'liability', level: 3, parent: '2', balance: 0 },
                 { code: '2102', name: 'ضريبة القيمة المضافة', type: 'liability', level: 3, parent: '2', balance: 0 },
                 { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
                 { code: '3', name: 'حقوق الملكية', type: 'equity', level: 1, balance: 0, isGroup: true },
                 { code: '3101', name: 'رأس المال', type: 'equity', level: 3, parent: '3', balance: 0 },
+                { code: '3201', name: 'مسحوبات الشركاء', type: 'equity', level: 3, parent: '3', balance: 0 },
                 { code: '4', name: 'الإيرادات', type: 'revenue', level: 1, balance: 0, isGroup: true },
                 { code: '4101', name: 'إيرادات المبيعات', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '4', balance: 0 },
                 { code: '4201', name: 'إيرادات خصومات وجزاءات', type: 'revenue', level: 3, parent: '4', balance: 0 },
                 { code: '5', name: 'المصروفات', type: 'expense', level: 1, balance: 0, isGroup: true },
                 { code: '5101', name: 'تكلفة المبيعات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5201', name: 'مصروفات تشغيلية', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5201', name: 'مصروفات تشغيلية عامة', type: 'expense', level: 3, parent: '5', balance: 0 },
                 { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', level: 3, parent: '5', balance: 0 }
+                { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '5', balance: 0 },
+                { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '5', balance: 0 }
             ],
             journal: [],
             products: [{ id: 1, name: 'منتج تجريبي', price: 100, cost: 80, stock: 10 }],
@@ -5356,6 +5380,34 @@
                         if (acc5202 && acc5202.name.includes('رواتب')) {
                             acc5202.name = 'مصروفات نثرية';
                         }
+
+                        // Ensure All Accounts exist (Migration)
+                        const defaultAccs = [
+                            { code: '1105', name: 'أقساط مستحقة (مدينو تقسيط)', type: 'asset', level: 3, parent: '11', balance: 0 },
+                            { code: '1106', name: 'سلف وعُهد موظفين', type: 'asset', level: 3, parent: '11', balance: 0 },
+                            { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 1, balance: 0, isGroup: true },
+                            { code: '1201', name: 'أثاث ومعدات مكتبية', type: 'asset', level: 3, parent: '12', balance: 0 },
+                            { code: '1202', name: 'أجهزة إلكترونية وحاسب', type: 'asset', level: 3, parent: '12', balance: 0 },
+                            { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                            { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                            { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                            { code: '3201', name: 'مسحوبات الشركاء', type: 'equity', level: 3, parent: '3', balance: 0 },
+                            { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                            { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                            { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '5', balance: 0 },
+                            { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '5', balance: 0 }
+                        ];
+
+                        defaultAccs.forEach(newAcc => {
+                            if (!db.chartOfAccounts.some(a => a.code == newAcc.code)) {
+                                db.chartOfAccounts.push(newAcc);
+                            }
+                        });
                     }
 
                     showToast('تم تحميل البيانات بنجاح');
@@ -5745,7 +5797,7 @@
             document.getElementById('pur-mode-badge').classList.toggle('hidden', !isRet);
         }
 
-        // Updated postSale to handle Returns
+        // Updated postSale to handle Returns and Cash/Credit logic
         function postSale() {
             if (currentCart.length === 0) return showToast('السلة فارغة', 'error');
 
@@ -5753,55 +5805,52 @@
             const customer = db.customers.find(c => c.id == custId);
             const date = new Date().toISOString().split('T')[0];
             const discount = parseFloat(document.getElementById('sale-discount').value) || 0;
-            const paid = parseFloat(document.getElementById('sale-paid').value) || 0;
-            const method = document.getElementById('sale-method').value;
+            const method = document.getElementById('sale-method').value || '1101';
             const isReturn = document.getElementById('is-return-sale').checked;
 
             let totalSale = 0, totalCost = 0;
             currentCart.forEach(i => { totalSale += i.total; totalCost += (i.cost * i.qty); });
 
-            const netSale = totalSale - discount; // Logic for return? Discount usually 0 in return or proportional.
+            const netSale = totalSale - discount;
             const vatAmount = netSale * (db.settings.vatRate / 100);
             const grandTotal = netSale + vatAmount;
+
+            // Robust check for paid amount based on payment type
+            let paid;
+            if (salePayType === 'cash' && !isReturn) {
+                paid = grandTotal;
+            } else {
+                paid = parseFloat(document.getElementById('sale-paid').value) || 0;
+            }
+            const remaining = Math.max(0, grandTotal - paid);
 
             const lines = [];
 
             if (isReturn) {
                 // Return Logic
-                // Dr Sales Return / Inventory / VAT
-                // Cr Cash / Customer / COGS
+                if (paid > 0) lines.push({ code: method, dr: 0, cr: paid }); // Cr Cash/Bank
+                if (remaining > 0.01) lines.push({ code: '1103', dr: 0, cr: remaining }); // Cr Customer
 
-                // 1. Refund Cash/Credit Customer
-                if (paid > 0) lines.push({ code: method || '1101', dr: 0, cr: paid }); // Cash Cr
-                const remaining = grandTotal - paid; // Remaining to credit to customer account
-                if (remaining > 0.01) lines.push({ code: '1103', dr: 0, cr: remaining }); // Customer Cr
-
-                // 2. Debit Sales Return & VAT
-                lines.push({ code: '4101', dr: netSale, cr: 0 }); // Sales Dr (Contra)
-                lines.push({ code: '2102', dr: vatAmount, cr: 0 }); // VAT Dr
-
-                // 3. Inventory & COGS
-                lines.push({ code: '1104', dr: totalCost, cr: 0 }); // Inventory Dr (Stock Up)
-                lines.push({ code: '5101', dr: 0, cr: totalCost }); // COGS Cr (Expense Down)
+                lines.push({ code: '4103', dr: netSale, cr: 0 }); // Dr Sales Return
+                lines.push({ code: '2102', dr: vatAmount, cr: 0 }); // Dr VAT
+                lines.push({ code: '1104', dr: totalCost, cr: 0 }); // Dr Inventory
+                lines.push({ code: '5101', dr: 0, cr: totalCost }); // Cr COGS
 
                 if (addJournalEntry(date, `مرتجع مبيعات - ${customer.name}`, lines)) {
-                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock += i.qty; }); // Increase Stock
+                    currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock += i.qty; });
                     db.returns.push({ id: Date.now(), date, type: 'sale', customer: customer.name, total: grandTotal, items: [...currentCart] });
                     showToast('تم حفظ المرتجع');
                 }
             } else {
-                // ... Existing Sale Logic ...
-                const remaining = grandTotal - paid;
-                // Assuming '1101' is Cash if method not found
-                lines.push({ code: '1101', dr: paid, cr: 0 });
+                // Sale Logic
+                if (paid > 0) lines.push({ code: method, dr: paid, cr: 0 }); // Dr Cash/Bank
+                if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 }); // Dr Customer Account
+                if (discount > 0) lines.push({ code: '5208', dr: discount, cr: 0 }); // Dr Discount Allowed
 
-                if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 }); // Customer Account
-                if (discount > 0) lines.push({ code: '5201', dr: discount, cr: 0 }); // Discount Allowed
-                lines.push({ code: '5101', dr: totalCost, cr: 0 });
-
-                lines.push({ code: '4101', dr: 0, cr: totalSale });
-                lines.push({ code: '2102', dr: 0, cr: vatAmount });
-                lines.push({ code: '1104', dr: 0, cr: totalCost });
+                lines.push({ code: '5101', dr: totalCost, cr: 0 }); // Dr COGS
+                lines.push({ code: '4101', dr: 0, cr: totalSale }); // Cr Sales Revenue
+                lines.push({ code: '2102', dr: 0, cr: vatAmount }); // Cr VAT
+                lines.push({ code: '1104', dr: 0, cr: totalCost }); // Cr Inventory
 
                 if (addJournalEntry(date, `فاتورة - ${customer.name}`, lines)) {
                     currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
@@ -5815,20 +5864,19 @@
             currentCart = []; renderCart();
             document.getElementById('sale-discount').value = 0;
             document.getElementById('sale-paid').value = '';
-            // Don't uncheck return mode automatically? Maybe better to keep it unchecked for safety.
             document.getElementById('is-return-sale').checked = false; toggleSaleMode();
+            renderAll();
         }
 
-        // Updated postPurchase to handle Returns
+        // Updated postPurchase to handle Returns and Cash/Credit logic
         function postPurchase() {
             if (currentPurCart.length === 0) return showToast('السلة فارغة', 'error');
 
             const suppId = document.getElementById('pur-supplier').value;
             const supplier = db.suppliers.find(s => s.id == suppId);
-            const date = document.getElementById('pur-date').value;
+            const date = document.getElementById('pur-date').value || new Date().toISOString().split('T')[0];
             const discount = parseFloat(document.getElementById('pur-discount').value) || 0;
-            const method = document.getElementById('pur-method').value;
-            const paid = parseFloat(document.getElementById('pur-paid').value) || 0;
+            const method = document.getElementById('pur-method').value || '1101';
             const isReturn = document.getElementById('is-return-pur').checked;
 
             let totalCost = 0;
@@ -5837,23 +5885,24 @@
             const vatAmount = netCost * 0.15;
             const grandTotal = netCost + vatAmount;
 
+            // Robust check for paid amount based on payment type
+            let paid;
+            if (purPayType === 'cash' && !isReturn) {
+                paid = grandTotal;
+            } else {
+                paid = parseFloat(document.getElementById('pur-paid').value) || 0;
+            }
+            const remaining = Math.max(0, grandTotal - paid);
+
             const lines = [];
 
             if (isReturn) {
-                // Return Logic: Dr Cash/Supplier, Cr Inventory/VAT
-                const remaining = grandTotal - paid;
-                if (paid > 0) lines.push({ code: '1101', dr: paid, cr: 0 }); // Cash Dr (Refund)
-                if (remaining > 0.01) lines.push({ code: '2101', dr: remaining, cr: 0 }); // Supplier Dr (Debit Note)
+                // Return Logic
+                if (paid > 0) lines.push({ code: method, dr: paid, cr: 0 }); // Dr Cash/Bank (Refund)
+                if (remaining > 0.01) lines.push({ code: '2101', dr: remaining, cr: 0 }); // Dr Supplier (Debit Note)
 
-                lines.push({ code: '1104', dr: 0, cr: totalCost }); // Inventory Cr (Stock Down)
-                lines.push({ code: '2102', dr: 0, cr: vatAmount }); // VAT Cr (Liability Up? No, Purchase VAT is Asset. Credit reduces Asset. Correct.)
-                // Wait, if VAT Input is Asset (1xxx), Credit reduces it. If 2102 is Liability, Debit reduces it.
-                // We used 2102 for Output VAT (Liability).
-                // And for Purchase, we Debit 2102 (Reducing Liability... or treating as asset).
-                // If we treat 2102 as "Net VAT Liability":
-                // Sale: Credit 2102 (Increase Liability).
-                // Purchase: Debit 2102 (Decrease Liability).
-                // Purchase Return: Credit 2102 (Increase Liability/Reverse Debit). Correct.
+                lines.push({ code: '1104', dr: 0, cr: totalCost }); // Cr Inventory
+                lines.push({ code: '2102', dr: 0, cr: vatAmount }); // Cr VAT (Reverse Input)
 
                 if (addJournalEntry(date, `مرتجع مشتريات - ${supplier.name}`, lines)) {
                     currentPurCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) { p.stock -= i.qty; } });
@@ -5861,29 +5910,29 @@
                     showToast('تم حفظ المرتجع');
                 }
             } else {
-                const remaining = grandTotal - paid;
-                lines.push({ code: '1104', dr: totalCost, cr: 0 });
-                lines.push({ code: '2102', dr: vatAmount, cr: 0 });
+                // Purchase Logic
+                lines.push({ code: '1104', dr: totalCost, cr: 0 }); // Dr Inventory
+                lines.push({ code: '2102', dr: vatAmount, cr: 0 }); // Dr VAT (Input)
 
-                if (discount > 0) lines.push({ code: '5201', dr: 0, cr: discount });
-                if (paid > 0) lines.push({ code: '1101', dr: 0, cr: paid });
-                if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
+                if (discount > 0) lines.push({ code: '4201', dr: 0, cr: discount }); // Cr Discount Received
+                if (paid > 0) lines.push({ code: method, dr: 0, cr: paid }); // Cr Cash/Bank
+                if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining }); // Cr Supplier Account
 
                 if (addJournalEntry(date, `فاتورة مشتريات - ${supplier.name} (${method})`, lines)) {
                     currentPurCart.forEach(i => {
                         if (i.isNew) {
-                            // Create new product in db
                             const newProd = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, price: i.cost, cost: i.cost, stock: i.qty };
                             db.products.push(newProd);
-                            i.id = newProd.id; // update reference
+                            i.id = newProd.id;
                             delete i.isNew;
                         } else {
                             const p = db.products.find(x => x.id == i.id);
                             if (p) { p.stock += i.qty; p.cost = i.cost; }
                         }
                     });
-                    db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart] });
+                    db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart], payType: purPayType });
                     showToast('تم حفظ المشتريات');
+                    renderRecentPurchases();
                 }
             }
 
@@ -7988,12 +8037,13 @@
         let salePayType = 'cash';
         function setSalePayType(type) {
             salePayType = type;
-            document.getElementById('sale-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
-            document.getElementById('sale-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('sale-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('sale-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
             document.getElementById('sale-credit-area').classList.toggle('hidden', type === 'cash');
             document.getElementById('sale-remaining-row').classList.toggle('hidden', type === 'cash');
             if (type === 'cash') {
-                document.getElementById('sale-paid').value = '';
+                const total = parseFloat(document.getElementById('cart-total').innerText) || 0;
+                document.getElementById('sale-paid').value = total > 0 ? total.toFixed(2) : '';
                 document.getElementById('sale-remaining').innerText = '0.00';
             }
         }
@@ -8008,12 +8058,13 @@
         let purPayType = 'cash';
         function setPurPayType(type) {
             purPayType = type;
-            document.getElementById('pur-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
-            document.getElementById('pur-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('pur-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('pur-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-orange-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
             document.getElementById('pur-credit-area').classList.toggle('hidden', type === 'cash');
             document.getElementById('pur-remaining-row').classList.toggle('hidden', type === 'cash');
             if (type === 'cash') {
-                document.getElementById('pur-paid').value = '';
+                const total = parseFloat(document.getElementById('pur-total').innerText) || 0;
+                document.getElementById('pur-paid').value = total > 0 ? total.toFixed(2) : '';
                 document.getElementById('pur-remaining').innerText = '0.00';
             }
         }
@@ -9747,11 +9798,14 @@
         }
 
         function setQuotePayType(type) {
-            document.getElementById('quote-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
-            document.getElementById('quote-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('quote-pay-cash-btn').className = type === 'cash' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
+            document.getElementById('quote-pay-credit-btn').className = type === 'credit' ? 'flex-1 py-1.5 rounded text-xs font-bold bg-emerald-600 text-white shadow-lg' : 'flex-1 py-1.5 rounded text-xs font-bold bg-slate-700 text-slate-300';
             document.getElementById('quote-credit-area').style.display = type === 'credit' ? 'block' : 'none';
             document.getElementById('quote-remaining-row').style.display = type === 'credit' ? 'flex' : 'none';
-            if (type === 'cash') { document.getElementById('quote-paid').value = ''; }
+            if (type === 'cash') {
+                const total = parseFloat(document.getElementById('quote-total').innerText) || 0;
+                document.getElementById('quote-paid').value = total > 0 ? total.toFixed(2) : '';
+            }
             calcQuoteRemaining();
         }
 
@@ -9880,7 +9934,7 @@
                 { code: '2102', dr: 0, cr: vatAmount },
                 { code: '1104', dr: 0, cr: totalCost }
             ];
-            if (discount > 0) lines.push({ code: '5201', dr: discount, cr: 0 });
+            if (discount > 0) lines.push({ code: '5208', dr: discount, cr: 0 }); // Discount Allowed
             if (remaining > 0.01) lines.push({ code: '1103', dr: remaining, cr: 0 });
 
             if (addJournalEntry(date, `تفعيل عرض سعر QT-${String(q.id).slice(-4)} - العميل: ${q.customer}`, lines)) {
@@ -9930,14 +9984,14 @@
             if (!tbody) return;
             if (currentPOCart.length === 0) {
                 tbody.innerHTML = '';
-                if(empty) empty.style.display = 'block';
+                if (empty) empty.style.display = 'block';
                 document.getElementById('po-subtotal').innerText = '0.00';
                 document.getElementById('po-vat').innerText = '0.00';
                 document.getElementById('po-total').innerText = '0.00';
                 calcPORemaining();
                 return;
             }
-            if(empty) empty.style.display = 'none';
+            if (empty) empty.style.display = 'none';
             let subtotal = 0;
             tbody.innerHTML = currentPOCart.map((item, index) => {
                 const total = item.qty * item.cost;
@@ -9982,10 +10036,10 @@
             const qty = parseFloat(document.getElementById('po-qty')?.value) || 1;
             const cost = parseFloat(document.getElementById('pur-cost')?.value);
             if (!prodId) return showToast('يرجى اختيار صنف من القائمة', 'error');
-            
+
             const product = db.products.find(p => p.id == prodId);
             if (!product) return;
-            
+
             const itemCost = isNaN(cost) ? product.cost : cost;
             const existing = currentPOCart.find(i => i.id == prodId);
             if (existing) {
@@ -10000,7 +10054,7 @@
                     qty: qty
                 });
             }
-            
+
             document.getElementById('po-qty').value = 1;
             document.getElementById('po-product-input').value = '';
             document.getElementById('po-product-id').value = '';
@@ -10022,18 +10076,19 @@
         function setPOPayType(type) {
             const cashBtn = document.getElementById('po-pay-cash-btn');
             const creditBtn = document.getElementById('po-pay-credit-btn');
-            
+
             if (type === 'cash') {
                 cashBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black bg-orange-600 text-white shadow-lg transition';
                 creditBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition';
+                const total = parseFloat(document.getElementById('po-total').innerText) || 0;
+                document.getElementById('po-paid').value = total > 0 ? total.toFixed(2) : '';
             } else {
                 creditBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black bg-orange-600 text-white shadow-lg transition';
                 cashBtn.className = 'flex-1 py-2 rounded-lg text-[10px] font-black text-slate-500 hover:text-slate-300 transition';
             }
-            
+
             document.getElementById('po-credit-area').style.display = type === 'credit' ? 'block' : 'none';
             document.getElementById('po-remaining-row').style.display = type === 'credit' ? 'flex' : 'none';
-            if (type === 'cash') { document.getElementById('po-paid').value = ''; }
             calcPORemaining();
         }
 
@@ -10185,7 +10240,7 @@
                 { code: '2102', dr: vatAmount, cr: 0 }
             ];
             if (paid > 0) lines.push({ code: method, dr: 0, cr: paid });
-            if (discount > 0) lines.push({ code: '5201', dr: 0, cr: discount }); // Unearned/Discount Earned
+            if (discount > 0) lines.push({ code: '4201', dr: 0, cr: discount }); // Discount Received
             if (remaining > 0.01) lines.push({ code: '2101', dr: 0, cr: remaining });
 
             if (addJournalEntry(date, `تفعيل أمر شراء PO-${String(po.id).slice(-4)} - المورد: ${po.supplier}`, lines)) {
