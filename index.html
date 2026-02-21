@@ -1984,6 +1984,7 @@
                                     onkeydown="onPurProductKeydown(event)">
                                 <i class="fas fa-search pur-combobox-icon"></i>
                                 <input type="hidden" id="pur-product-id" value="">
+                                <input type="hidden" id="pur-product-type" value="product">
                                 <div id="pur-suggestions" class="pur-suggestions"></div>
                             </div>
                             <input type="number" id="pur-cost" placeholder="التكلفة"
@@ -2190,14 +2191,15 @@
                                     <div class="relative">
                                         <input type="text" id="po-product-input"
                                             class="w-full p-3 pr-10 border border-slate-200 rounded-xl text-sm shadow-sm outline-none focus:ring-4 focus:ring-orange-500/10 bg-white"
-                                            placeholder="اكتب للبحث..." autocomplete="off" onfocus="onPurProductFocus()"
-                                            oninput="onPurProductInput(this.value)"
-                                            onkeydown="onPurProductKeydown(event)">
+                                            placeholder="اكتب للبحث..." autocomplete="off" onfocus="onPOProductFocus()"
+                                            oninput="onPOProductInput(this.value)"
+                                            onkeydown="onPOProductKeydown(event)">
                                         <i
                                             class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-300"></i>
                                     </div>
                                     <input type="hidden" id="po-product-id" value="">
-                                    <div id="pur-suggestions" class="pur-suggestions"></div>
+                                    <input type="hidden" id="po-product-type" value="product">
+                                    <div id="po-suggestions" class="pur-suggestions"></div>
                                 </div>
                                 <div class="w-28">
                                     <label class="text-[10px] font-black text-slate-400 block mb-1">تكلفة الوحدة</label>
@@ -2476,8 +2478,15 @@
 
                         <!-- بيانات العميل والتاريخ -->
                         <div class="grid grid-cols-2 gap-3 mb-3">
-                            <input type="text" id="srv-customer" placeholder="اسم العميل (اختياري)"
-                                class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
+                            <div class="srv-cust-wrapper" style="position:relative;">
+                                <input type="text" id="srv-customer" placeholder="اسم العميل (اختياري)"
+                                    class="w-full p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none"
+                                    onfocus="onSrvCustomerFocus()" oninput="onSrvCustomerInput(this.value)"
+                                    onkeydown="onSrvCustomerKeydown(event)">
+                                <i class="fas fa-user-tag pur-combobox-icon"></i>
+                                <input type="hidden" id="srv-customer-id" value="">
+                                <div id="srv-customer-suggestions" class="pur-suggestions"></div>
+                            </div>
                             <input type="date" id="srv-date"
                                 class="p-2.5 border rounded-lg text-sm bg-slate-50 focus:bg-white outline-none">
                         </div>
@@ -5932,13 +5941,25 @@
                 if (addJournalEntry(date, `فاتورة مشتريات - ${supplier.name} (${method})`, lines)) {
                     currentPurCart.forEach(i => {
                         if (i.isNew) {
-                            const newProd = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, price: i.cost, cost: i.cost, stock: i.qty };
-                            db.products.push(newProd);
-                            i.id = newProd.id;
+                            if (i.type === 'service') {
+                                if (!db.services) db.services = [];
+                                const newSrv = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, cost: i.cost, price: i.cost * 1.2, description: '' };
+                                db.services.push(newSrv);
+                                i.id = newSrv.id;
+                            } else {
+                                const newProd = { id: Date.now() + Math.floor(Math.random() * 1000), name: i.name, price: i.cost * 1.2, cost: i.cost, stock: i.qty };
+                                db.products.push(newProd);
+                                i.id = newProd.id;
+                            }
                             delete i.isNew;
                         } else {
-                            const p = db.products.find(x => x.id == i.id);
-                            if (p) { p.stock += i.qty; p.cost = i.cost; }
+                            if (i.type === 'product' || !i.type) {
+                                const p = db.products.find(x => x.id == i.id);
+                                if (p) { p.stock += i.qty; p.cost = i.cost; }
+                            } else if (i.type === 'service') {
+                                const s = db.services.find(x => x.id == i.id);
+                                if (s) { s.cost = i.cost; }
+                            }
                         }
                     });
                     db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart], payType: purPayType });
@@ -6008,29 +6029,50 @@
             let html = '';
             purComboActive = -1;
 
-            const filtered = db.products.filter(p => p.name.toLowerCase().includes(q));
+            if (!db.products) db.products = [];
+            if (!db.services) db.services = [];
+
+            const filteredProducts = db.products.filter(p => p.name.toLowerCase().includes(q));
+            const filteredServices = db.services.filter(s => s.name.toLowerCase().includes(q));
 
             if (q === '') {
                 // show all products
                 html = db.products.map((p, i) => `
-                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id})">
-                        <span class="item-name">${p.name}</span>
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id}, 'product')">
+                        <span class="item-name"><i class="fas fa-box text-blue-500 me-1"></i> ${p.name}</span>
                         <span class="item-meta">تكلفة: ${p.cost || 0} | مخزون: ${p.stock || 0}</span>
                     </div>`).join('');
+                html += db.services.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${db.products.length + i}" onclick="selectPurProduct(${s.id}, 'service')">
+                        <span class="item-name"><i class="fas fa-concierge-bell text-emerald-500 me-1"></i> ${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
             } else {
-                html = filtered.map((p, i) => `
-                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id})">
-                        <span class="item-name">${p.name}</span>
+                html = filteredProducts.map((p, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPurProduct(${p.id}, 'product')">
+                        <span class="item-name"><i class="fas fa-box text-blue-500 me-1"></i> ${p.name}</span>
                         <span class="item-meta">تكلفة: ${p.cost || 0} | مخزون: ${p.stock || 0}</span>
                     </div>`).join('');
 
+                html += filteredServices.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${filteredProducts.length + i}" onclick="selectPurProduct(${s.id}, 'service')">
+                        <span class="item-name"><i class="fas fa-concierge-bell text-emerald-500 me-1"></i> ${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
+
                 // If no exact match, show "add new product" option
-                const exactMatch = db.products.some(p => p.name.toLowerCase() === q);
-                if (!exactMatch && q.length > 0) {
-                    const newIdx = filtered.length;
+                const exactMatchProd = db.products.some(p => p.name.toLowerCase() === q);
+                const exactMatchServ = db.services.some(s => s.name.toLowerCase() === q);
+
+                if (!exactMatchProd && !exactMatchServ && q.length > 0) {
+                    const newIdx = filteredProducts.length + filteredServices.length;
                     html += `
                     <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx}" onclick="selectNewPurProduct('${query.replace(/'/g, "\\'")}')"> 
-                        <span><i class="fas fa-plus-circle"></i> إضافة منتج جديد: "${query}"</span>
+                        <span class="font-bold"><i class="fas fa-plus-circle text-orange-500 me-1"></i> إضافة كمنتج جديد: "${query}"</span>
+                    </div>`;
+                    html += `
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx + 1}" onclick="selectNewPurService('${query.replace(/'/g, "\\'")}')"> 
+                        <span class="font-bold"><i class="fas fa-plus-circle text-emerald-500 me-1"></i> إضافة كخدمة جديدة: "${query}"</span>
                     </div>`;
                 }
             }
@@ -6039,18 +6081,38 @@
             container.classList.toggle('open', html.length > 0);
         }
 
-        function selectPurProduct(productId) {
-            const prod = db.products.find(p => p.id == productId);
-            if (!prod) return;
-            document.getElementById('pur-product-input').value = prod.name;
-            document.getElementById('pur-product-id').value = prod.id;
-            document.getElementById('pur-cost').value = prod.cost || '';
+        function selectPurProduct(productId, type = 'product') {
+            if (type === 'product') {
+                const prod = db.products.find(p => p.id == productId);
+                if (!prod) return;
+                document.getElementById('pur-product-input').value = prod.name;
+                document.getElementById('pur-product-id').value = prod.id;
+                document.getElementById('pur-product-type').value = 'product';
+                document.getElementById('pur-cost').value = prod.cost || '';
+            } else {
+                const serv = db.services.find(s => s.id == productId);
+                if (!serv) return;
+                document.getElementById('pur-product-input').value = serv.name;
+                document.getElementById('pur-product-id').value = serv.id;
+                document.getElementById('pur-product-type').value = 'service';
+                document.getElementById('pur-cost').value = serv.cost || serv.price || '';
+            }
             document.getElementById('pur-suggestions').classList.remove('open');
         }
 
         function selectNewPurProduct(name) {
             document.getElementById('pur-product-input').value = name;
             document.getElementById('pur-product-id').value = '__new__';
+            document.getElementById('pur-product-type').value = 'product';
+            document.getElementById('pur-cost').value = '';
+            document.getElementById('pur-cost').focus();
+            document.getElementById('pur-suggestions').classList.remove('open');
+        }
+
+        function selectNewPurService(name) {
+            document.getElementById('pur-product-input').value = name;
+            document.getElementById('pur-product-id').value = '__new_service__';
+            document.getElementById('pur-product-type').value = 'service';
             document.getElementById('pur-cost').value = '';
             document.getElementById('pur-cost').focus();
             document.getElementById('pur-suggestions').classList.remove('open');
@@ -6100,17 +6162,36 @@
             const qty = parseFloat(document.getElementById('pur-qty').value);
             const cost = parseFloat(document.getElementById('pur-cost').value);
 
+            const type = document.getElementById('pur-product-type').value;
+
             if (!prodName || !qty || !cost) return showToast('بيانات ناقصة', 'error');
 
             let item;
-            if (prodIdVal && prodIdVal !== '__new__') {
-                // Existing product
-                const prod = db.products.find(p => p.id == prodIdVal);
-                if (!prod) return showToast('منتج غير موجود', 'error');
-                item = { ...prod, qty, cost, total: cost * qty };
+            if (prodIdVal && !prodIdVal.startsWith('__new')) {
+                // Existing product or service
+                if (type === 'product') {
+                    const prod = db.products.find(p => p.id == prodIdVal);
+                    if (!prod) return showToast('منتج غير موجود', 'error');
+                    item = { ...prod, qty, cost, total: cost * qty, type: 'product' };
+                } else {
+                    const serv = db.services.find(s => s.id == prodIdVal);
+                    if (!serv) return showToast('خدمة غير موجودة', 'error');
+                    item = { ...serv, qty, cost, total: cost * qty, type: 'service' };
+                }
             } else {
-                // New product — mark with __new__ flag
-                item = { id: '__new_' + Date.now(), name: prodName, price: cost, cost: cost, stock: 0, qty, total: cost * qty, isNew: true };
+                // New product or service
+                const isService = prodIdVal === '__new_service__' || type === 'service';
+                item = {
+                    id: '__new_' + Date.now(),
+                    name: prodName,
+                    price: cost,
+                    cost: cost,
+                    stock: 0,
+                    qty,
+                    total: cost * qty,
+                    isNew: true,
+                    type: isService ? 'service' : 'product'
+                };
             }
 
             currentPurCart.push(item);
@@ -6126,9 +6207,15 @@
             let subtotal = 0;
             currentPurCart.forEach((item, idx) => {
                 subtotal += item.total;
+                const typeIcon = item.type === 'service' ? '<i class="fas fa-concierge-bell text-emerald-500" title="خدمة"></i>' : '<i class="fas fa-box text-blue-500" title="منتج"></i>';
                 tbody.innerHTML += `
-                    <tr class="bg-white"><td class="p-2">${item.name}</td><td class="p-2 font-bold">${item.qty}</td><td class="p-2">${item.cost}</td><td class="p-2">${item.total.toFixed(2)}</td>
-                    <td class="p-2"><button onclick="currentPurCart.splice(${idx},1);renderPurCart()" class="text-red-500"><i class="fas fa-times"></i></button></td></tr>`;
+                    <tr class="bg-white">
+                        <td class="p-2 text-right">${typeIcon} ${item.name}</td>
+                        <td class="p-2 font-bold">${item.qty}</td>
+                        <td class="p-2">${item.cost}</td>
+                        <td class="p-2">${item.total.toFixed(2)}</td>
+                        <td class="p-2"><button onclick="currentPurCart.splice(${idx},1);renderPurCart()" class="text-red-500"><i class="fas fa-times"></i></button></td>
+                    </tr>`;
             });
             const discount = parseFloat(document.getElementById('pur-discount').value) || 0;
             const net = Math.max(0, subtotal - discount);
@@ -7434,6 +7521,71 @@
             }
         }
 
+        let srvCustComboActive = -1;
+        function onSrvCustomerFocus() {
+            onSrvCustomerInput(document.getElementById('srv-customer').value);
+        }
+        function onSrvCustomerInput(query) {
+            const container = document.getElementById('srv-customer-suggestions');
+            if (!db.customers) db.customers = [];
+            const q = query.trim().toLowerCase();
+            let html = '';
+            srvCustComboActive = -1;
+            const filtered = db.customers.filter(c => c.name.toLowerCase().includes(q));
+            if (q === '') {
+                html = db.customers.map((c, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectSrvCustomer(${c.id})">
+                        <span class="item-name">${c.name}</span>
+                    </div>`).join('');
+            } else {
+                html = filtered.map((c, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectSrvCustomer(${c.id})">
+                        <span class="item-name">${c.name}</span>
+                    </div>`).join('');
+                const exactMatch = db.customers.some(c => c.name.toLowerCase() === q);
+                if (!exactMatch && q.length > 0) {
+                    html += `
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${filtered.length}" onclick="selectNewSrvCustomer('${query.replace(/'/g, "\\'")}')">
+                        <span><i class="fas fa-plus-circle text-orange-500"></i> إضافة عميل جديد: "${query}"</span>
+                    </div>`;
+                }
+            }
+            container.innerHTML = html;
+            container.classList.toggle('open', html.length > 0);
+        }
+        function selectSrvCustomer(id) {
+            const cust = db.customers.find(c => c.id == id);
+            if (cust) {
+                document.getElementById('srv-customer').value = cust.name;
+                document.getElementById('srv-customer-id').value = cust.id;
+            }
+            document.getElementById('srv-customer-suggestions').classList.remove('open');
+        }
+        function selectNewSrvCustomer(name) {
+            document.getElementById('srv-customer').value = name;
+            document.getElementById('srv-customer-id').value = '__new__';
+            document.getElementById('srv-customer-suggestions').classList.remove('open');
+        }
+        function onSrvCustomerKeydown(e) {
+            const container = document.getElementById('srv-customer-suggestions');
+            const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                srvCustComboActive = Math.min(srvCustComboActive + 1, items.length - 1);
+                items.forEach((item, i) => item.classList.toggle('active', i === srvCustComboActive));
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                srvCustComboActive = Math.max(srvCustComboActive - 1, 0);
+                items.forEach((item, i) => item.classList.toggle('active', i === srvCustComboActive));
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (srvCustComboActive >= 0) items[srvCustComboActive].click();
+            } else if (e.key === 'Escape') {
+                container.classList.remove('open');
+            }
+        }
+
         function updateSrvComboHighlight(items) {
             items.forEach((el, i) => {
                 el.style.background = i === srvComboActive ? '#e2e8f0' : '';
@@ -7446,6 +7598,16 @@
             if (!e.target.closest('.srv-combobox-wrapper')) {
                 const s = document.getElementById('srv-suggestions');
                 if (s) { s.classList.remove('open'); s.innerHTML = ''; }
+            }
+            if (!e.target.closest('.srv-cust-wrapper')) {
+                const s = document.getElementById('srv-customer-suggestions');
+                if (s) { s.classList.remove('open'); s.innerHTML = ''; }
+            }
+            if (!e.target.closest('.pur-combobox-wrapper')) {
+                const s = document.getElementById('pur-suggestions');
+                if (s) { s.classList.remove('open'); s.innerHTML = ''; }
+                const s2 = document.getElementById('po-suggestions');
+                if (s2) { s2.classList.remove('open'); s2.innerHTML = ''; }
             }
         });
 
@@ -7570,7 +7732,8 @@
 
             const grandTotal = subtotal + vat - discount;
             const method = document.getElementById('srv-method')?.value || 'Cash';
-            const custName = document.getElementById('srv-customer')?.value || '\u0639\u0645\u064a\u0644 \u062e\u062f\u0645\u0627\u062a';
+            const custId = document.getElementById('srv-customer-id')?.value;
+            let custName = document.getElementById('srv-customer')?.value || '\u0639\u0645\u064a\u0644 \u062e\u062f\u0645\u0627\u062a';
             const date = document.getElementById('srv-date')?.value || new Date().toISOString().split('T')[0];
             let paid, remaining;
 
@@ -7597,6 +7760,12 @@
             if (remaining > 0) lines.push({ code: '1201', dr: remaining, cr: 0 }); // Receivable
 
             if (addJournalEntry(date, `\u0641\u0627\u062a\u0648\u0631\u0629 \u062e\u062f\u0645\u0627\u062a ${invoiceNo} - ${custName}`, lines)) {
+                // Handle new customer auto-creation
+                if (custId === '__new__') {
+                    const newId = Date.now();
+                    db.customers.push({ id: newId, name: custName, phone: '', balance: 0 });
+                }
+
                 // Auto-create new services
                 currentSrvCart.forEach(i => {
                     if (i.isNew) {
@@ -7625,6 +7794,7 @@
                 currentSrvCart = [];
                 renderServiceCart();
                 document.getElementById('srv-customer').value = '';
+                document.getElementById('srv-customer-id').value = '';
                 document.getElementById('srv-paid') && (document.getElementById('srv-paid').value = '');
                 if (discToggle) { discToggle.checked = false; document.getElementById('srv-disc-area').classList.add('hidden'); }
                 document.getElementById('srv-discount') && (document.getElementById('srv-discount').value = '0');
@@ -10042,28 +10212,25 @@
         }
 
         function addToPOCart() {
-            const prodId = document.getElementById('po-product-id')?.value;
-            const qty = parseFloat(document.getElementById('po-qty')?.value) || 1;
-            const cost = parseFloat(document.getElementById('pur-cost')?.value);
-            if (!prodId) return showToast('يرجى اختيار صنف من القائمة', 'error');
+            const prodIdVal = document.getElementById('po-product-id').value;
+            const prodName = document.getElementById('po-product-input').value.trim();
+            const qty = parseFloat(document.getElementById('po-qty').value);
+            const cost = parseFloat(document.getElementById('pur-cost').value);
+            const type = document.getElementById('po-product-type').value;
 
-            const product = db.products.find(p => p.id == prodId);
-            if (!product) return;
+            if (!prodName || !qty || !cost) return showToast('بيانات ناقصة', 'error');
 
-            const itemCost = isNaN(cost) ? product.cost : cost;
-            const existing = currentPOCart.find(i => i.id == prodId);
-            if (existing) {
-                existing.qty += qty;
-                existing.cost = itemCost;
-            } else {
-                currentPOCart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    cost: itemCost,
-                    qty: qty
-                });
-            }
+            const item = {
+                id: (prodIdVal && !prodIdVal.startsWith('__new')) ? prodIdVal : Date.now() + Math.floor(Math.random() * 1000),
+                name: prodName,
+                qty: qty,
+                cost: cost,
+                total: cost * qty,
+                type: type,
+                isNew: (!prodIdVal || prodIdVal.startsWith('__new'))
+            };
+
+            currentPOCart.push(item);
 
             document.getElementById('po-qty').value = 1;
             document.getElementById('po-product-input').value = '';
@@ -10102,38 +10269,125 @@
             calcPORemaining();
         }
 
-        // Helper for PO Combobox
-        function onPurProductFocus() {
-            onPurProductInput(document.getElementById('po-product-input').value);
+        // PO Combobox Logic
+        let poComboActive = -1;
+
+        function onPOProductFocus() {
+            onPOProductInput(document.getElementById('po-product-input').value);
         }
 
-        function onPurProductInput(val) {
-            const dropdown = document.getElementById('po-product-dropdown');
-            const list = document.getElementById('po-product-list');
-            if (!val) {
-                dropdown.classList.add('hidden');
-                return;
+        function onPOProductInput(query) {
+            const container = document.getElementById('po-suggestions');
+            const q = query.trim().toLowerCase();
+            let html = '';
+            poComboActive = -1;
+
+            if (!db.products) db.products = [];
+            if (!db.services) db.services = [];
+
+            const filteredProducts = db.products.filter(p => p.name.toLowerCase().includes(q));
+            const filteredServices = db.services.filter(s => s.name.toLowerCase().includes(q));
+
+            if (q === '') {
+                html = db.products.map((p, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPOProduct(${p.id}, 'product')">
+                        <span class="item-name"><i class="fas fa-box text-blue-500 me-1"></i> ${p.name}</span>
+                        <span class="item-meta">تكلفة: ${p.cost || 0}</span>
+                    </div>`).join('');
+                html += db.services.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${db.products.length + i}" onclick="selectPOProduct(${s.id}, 'service')">
+                        <span class="item-name"><i class="fas fa-concierge-bell text-emerald-500 me-1"></i> ${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
+            } else {
+                html = filteredProducts.map((p, i) => `
+                    <div class="pur-suggestion-item" data-index="${i}" onclick="selectPOProduct(${p.id}, 'product')">
+                        <span class="item-name"><i class="fas fa-box text-blue-500 me-1"></i> ${p.name}</span>
+                        <span class="item-meta">تكلفة: ${p.cost || 0}</span>
+                    </div>`).join('');
+                html += filteredServices.map((s, i) => `
+                    <div class="pur-suggestion-item" data-index="${filteredProducts.length + i}" onclick="selectPOProduct(${s.id}, 'service')">
+                        <span class="item-name"><i class="fas fa-concierge-bell text-emerald-500 me-1"></i> ${s.name}</span>
+                        <span class="item-meta">سعر: ${s.price || 0}</span>
+                    </div>`).join('');
+
+                const exactMatchProd = db.products.some(p => p.name.toLowerCase() === q);
+                const exactMatchServ = db.services.some(s => s.name.toLowerCase() === q);
+                if (!exactMatchProd && !exactMatchServ && q.length > 0) {
+                    const newIdx = filteredProducts.length + filteredServices.length;
+                    html += `
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx}" onclick="selectNewPOProduct('${query.replace(/'/g, "\\'")}')"> 
+                        <span class="font-bold"><i class="fas fa-plus-circle text-orange-500 me-1"></i> إضافة كمنتج جديد: "${query}"</span>
+                    </div>
+                    <div class="pur-suggestion-item pur-suggestion-new" data-index="${newIdx + 1}" onclick="selectNewPOService('${query.replace(/'/g, "\\'")}')"> 
+                        <span class="font-bold"><i class="fas fa-plus-circle text-emerald-500 me-1"></i> إضافة كخدمة جديدة: "${query}"</span>
+                    </div>`;
+                }
             }
-            const matches = db.products.filter(p => p.name.includes(val) || p.id.toString().includes(val)).slice(0, 10);
-            if (matches.length === 0) {
-                dropdown.classList.add('hidden');
-                return;
-            }
-            dropdown.classList.remove('hidden');
-            list.innerHTML = matches.map(p => `
-                <div onclick="selectPurProduct(${p.id}, '${p.name}', ${p.cost})" class="p-2 hover:bg-orange-50 cursor-pointer border-b last:border-0 flex justify-between items-center transition">
-                    <span class="font-bold text-slate-700">${p.name}</span>
-                    <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">${p.cost.toFixed(2)}</span>
-                </div>
-            `).join('');
+            container.innerHTML = html;
+            container.classList.toggle('open', html.length > 0);
         }
 
-        function selectPurProduct(id, name, cost) {
+        function selectPOProduct(id, type = 'product') {
+            if (type === 'product') {
+                const prod = db.products.find(p => p.id == id);
+                if (!prod) return;
+                document.getElementById('po-product-input').value = prod.name;
+                document.getElementById('po-product-id').value = prod.id;
+                document.getElementById('po-product-type').value = 'product';
+                document.getElementById('pur-cost').value = prod.cost || '';
+            } else {
+                const serv = db.services.find(s => s.id == id);
+                if (!serv) return;
+                document.getElementById('po-product-input').value = serv.name;
+                document.getElementById('po-product-id').value = serv.id;
+                document.getElementById('po-product-type').value = 'service';
+                document.getElementById('pur-cost').value = serv.cost || serv.price || '';
+            }
+            document.getElementById('po-suggestions').classList.remove('open');
+        }
+
+        function selectNewPOProduct(name) {
             document.getElementById('po-product-input').value = name;
-            document.getElementById('po-product-id').value = id;
-            document.getElementById('pur-cost').value = cost.toFixed(2);
-            document.getElementById('po-product-dropdown').classList.add('hidden');
-            document.getElementById('po-qty').focus();
+            document.getElementById('po-product-id').value = '__new__';
+            document.getElementById('po-product-type').value = 'product';
+            document.getElementById('pur-cost').value = '';
+            document.getElementById('pur-cost').focus();
+            document.getElementById('po-suggestions').classList.remove('open');
+        }
+
+        function selectNewPOService(name) {
+            document.getElementById('po-product-input').value = name;
+            document.getElementById('po-product-id').value = '__new_service__';
+            document.getElementById('po-product-type').value = 'service';
+            document.getElementById('pur-cost').value = '';
+            document.getElementById('pur-cost').focus();
+            document.getElementById('po-suggestions').classList.remove('open');
+        }
+
+        function onPOProductKeydown(e) {
+            const container = document.getElementById('po-suggestions');
+            const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                poComboActive = Math.min(poComboActive + 1, items.length - 1);
+                updatePOComboHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                poComboActive = Math.max(poComboActive - 1, 0);
+                updatePOComboHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (poComboActive >= 0 && items[poComboActive]) items[poComboActive].click();
+            } else if (e.key === 'Escape') {
+                container.classList.remove('open');
+            }
+        }
+
+        function updatePOComboHighlight(items) {
+            items.forEach((el, i) => el.classList.toggle('active', i === poComboActive));
+            if (items[poComboActive]) items[poComboActive].scrollIntoView({ block: 'nearest' });
         }
 
         function postPurchaseOrder() {
@@ -10256,10 +10510,24 @@
             if (addJournalEntry(date, `تفعيل أمر شراء PO-${String(po.id).slice(-4)} - المورد: ${po.supplier}`, lines)) {
                 po.status = 'active';
                 po.items.forEach(i => {
-                    const p = db.products.find(x => x.id == i.id);
-                    if (p) {
-                        p.stock += i.qty;
-                        p.cost = i.cost;
+                    if (i.isNew) {
+                        if (i.type === 'service') {
+                            if (!db.services) db.services = [];
+                            const newSrv = { id: i.id, name: i.name, cost: i.cost, price: i.cost * 1.2, description: '' };
+                            db.services.push(newSrv);
+                        } else {
+                            if (!db.products) db.products = [];
+                            const newProd = { id: i.id, name: i.name, cost: i.cost, price: i.cost * 1.5, stock: i.qty, minStock: 0, unit: 'pcs', category: 'General' };
+                            db.products.push(newProd);
+                        }
+                    } else {
+                        if (i.type === 'product' || !i.type) {
+                            const p = db.products.find(x => x.id == i.id);
+                            if (p) {
+                                p.stock += i.qty;
+                                p.cost = i.cost;
+                            }
+                        }
                     }
                 });
                 db.purchases.push({
