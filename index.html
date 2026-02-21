@@ -675,6 +675,10 @@
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="settings">
                 <i class="fas fa-cogs w-7 text-center"></i> الإعدادات</button>
+            <button onclick="showSection('support')"
+                class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
+                data-target="support">
+                <i class="fas fa-headset w-7 text-center"></i> الدعم الفني</button>
         </nav>
     </aside>
 
@@ -2547,7 +2551,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
                         <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2"><span id="coa-form-title">إضافة
                                 حساب جديد</span></h3>
-                        <form onsubmit="saveAccount(event)" class="space-y-4">
+                        <form id="coa-form" onsubmit="saveAccount(event)" class="space-y-4">
                             <input type="hidden" id="coa-id">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">اسم الحساب</label>
@@ -2562,23 +2566,26 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 mb-1">نوع الحساب</label>
-                                    <select id="coa-type"
+                                    <input type="text" id="coa-type" list="coa-type-list" placeholder="اكتب أو اختر..."
                                         class="w-full p-2.5 border rounded-lg outline-none text-sm bg-slate-50 focus:bg-white">
+                                    <datalist id="coa-type-list">
                                         <option value="asset">أصل</option>
                                         <option value="liability">التزام</option>
                                         <option value="equity">حقوق ملكية</option>
                                         <option value="revenue">إيراد</option>
                                         <option value="expense">مصروف</option>
-                                    </select>
+                                    </datalist>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">الحساب الرئيسي
                                     (اختياري)</label>
-                                <select id="coa-parent"
+                                <input type="text" id="coa-parent" list="coa-parent-list"
+                                    placeholder="اكتب كود أو اسم الحساب..."
                                     class="w-full p-2.5 border rounded-lg outline-none text-sm bg-slate-50 focus:bg-white">
+                                <datalist id="coa-parent-list">
                                     <option value="">-- بدون (حساب رئيسي) --</option>
-                                </select>
+                                </datalist>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">الرصيد الافتتاحي</label>
@@ -2608,18 +2615,24 @@
                                     title="Excel"><i class="fas fa-file-excel"></i></button>
                             </div>
                         </div>
-                        <div class="overflow-y-auto flex-1 border rounded-lg bg-white">
-                            <table class="w-full text-sm border-collapse">
-                                <thead class="bg-slate-800 text-white sticky top-0 z-10">
-                                    <tr>
-                                        <th class="p-3 text-right w-24 font-mono">الكود</th>
-                                        <th class="p-3 text-right">اسم الحساب</th>
-                                        <th class="p-3 text-right w-20">النوع</th>
-                                        <th class="p-3 text-center w-28">الرصيد</th>
-                                        <th class="p-3 text-center w-20">إجراء</th>
+                        <div
+                            style="overflow-x:auto; overflow-y:auto; flex:1; border:1px solid #e2e8f0; border-radius:8px; background:#fff;">
+                            <table id="coa-table" dir="rtl"
+                                style="width:100%; min-width:600px; table-layout:fixed; border-collapse:collapse; font-size:11px;">
+                                <thead>
+                                    <tr style="background:#1e293b; color:#fff; position:sticky; top:0; z-index:10;">
+                                        <th style="width:30px; padding:7px 4px; text-align:center; opacity:0.5;"><i
+                                                class="fas fa-hashtag" style="font-size:10px;"></i></th>
+                                        <th
+                                            style="width:70px; padding:7px 6px; text-align:right; font-family:monospace;">
+                                            الكود</th>
+                                        <th style="padding:7px 6px; text-align:right;">اسم الحساب</th>
+                                        <th style="width:70px; padding:7px 6px; text-align:right;">النوع</th>
+                                        <th style="width:90px; padding:7px 6px; text-align:center;">الرصيد</th>
+                                        <th style="width:100px; padding:7px 6px; text-align:center;">إجراء</th>
                                     </tr>
                                 </thead>
-                                <tbody id="coa-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                                <tbody id="coa-body"></tbody>
                             </table>
                         </div>
                     </div>
@@ -4272,6 +4285,40 @@
                         <div class="bg-slate-50 p-4 rounded-lg">
                             <h4 class="font-bold text-sm mb-2">تفاصيل المصروفات</h4>
                             <div id="rpt-pft-exp-details" class="space-y-1 text-xs"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- الدعم الفني -->
+            <section id="support" class="section-content">
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                            <i class="fas fa-headset text-4xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">الدعم الفني والمساعدة</h2>
+                        <p class="text-slate-500">نحن هنا لمساعدتك دائماً. يمكنك التواصل مع فريق الدعم أو مبرمج النظام مباشرة عبر الواتساب للأعطال الفنية والاستفسارات.</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- الدعم الفني -->
+                        <div class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
+                            <i class="fas fa-user-clock text-4xl text-slate-400 mb-4"></i>
+                            <h3 class="font-bold text-lg mb-1 text-slate-800">الدعم الفني</h3>
+                            <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01279180008</p>
+                            <a href="https://wa.me/201279180008" target="_blank" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
+                                <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
+                            </a>
+                        </div>
+                        
+                        <!-- المبرمج -->
+                        <div class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
+                            <i class="fas fa-laptop-code text-4xl text-slate-400 mb-4"></i>
+                            <h3 class="font-bold text-lg mb-1 text-slate-800">مبرمج النظام</h3>
+                            <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01508090753</p>
+                            <a href="https://wa.me/201508090753" target="_blank" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
+                                <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -4279,6 +4326,51 @@
 
         </div>
     </main>
+
+    <!-- CoA Details Modal -->
+    <div id="coa-details-modal" class="modal">
+        <div class="modal-content" style="max-width:800px; width:95%;" id="print-coa-ledger">
+            <div class="flex justify-between items-center mb-4 border-b pb-2 no-print">
+                <h3 class="font-bold text-lg text-slate-800"><i class="fas fa-book me-2"></i>كشف حساب / تفاصيل (<span id="coa-det-code-val"></span>)</h3>
+                <div class="flex gap-2">
+                    <button onclick="printSection('print-coa-ledger')" class="text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded transition text-sm flex items-center font-bold"><i class="fas fa-print me-1"></i> طباعة</button>
+                    <button onclick="closeModal('coa-details-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+                </div>
+            </div>
+            
+            <!-- معلومات للطباعة فقط كترويسة -->
+            <div class="hidden print:block mb-6 text-center border-b pb-4">
+                <h2 class="text-2xl font-bold mb-2">كشف حساب تفصيلي</h2>
+                <p class="text-sm text-slate-500" id="print-coa-date"></p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4 text-sm bg-slate-50 p-4 rounded-lg border border-slate-100">
+                <div><strong>اسم الحساب:</strong> <span id="coa-det-name"></span></div>
+                <div><strong>الرصيد الافتتاحي:</strong> <span id="coa-det-init" dir="ltr"></span></div>
+                <div><strong>النوع:</strong> <span id="coa-det-type"></span></div>
+                <div><strong>الرصيد الحالي:</strong> <span id="coa-det-curr" dir="ltr" class="font-bold"></span></div>
+            </div>
+            <div class="overflow-x-auto border rounded-xl">
+                <table class="w-full text-sm text-right" style="font-size:11px;">
+                    <thead class="bg-slate-800 text-white">
+                        <tr>
+                            <th class="p-2 w-24">التاريخ</th>
+                            <th class="p-2 w-20">الرقم</th>
+                            <th class="p-2">البيان</th>
+                            <th class="p-2 w-24 text-center">مدين</th>
+                            <th class="p-2 w-24 text-center">دائن</th>
+                            <th class="p-2 w-24 text-center">الرصيد</th>
+                        </tr>
+                    </thead>
+                    <tbody id="coa-det-body" class="bg-white"></tbody>
+                </table>
+            </div>
+            <div class="flex justify-end gap-2 mt-4 pt-4 border-t no-print">
+                <button onclick="closeModal('coa-details-modal')"
+                    class="px-4 py-2 border rounded-lg text-slate-600 hover:bg-slate-50">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // --- 0. Firebase Config & Login ---
@@ -5528,25 +5620,106 @@
             }
         }
 
+        let _coaDragSrc = null;
+
         function renderCOATable() {
             const tbody = document.getElementById('coa-body');
             if (!tbody) return;
-            tbody.innerHTML = db.chartOfAccounts.map(a => {
+            // Removed strict sort to allow drag-and-drop manual ordering
+            tbody.innerHTML = db.chartOfAccounts.map((a, idx) => {
                 const bal = getAccountBalance(a.code);
-                return `<tr class="border-b hover:bg-slate-50">
-                    <td class="p-3 font-mono level-${a.level}">${a.code}</td>
-                    <td class="p-3 level-${a.level}">${a.name}</td>
-                    <td class="p-3 text-[10px] text-slate-500">${a.type}</td>
-                    <td class="p-3 text-center font-bold ${bal < 0 ? 'text-red-500' : 'text-emerald-600'}">${bal.toFixed(2)}</td>
-                    <td class="p-3 text-center">
-                        <div class="flex justify-center gap-2">
-                            <button onclick="editAccount('${a.code}')" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
-                            <button onclick="deleteAccount('${a.code}')" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                const balColor = bal < 0 ? '#ef4444' : '#059669';
+                return `<tr dir="rtl" style="border-bottom:1px solid #f1f5f9; cursor:grab;"
+                            draggable="true"
+                            data-code="${a.code}"
+                            ondragstart="coaDragStart(event)"
+                            ondragover="coaDragOver(event)"
+                            ondrop="coaDrop(event)"
+                            ondragend="coaDragEnd(event)"
+                            onmouseover="this.style.background='#eff6ff'"
+                            onmouseout="this.style.background=''">
+                    <td style="width:30px; padding:5px 4px; text-align:center; color:#cbd5e1; user-select:none;">
+                        <i class="fas fa-grip-vertical" style="font-size:10px;"></i>
+                    </td>
+                    <td style="width:70px; padding:5px 6px; text-align:right; font-family:monospace; font-size:11px; white-space:nowrap; overflow:hidden;">${a.code}</td>
+                    <td style="padding:5px 6px; text-align:right; font-size:11px; font-weight:500; max-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.name}">${a.name}</td>
+                    <td style="width:70px; padding:5px 6px; text-align:right; font-size:9px; color:#94a3b8; white-space:nowrap; overflow:hidden;">${a.type}</td>
+                    <td style="width:90px; padding:5px 6px; text-align:center; font-weight:bold; font-size:11px; color:${balColor}; white-space:nowrap; overflow:hidden;">${bal.toFixed(2)}</td>
+                    <td style="width:100px; padding:5px 4px; text-align:center;">
+                        <div style="display:flex; justify-content:center; gap:3px;">
+                            <button onclick="viewAccount('${a.code}')" title="التفاصيل"
+                                style="background:#f3f4f6; color:#475569; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-eye" style="font-size:10px;"></i>
+                            </button>
+                            <button onclick="editAccount('${a.code}')" title="تعديل"
+                                style="background:#eff6ff; color:#2563eb; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-edit" style="font-size:10px;"></i>
+                            </button>
+                            <button onclick="deleteAccount('${a.code}')" title="حذف"
+                                style="background:#fef2f2; color:#ef4444; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-trash" style="font-size:10px;"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>`;
             }).join('');
             populateCoAParents();
+        }
+
+        function coaDragStart(e) {
+            _coaDragSrc = e.currentTarget.dataset.code;
+            e.currentTarget.style.opacity = '0.4';
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', _coaDragSrc);
+        }
+
+        function coaDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            document.querySelectorAll('#coa-body tr').forEach(r => {
+                r.style.borderTop = '';
+                r.style.boxShadow = '';
+            });
+            e.currentTarget.style.borderTop = '2px solid #3b82f6';
+            e.currentTarget.style.boxShadow = '0 -2px 0 #3b82f6';
+        }
+
+        function coaDrop(e) {
+            e.preventDefault();
+            const fromCode = e.dataTransfer.getData('text/plain');
+            const toCode = e.currentTarget.dataset.code;
+            if (!fromCode || fromCode === toCode) return;
+            const arr = db.chartOfAccounts;
+            const fromIdx = arr.findIndex(a => a.code === fromCode);
+            const toIdx = arr.findIndex(a => a.code === toCode);
+            if (fromIdx === -1 || toIdx === -1) return;
+            const [moved] = arr.splice(fromIdx, 1);
+            arr.splice(toIdx, 0, moved);
+            save(); // Save the new explicit ordering
+            renderCOATable();
+        }
+
+        function coaDragEnd(e) {
+            document.querySelectorAll('#coa-body tr').forEach(r => {
+                r.style.opacity = '1';
+                r.style.borderTop = '';
+                r.style.boxShadow = '';
+            });
+        }
+        function exportCoA() {
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "الكود,اسم الحساب,النوع,الرصيد\n";
+            db.chartOfAccounts.forEach(a => {
+                const bal = getAccountBalance(a.code);
+                csvContent += `${a.code},"${a.name}",${a.type},${bal.toFixed(2)}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `ChartOfAccounts_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function saveAccount(e) {
@@ -5569,9 +5742,14 @@
             if (id) {
                 const acc = db.chartOfAccounts.find(a => a.code == id);
                 if (acc) {
+                    if (code !== id && db.chartOfAccounts.some(a => a.code == code)) {
+                        return showToast('الكود موجود بالفعل', 'error');
+                    }
+                    acc.code = code || id;
                     acc.name = name;
                     acc.type = type;
                     acc.parent = parent;
+                    acc.level = parent ? (db.chartOfAccounts.find(x => x.code == parent)?.level + 1 || 2) : 1;
                     acc.balance = initBal;
                 }
             } else {
@@ -5580,11 +5758,80 @@
                 db.chartOfAccounts.push({
                     code, name, type, parent, level, balance: initBal, isGroup: false
                 });
-                // Sort by code
-                db.chartOfAccounts.sort((a, b) => a.code.localeCompare(b.code));
+                // Removed auto-sort to preserve manual ordering
             }
             save(); renderAll(); resetCoAForm();
             showToast('تم حفظ الحساب بنجاح ✅');
+        }
+
+        function viewAccount(code) {
+            const acc = db.chartOfAccounts.find(a => a.code == code);
+            if (!acc) return;
+            
+            document.getElementById('coa-det-code-val').innerText = acc.code;
+            
+            // For printing
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+            document.getElementById('print-coa-date').innerText = 'تاريخ الطباعة: ' + dateStr;
+
+            document.getElementById('coa-det-name').innerText = acc.name;
+            document.getElementById('coa-det-init').innerText = (acc.balance || 0).toFixed(2);
+            document.getElementById('coa-det-type').innerText = acc.type;
+
+            const tbody = document.getElementById('coa-det-body');
+            tbody.innerHTML = '';
+
+            let runningBal = parseFloat(acc.balance || 0);
+            let html = '';
+
+            // Initial Balance Row
+            html += `<tr class="bg-slate-50 border-b">
+                <td class="p-2 text-slate-500">-</td>
+                <td class="p-2 text-slate-500">-</td>
+                <td class="p-2 font-bold text-slate-600">رصيد افتتاحي</td>
+                <td class="p-2 text-center text-slate-400">-</td>
+                <td class="p-2 text-center text-slate-400">-</td>
+                <td class="p-2 text-center font-bold" dir="ltr">${runningBal.toFixed(2)}</td>
+            </tr>`;
+
+            const relatedEntries = [];
+            db.journal.forEach(entry => {
+                entry.lines.forEach(line => {
+                    if (line.code === code) {
+                        relatedEntries.push({
+                            date: entry.date,
+                            id: entry.id,
+                            desc: entry.desc,
+                            dr: line.dr,
+                            cr: line.cr
+                        });
+                    }
+                });
+            });
+
+            relatedEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            relatedEntries.forEach(entry => {
+                if (acc.type === 'asset' || acc.type === 'expense') {
+                    runningBal += (entry.dr - entry.cr);
+                } else {
+                    runningBal += (entry.cr - entry.dr);
+                }
+
+                html += `<tr class="border-b hover:bg-slate-50">
+                    <td class="p-2 text-xs">${entry.date}</td>
+                    <td class="p-2 text-xs font-mono text-blue-600 cursor-pointer" onclick="viewEntry(${entry.id}); closeModal('coa-details-modal')">#${entry.id}</td>
+                    <td class="p-2 text-xs" title="${entry.desc}">${entry.desc.length > 40 ? entry.desc.substring(0, 40) + '...' : entry.desc}</td>
+                    <td class="p-2 text-center text-emerald-600 font-mono">${entry.dr > 0 ? entry.dr.toFixed(2) : '-'}</td>
+                    <td class="p-2 text-center text-red-500 font-mono">${entry.cr > 0 ? entry.cr.toFixed(2) : '-'}</td>
+                    <td class="p-2 text-center font-bold font-mono" dir="ltr">${runningBal.toFixed(2)}</td>
+                </tr>`;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('coa-det-curr').innerText = runningBal.toFixed(2);
+            document.getElementById('coa-details-modal').classList.add('active');
         }
 
         function editAccount(code) {
@@ -5597,7 +5844,8 @@
             document.getElementById('coa-parent').value = acc.parent || '';
             document.getElementById('coa-balance').value = acc.balance || 0;
             document.getElementById('coa-form-title').innerText = 'تعديل حساب';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const formEl = document.getElementById('coa-form');
+            if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function resetCoAForm() {
@@ -5609,12 +5857,10 @@
         }
 
         function populateCoAParents() {
-            const sel = document.getElementById('coa-parent');
-            if (!sel) return;
-            const currentVal = sel.value;
-            sel.innerHTML = '<option value="">-- بدون (حساب رئيسي) --</option>' +
-                db.chartOfAccounts.filter(a => a.isGroup || a.level < 3).map(a => `<option value="${a.code}">${a.code} - ${a.name}</option>`).join('');
-            sel.value = currentVal;
+            const dl = document.getElementById('coa-parent-list');
+            if (!dl) return;
+            dl.innerHTML = '<option value="">-- بدون (حساب رئيسي) --</option>' +
+                db.chartOfAccounts.map(a => `<option value="${a.code}">${a.code} - ${a.name}</option>`).join('');
         }
 
         function deleteAccount(code) {
@@ -5625,6 +5871,15 @@
                 save(); renderAll();
                 showToast('تم حذف الحساب');
             }
+        }
+
+        function moveAccount(code, dir) {
+            const arr = db.chartOfAccounts;
+            const idx = arr.findIndex(a => a.code === code);
+            const newIdx = idx + dir;
+            if (newIdx < 0 || newIdx >= arr.length) return;
+            [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+            save(); renderCOATable();
         }
 
         function renderReports() {
@@ -5786,26 +6041,10 @@
             // Trigger section-specific rendering
             try {
                 if (id === 'pos') renderPOSProducts();
-                if (id === 'accounts_tree') renderAccountsTree();
+                if (id === 'accounts_tree') renderCOATable();
                 if (id === 'reports') renderReports();
                 if (id === 'inventory') filterInventory('');
             } catch (e) { console.error('Section render error:', e); }
-        }
-
-        function renderAccountsTree() {
-            const tbody = document.getElementById('coa-body');
-            if (!tbody || !db.chartOfAccounts) return;
-            tbody.innerHTML = db.chartOfAccounts.map(a => {
-                const bal = getAccountBalance(a.code);
-                const isGroup = a.isGroup ? 'font-bold bg-slate-50' : '';
-                const indent = (a.level || 0) * 20;
-                return `<tr class="border-b hover:bg-blue-50 ${isGroup}">
-                    <td class="p-3 font-mono text-xs">${a.code}</td>
-                    <td class="p-3" style="padding-right:${indent + 12}px">${a.isGroup ? '<i class="fas fa-folder-open text-yellow-500 me-1"></i>' : '<i class="fas fa-file-alt text-slate-400 me-1"></i>'}${a.name}</td>
-                    <td class="p-3 text-xs text-slate-500">${a.type || ''}</td>
-                    <td class="p-3 font-bold font-mono ${bal < 0 ? 'text-red-500' : 'text-emerald-600'}">${bal.toFixed(2)}</td>
-                </tr>`;
-            }).join('');
         }
 
         function filterAccounts(q) {
