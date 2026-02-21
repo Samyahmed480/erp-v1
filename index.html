@@ -109,11 +109,13 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 50;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s;
+            overflow-y: auto;
+            padding: 40px 10px;
         }
 
         .modal.active {
@@ -125,11 +127,10 @@
             background: white;
             border-radius: 12px;
             max-width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
             width: 500px;
             transform: scale(0.9);
             transition: transform 0.3s;
+            margin-bottom: 20px;
         }
 
         .modal.active .modal-content {
@@ -1380,47 +1381,193 @@
 
             <!-- 5. Journal (Entries) -->
             <section id="journal" class="section-content">
-                <div class="bg-white p-6 rounded-xl shadow-sm mb-6">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4">قيد يومية يدوي</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
-                        <div class="md:col-span-3">
-                            <input type="text" id="manual-desc" placeholder="شرح القيد (البيان)"
-                                class="w-full p-2.5 border rounded-lg outline-none focus:border-blue-500">
+                <div class="flex flex-col gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fas fa-plus-circle text-blue-600"></i> قيد يومية يدوي
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-bold text-slate-500 mb-1">شرح القيد (البيان)</label>
+                                <input type="text" id="manual-desc" placeholder="أدخل وصفاً مفصلاً للقيد..."
+                                    class="w-full p-2.5 border rounded-lg outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">التاريخ</label>
+                                <input type="date" id="manual-date"
+                                    class="w-full p-2.5 border rounded-lg outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition">
+                            </div>
                         </div>
-                        <div>
-                            <input type="date" id="manual-date"
-                                class="w-full p-2.5 border rounded-lg outline-none focus:border-blue-500">
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                            <div
+                                class="grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-500 mb-2 px-2 uppercase tracking-wider">
+                                <div class="col-span-6">الحساب</div>
+                                <div class="col-span-2 text-center">مدين</div>
+                                <div class="col-span-2 text-center">دائن</div>
+                                <div class="col-span-2"></div>
+                            </div>
+                            <div id="journal-lines" class="space-y-2"></div>
+                            <button onclick="addJournalLineRow()"
+                                class="mt-4 text-xs bg-blue-50 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 font-bold transition flex items-center gap-2 w-fit">
+                                <i class="fas fa-plus"></i> إضافة طرف جديد
+                            </button>
+                        </div>
+
+                        <div class="flex justify-between items-center bg-slate-900 p-4 rounded-xl text-white shadow-lg">
+                            <div class="flex gap-6 text-sm font-mono font-bold">
+                                <div class="flex flex-col">
+                                    <span class="text-slate-400 text-[10px]">إجمالي المدين</span>
+                                    <span class="text-emerald-400 text-lg" id="total-dr">0.00</span>
+                                </div>
+                                <div class="w-px bg-slate-700 mx-2"></div>
+                                <div class="flex flex-col">
+                                    <span class="text-slate-400 text-[10px]">إجمالي الدائن</span>
+                                    <span class="text-red-400 text-lg" id="total-cr">0.00</span>
+                                </div>
+                                <span id="unbalanced-msg"
+                                    class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-xs hidden flex items-center gap-2 animate-pulse">
+                                    <i class="fas fa-exclamation-triangle"></i> القيد غير متزن
+                                </span>
+                            </div>
+                            <button onclick="saveManualJournal()"
+                                class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-blue-900/20 active:scale-95">
+                                ترحيل القيد <i class="fas fa-paper-plane ms-2"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4">
-                        <div class="grid grid-cols-12 gap-2 text-xs font-bold text-slate-500 mb-2 px-2">
-                            <div class="col-span-6">الحساب</div>
-                            <div class="col-span-2">مدين</div>
-                            <div class="col-span-2">دائن</div>
-                            <div class="col-span-2"></div>
+                    <!-- Journal List -->
+                    <div
+                        class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex-1 flex flex-col min-h-[400px]">
+                        <div class="flex flex-wrap justify-between items-center mb-5 gap-4">
+                            <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2 text-2xl">
+                                <i class="fas fa-book-open text-slate-400"></i> سجل العمليات المحاسبية
+                            </h3>
+                            <div class="flex gap-2 bg-slate-50 p-1.5 rounded-xl border">
+                                <input type="date" id="journal-filter-date" onchange="renderJournal()"
+                                    title="تصفية بالتاريخ"
+                                    class="bg-transparent text-xs p-1 outline-none border-r me-1">
+                                <div class="relative">
+                                    <i
+                                        class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"></i>
+                                    <input type="text" id="journal-search" placeholder="بحث في الملاحظات..."
+                                        onkeyup="renderJournal()"
+                                        class="bg-transparent text-xs py-1.5 pr-8 pl-3 rounded-lg outline-none w-56 focus:bg-white transition">
+                                </div>
+                            </div>
                         </div>
-                        <div id="journal-lines" class="space-y-2"></div>
-                        <button onclick="addJournalLineRow()"
-                            class="mt-4 text-xs bg-blue-50 text-blue-600 px-3 py-1.5 rounded-full hover:bg-blue-100 font-bold transition flex items-center gap-1 w-fit"><i
-                                class="fas fa-plus"></i> طرف جديد</button>
-                    </div>
-
-                    <div class="flex justify-between items-center bg-slate-100 p-3 rounded-lg border border-slate-200">
-                        <div class="flex gap-4 text-sm font-mono font-bold">
-                            <span class="text-emerald-600">مدين: <span id="total-dr">0.00</span></span>
-                            <span class="text-slate-300">|</span>
-                            <span class="text-red-600">دائن: <span id="total-cr">0.00</span></span>
-                            <span id="unbalanced-msg"
-                                class="text-red-500 bg-red-50 px-2 rounded text-xs hidden flex items-center gap-1"><i
-                                    class="fas fa-exclamation-circle"></i> غير متزن</span>
+                        <div class="overflow-y-auto flex-1 border rounded-xl bg-slate-50/30">
+                            <table id="journal-table" class="w-full text-xs text-right">
+                                <thead class="bg-slate-800 text-white sticky top-0 z-20">
+                                    <tr>
+                                        <th class="p-3 w-16 text-center border-l border-slate-700">#</th>
+                                        <th class="p-3 w-28 border-l border-slate-700">التاريخ</th>
+                                        <th class="p-3">البيان / الملاحظات</th>
+                                        <th class="p-3 w-28 text-center border-l border-slate-700">المصدر</th>
+                                        <th class="p-3 w-32 text-center border-l border-slate-700">إجمالي مدين</th>
+                                        <th class="p-3 w-32 text-center">إجمالي دائن</th>
+                                        <th class="p-3 w-20 px-4"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="journal-history-body"
+                                    class="divide-y divide-slate-100 bg-white shadow-inner">
+                                </tbody>
+                            </table>
                         </div>
-                        <button onclick="saveManualJournal()"
-                            class="bg-slate-800 text-white px-6 py-2 rounded-lg text-sm hover:bg-slate-700 font-bold shadow">ترحيل
-                            القيد</button>
                     </div>
                 </div>
             </section>
+
+            <!-- Modal تفاصيل القيد -->
+            <div id="entry-modal" class="modal">
+                <div class="modal-content w-[700px] p-0 shadow-2xl scale-95 transition-transform">
+                    <div class="bg-slate-900 text-white p-5 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg">
+                                <i class="fas fa-file-invoice-dollar text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg leading-tight" id="entry-modal-title">تفاصيل القيد المحاسبي
+                                </h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Transaction
+                                    Voucher Details</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center bg-white/10 rounded-lg p-1 gap-1">
+                                <button onclick="navigateEntry(1)" id="prev-entry-btn"
+                                    class="w-8 h-8 rounded-md hover:bg-white/20 transition flex items-center justify-center title='السابق'">
+                                    <i class="fas fa-chevron-right text-xs"></i>
+                                </button>
+                                <span class="text-[10px] font-bold px-1 opacity-50">تصفح</span>
+                                <button onclick="navigateEntry(-1)" id="next-entry-btn"
+                                    class="w-8 h-8 rounded-md hover:bg-white/20 transition flex items-center justify-center title='التالي'">
+                                    <i class="fas fa-chevron-left text-xs"></i>
+                                </button>
+                            </div>
+                            <button onclick="printEntry()"
+                                class="w-8 h-8 rounded-md bg-white/10 hover:bg-white/20 transition flex items-center justify-center title='طباعة'">
+                                <i class="fas fa-print text-xs"></i>
+                            </button>
+                            <button onclick="closeModal('entry-modal')"
+                                class="w-8 h-8 rounded-full hover:bg-white/10 transition flex items-center justify-center">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div
+                            class="mb-6 grid grid-cols-2 gap-8 text-sm bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div>
+                                <p class="text-[10px] text-slate-400 mb-1 font-bold">رقم القيد</p>
+                                <span class="font-mono text-blue-600 font-bold text-lg" id="view-entry-id"></span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 mb-1 font-bold">تاريخ العملية</p>
+                                <span class="font-bold" id="view-entry-date"></span>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-[10px] text-slate-400 mb-1 font-bold">البيان والوصف</p>
+                                <span class="text-slate-700 leading-relaxed font-bold" id="view-entry-desc"></span>
+                            </div>
+                        </div>
+                        <div class="border rounded-xl overflow-hidden shadow-sm">
+                            <table class="w-full text-xs text-right border-collapse">
+                                <thead class="bg-slate-100 text-slate-600">
+                                    <tr>
+                                        <th class="p-3 font-bold border-b">اسم الحساب</th>
+                                        <th
+                                            class="p-3 w-32 text-center font-bold border-b border-r bg-emerald-50 text-emerald-700">
+                                            مدين (DR)</th>
+                                        <th class="p-3 w-32 text-center font-bold border-b bg-red-50 text-red-700">دائن
+                                            (CR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="view-entry-lines" class="divide-y divide-slate-100"></tbody>
+                                <tfoot class="bg-slate-800 text-white font-bold">
+                                    <tr>
+                                        <td class="p-3 text-left">الإجمالي</td>
+                                        <td class="p-3 text-center border-r border-slate-700 font-mono"
+                                            id="view-total-dr">0.00</td>
+                                        <td class="p-3 text-center font-mono" id="view-total-cr">0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-5 flex justify-end gap-3 border-t">
+                        <button onclick="window.print()"
+                            class="text-slate-600 px-6 py-2 rounded-lg text-xs font-bold hover:bg-slate-200 transition">
+                            <i class="fas fa-print me-1"></i> طباعة القيد
+                        </button>
+                        <button onclick="closeModal('entry-modal')"
+                            class="bg-slate-900 text-white px-8 py-2.5 rounded-lg text-xs font-bold hover:bg-slate-800 transition active:scale-95 shadow-lg">
+                            إغلاق النافذة
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <!-- 9. Purchases (New) -->
             <section id="purchases" class="section-content">
@@ -1983,39 +2130,7 @@
                     <div class="flex flex-col gap-6 h-full">
 
 
-                        <!-- Payroll Run -->
-                        <div class="bg-white p-6 rounded-xl shadow-sm flex-1">
-                            <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">كشف الرواتب</h3>
-                            <div class="flex gap-2 mb-4">
-                                <input type="month" id="payroll-month" class="flex-1 p-2 border rounded outline-none">
-                                <button onclick="generatePayrollPreview()"
-                                    class="bg-emerald-600 text-white px-4 rounded font-bold hover:bg-emerald-700">إعداد
-                                    الكشف</button>
-                            </div>
-                            <div id="payroll-preview" class="hidden">
-                                <div class="overflow-y-auto max-h-[200px] border rounded mb-3">
-                                    <table class="w-full text-xs text-right bg-white">
-                                        <thead class="bg-slate-100 font-bold sticky top-0">
-                                            <tr>
-                                                <th class="p-2">الموظف</th>
-                                                <th class="p-2">الراتب</th>
-                                                <th class="p-2 text-green-600">(+)</th>
-                                                <th class="p-2 text-red-600">(-)</th>
-                                                <th class="p-2 font-bold">الصافي</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="payroll-table" class="divide-y"></tbody>
-                                    </table>
-                                </div>
-                                <div class="flex justify-between items-center pt-2 border-t">
-                                    <div class="font-bold text-lg">إجمالي الرواتب: <span id="payroll-total"
-                                            class="text-emerald-700">0.00</span></div>
-                                    <button onclick="postPayroll()"
-                                        class="bg-indigo-600 text-white px-6 py-2 rounded font-bold hover:bg-indigo-700 shadow">اعتماد
-                                        وصرف الرواتب</button>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </section>
@@ -2431,30 +2546,86 @@
 
             <!-- 6. Accounts Tree -->
             <section id="accounts_tree" class="section-content">
-                <div class="bg-white p-6 rounded-xl shadow-sm h-full flex flex-col">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-lg text-slate-800">الدليل المحاسبي</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="بحث..."
-                                class="p-1.5 border rounded text-xs w-32 focus:border-blue-500 outline-none"
-                                onkeyup="filterAccounts(this.value)">
-                            <button onclick="alert('لإضافة حساب، يرجى التواصل مع الدعم الفني')"
-                                class="bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg text-xs hover:bg-slate-200"><i
-                                    class="fas fa-lock"></i></button>
-                        </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+                    <!-- Account Form -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
+                        <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2"><span id="coa-form-title">إضافة
+                                حساب جديد</span></h3>
+                        <form onsubmit="saveAccount(event)" class="space-y-4">
+                            <input type="hidden" id="coa-id">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">اسم الحساب</label>
+                                <input type="text" id="coa-name" required
+                                    class="w-full p-2.5 border rounded-lg outline-none focus:border-blue-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1">الكود (اختياري)</label>
+                                    <input type="text" id="coa-code" placeholder="تلقائي"
+                                        class="w-full p-2.5 border rounded-lg outline-none font-mono text-sm bg-slate-50">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1">نوع الحساب</label>
+                                    <select id="coa-type"
+                                        class="w-full p-2.5 border rounded-lg outline-none text-sm bg-slate-50 focus:bg-white">
+                                        <option value="asset">أصل</option>
+                                        <option value="liability">التزام</option>
+                                        <option value="equity">حقوق ملكية</option>
+                                        <option value="revenue">إيراد</option>
+                                        <option value="expense">مصروف</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">الحساب الرئيسي
+                                    (اختياري)</label>
+                                <select id="coa-parent"
+                                    class="w-full p-2.5 border rounded-lg outline-none text-sm bg-slate-50 focus:bg-white">
+                                    <option value="">-- بدون (حساب رئيسي) --</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1">الرصيد الافتتاحي</label>
+                                <input type="number" id="coa-balance" value="0" step="0.01"
+                                    class="w-full p-2.5 border rounded-lg outline-none font-bold text-blue-600">
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button type="submit"
+                                    class="flex-1 bg-indigo-600 text-white py-2.5 rounded-lg font-bold hover:bg-indigo-700 shadow shadow-indigo-200">حفظ
+                                    الحساب</button>
+                                <button type="button" onclick="resetCoAForm()"
+                                    class="bg-slate-100 text-slate-600 px-4 py-2.5 rounded-lg font-bold hover:bg-slate-200">إلغاء</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="overflow-y-auto flex-1 border rounded-lg bg-white">
-                        <table class="w-full text-sm border-collapse">
-                            <thead class="bg-slate-800 text-white sticky top-0 z-10">
-                                <tr>
-                                    <th class="p-3 text-right w-32 font-mono">الكود</th>
-                                    <th class="p-3 text-right">اسم الحساب</th>
-                                    <th class="p-3 text-right w-24">النوع</th>
-                                    <th class="p-3 text-right w-32">الرصيد</th>
-                                </tr>
-                            </thead>
-                            <tbody id="coa-body" class="divide-y divide-slate-100"></tbody>
-                        </table>
+
+                    <!-- Accounts List -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm flex flex-col h-[600px]">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg text-slate-800">الدليل المحاسبي</h3>
+                            <div class="flex gap-2">
+                                <input type="text" placeholder="بحث..."
+                                    class="p-1.5 border rounded text-xs w-32 focus:border-blue-500 outline-none"
+                                    onkeyup="filterAccounts(this.value)">
+                                <button onclick="exportCoA()"
+                                    class="bg-green-50 text-green-600 px-3 py-1.5 rounded-lg text-xs hover:bg-green-100"
+                                    title="Excel"><i class="fas fa-file-excel"></i></button>
+                            </div>
+                        </div>
+                        <div class="overflow-y-auto flex-1 border rounded-lg bg-white">
+                            <table class="w-full text-sm border-collapse">
+                                <thead class="bg-slate-800 text-white sticky top-0 z-10">
+                                    <tr>
+                                        <th class="p-3 text-right w-24 font-mono">الكود</th>
+                                        <th class="p-3 text-right">اسم الحساب</th>
+                                        <th class="p-3 text-right w-20">النوع</th>
+                                        <th class="p-3 text-center w-28">الرصيد</th>
+                                        <th class="p-3 text-center w-20">إجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coa-body" class="divide-y divide-slate-100 text-xs"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -4450,12 +4621,17 @@
                     <span>${inv.total.toFixed(2)} ${db.settings.currency}</span>
                 </div>
             `;
-
             modal.classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('invoice-modal').classList.remove('active');
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if (m) m.classList.add('active');
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id || 'invoice-modal');
+            if (m) m.classList.remove('active');
         }
 
         function printCurrentModalInvoice() {
@@ -4471,7 +4647,7 @@
             return children.reduce((sum, child) => sum + getAccountBalance(child.code), 0);
         }
 
-        function addJournalEntry(date, desc, lines) {
+        function addJournalEntry(date, desc, lines, type = 'System') {
             const totalDr = lines.reduce((s, l) => s + (l.dr || 0), 0);
             const totalCr = lines.reduce((s, l) => s + (l.cr || 0), 0);
 
@@ -4483,7 +4659,7 @@
             const entryId = db.journal.length + 1;
             const userName = db.users.find(u => u.id == db.currentUser)?.name || 'System';
 
-            db.journal.push({ id: entryId, date, desc: desc + ` (بواسطة: ${userName})`, lines });
+            db.journal.push({ id: entryId, date, desc: desc + ` (بواسطة: ${userName})`, lines, type });
 
             lines.forEach(line => {
                 const acc = db.chartOfAccounts.find(a => a.code === line.code);
@@ -5234,10 +5410,27 @@
             document.getElementById('unbalanced-msg').classList.toggle('hidden', Math.abs(dr - cr) <= 0.01);
         }
         function saveManualJournal() {
-            const desc = document.getElementById('manual-desc').value; const date = document.getElementById('manual-date').value;
-            const lines = []; document.querySelectorAll('.j-row').forEach(row => { const c = row.querySelector('.j-code').value, d = parseFloat(row.querySelector('.j-dr').value || 0), r = parseFloat(row.querySelector('.j-cr').value || 0); if (d > 0 || r > 0) lines.push({ code: c, dr: d, cr: r }); });
-            if (lines.length < 2 || !desc) return showToast('بيانات ناقصة', 'error');
-            if (addJournalEntry(date, desc, lines)) { showToast('تم الترحيل'); document.getElementById('journal-lines').innerHTML = ''; addJournalLineRow(); addJournalLineRow(); document.getElementById('manual-desc').value = ''; calcJTotals(); }
+            const date = document.getElementById('manual-date').value;
+            const desc = document.getElementById('manual-desc').value;
+            const lines = [];
+
+            document.querySelectorAll('.journal-row').forEach(row => {
+                const code = row.querySelector('.acc-select').value;
+                const dr = parseFloat(row.querySelector('.dr-input').value) || 0;
+                const cr = parseFloat(row.querySelector('.cr-input').value) || 0;
+                if (code && (dr > 0 || cr > 0)) lines.push({ code, dr, cr });
+            });
+
+            if (lines.length < 2) return showToast('أدخل طرفين للقيد على الأقل', 'error');
+
+            if (addJournalEntry(date, desc, lines, 'Adjustment')) {
+                showToast('تم ترحيل القيد');
+                document.getElementById('journal-lines').innerHTML = '';
+                addJournalLineRow(); addJournalLineRow();
+                document.getElementById('manual-desc').value = '';
+                calcJTotals();
+                save(); renderAll();
+            }
         }
 
         function saveSettings(e) {
@@ -5341,7 +5534,101 @@
 
         function renderCOATable() {
             const tbody = document.getElementById('coa-body');
-            if (tbody) tbody.innerHTML = db.chartOfAccounts.map(a => `<tr class="border-b"><td class="p-3 font-mono level-${a.level}">${a.code}</td><td class="p-3 level-${a.level}">${a.name}</td><td class="p-3 text-xs">${a.type}</td><td class="p-3 font-bold ${getAccountBalance(a.code) < 0 ? 'text-red-500' : 'text-emerald-600'}">${getAccountBalance(a.code).toFixed(2)}</td></tr>`).join('');
+            if (!tbody) return;
+            tbody.innerHTML = db.chartOfAccounts.map(a => {
+                const bal = getAccountBalance(a.code);
+                return `<tr class="border-b hover:bg-slate-50">
+                    <td class="p-3 font-mono level-${a.level}">${a.code}</td>
+                    <td class="p-3 level-${a.level}">${a.name}</td>
+                    <td class="p-3 text-[10px] text-slate-500">${a.type}</td>
+                    <td class="p-3 text-center font-bold ${bal < 0 ? 'text-red-500' : 'text-emerald-600'}">${bal.toFixed(2)}</td>
+                    <td class="p-3 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button onclick="editAccount('${a.code}')" class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteAccount('${a.code}')" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+            populateCoAParents();
+        }
+
+        function saveAccount(e) {
+            e.preventDefault();
+            const id = document.getElementById('coa-id').value;
+            const name = document.getElementById('coa-name').value;
+            let code = document.getElementById('coa-code').value;
+            const type = document.getElementById('coa-type').value;
+            const parent = document.getElementById('coa-parent').value;
+            const initBal = parseFloat(document.getElementById('coa-balance').value) || 0;
+
+            if (!id && !code) {
+                // Generate auto code if not provided
+                const prefix = parent || (type === 'asset' ? '1' : type === 'liability' ? '2' : type === 'equity' ? '3' : type === 'revenue' ? '4' : '5');
+                const existing = db.chartOfAccounts.filter(a => a.code.startsWith(prefix) && a.code.length > prefix.length);
+                const nextSuffix = (existing.length + 1).toString().padStart(2, '0');
+                code = prefix + nextSuffix;
+            }
+
+            if (id) {
+                const acc = db.chartOfAccounts.find(a => a.code == id);
+                if (acc) {
+                    acc.name = name;
+                    acc.type = type;
+                    acc.parent = parent;
+                    acc.balance = initBal;
+                }
+            } else {
+                if (db.chartOfAccounts.some(a => a.code == code)) return showToast('الكود موجود بالفعل', 'error');
+                const level = parent ? (db.chartOfAccounts.find(x => x.code == parent)?.level + 1 || 2) : 1;
+                db.chartOfAccounts.push({
+                    code, name, type, parent, level, balance: initBal, isGroup: false
+                });
+                // Sort by code
+                db.chartOfAccounts.sort((a, b) => a.code.localeCompare(b.code));
+            }
+            save(); renderAll(); resetCoAForm();
+            showToast('تم حفظ الحساب بنجاح ✅');
+        }
+
+        function editAccount(code) {
+            const acc = db.chartOfAccounts.find(a => a.code == code);
+            if (!acc) return;
+            document.getElementById('coa-id').value = acc.code;
+            document.getElementById('coa-code').value = acc.code;
+            document.getElementById('coa-name').value = acc.name;
+            document.getElementById('coa-type').value = acc.type;
+            document.getElementById('coa-parent').value = acc.parent || '';
+            document.getElementById('coa-balance').value = acc.balance || 0;
+            document.getElementById('coa-form-title').innerText = 'تعديل حساب';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetCoAForm() {
+            document.getElementById('coa-id').value = '';
+            document.getElementById('coa-code').value = '';
+            document.getElementById('coa-name').value = '';
+            document.getElementById('coa-balance').value = 0;
+            document.getElementById('coa-form-title').innerText = 'إضافة حساب جديد';
+        }
+
+        function populateCoAParents() {
+            const sel = document.getElementById('coa-parent');
+            if (!sel) return;
+            const currentVal = sel.value;
+            sel.innerHTML = '<option value="">-- بدون (حساب رئيسي) --</option>' +
+                db.chartOfAccounts.filter(a => a.isGroup || a.level < 3).map(a => `<option value="${a.code}">${a.code} - ${a.name}</option>`).join('');
+            sel.value = currentVal;
+        }
+
+        function deleteAccount(code) {
+            if (confirm('هل أنت متأكد من حذف هذا الحساب؟')) {
+                if (db.chartOfAccounts.some(a => a.parent == code)) return showToast('لا يمكن حذف حساب له حسابات فرعية', 'error');
+                if (db.journal.some(j => j.lines.some(l => l.code == code))) return showToast('لا يمكن حذف حساب له قيود يومية', 'error');
+                db.chartOfAccounts = db.chartOfAccounts.filter(a => a.code !== code);
+                save(); renderAll();
+                showToast('تم حذف الحساب');
+            }
         }
 
         function renderReports() {
@@ -5447,6 +5734,7 @@
             try { renderInventoryTable(); } catch (e) { }
             try { renderRecentSales(); } catch (e) { }
             try { renderRecentPurchases(); } catch (e) { }
+            try { renderJournal(); } catch (e) { }
             try { renderCOATable(); } catch (e) { }
             try { renderUsersTable(); } catch (e) { }
             try { renderSuppliersTable(); } catch (e) { }
@@ -6443,52 +6731,6 @@
 
 
 
-        function generatePayrollPreview() {
-            const month = document.getElementById('payroll-month').value;
-            if (!month) return showToast('اختر الشهر', 'error');
-
-            const tbody = document.getElementById('payroll-table');
-            let totalNet = 0;
-
-            const rows = db.employees.map(emp => {
-                const actions = db.payrollActions.filter(a => a.empId == emp.id && a.date.startsWith(month));
-                const bonuses = actions.filter(a => a.type === 'bonus').reduce((sum, a) => sum + a.amount, 0);
-                const deductions = actions.filter(a => a.type === 'deduction').reduce((sum, a) => sum + a.amount, 0);
-                const net = emp.salary + bonuses - deductions;
-                totalNet += net;
-
-                return `<tr>
-                    <td class="p-2 font-bold">${emp.name}</td>
-                    <td class="p-2">${emp.salary}</td>
-                    <td class="p-2 text-green-600">${bonuses}</td>
-                    <td class="p-2 text-red-600">${deductions}</td>
-                    <td class="p-2 font-bold">${net}</td>
-                </tr>`;
-            }).join('');
-
-            tbody.innerHTML = rows;
-            document.getElementById('payroll-total').innerText = totalNet.toFixed(2);
-            document.getElementById('payroll-preview').classList.remove('hidden');
-        }
-
-        function postPayroll() {
-            if (!confirm('هل أنت متأكد من صرف الرواتب؟ سيتم تسجيل قيد يومي.')) return;
-            const total = parseFloat(document.getElementById('payroll-total').innerText);
-            const month = document.getElementById('payroll-month').value;
-            const date = new Date().toISOString().split('T')[0];
-
-            const lines = [
-                { code: '5202', dr: total, cr: 0 },
-                { code: '1101', dr: 0, cr: total }
-            ];
-
-            if (addJournalEntry(date, `رواتب شهر ${month}`, lines)) {
-                showToast('تم صرف الرواتب');
-                document.getElementById('payroll-preview').classList.add('hidden');
-                save(); renderAll();
-            }
-        }
-
         // ==========================================
         // NEW ENHANCEMENTS: Cash/Credit, Discounts, Statements, POS Receipt, Barcode
         // ==========================================
@@ -6831,6 +7073,7 @@
                 if (id === 'inst_collection') { renderInstCollection(); }
                 // Expenses
                 if (id === 'expense_vouchers') { renderExpenseVouchers(); }
+                if (id === 'journal') renderJournal();
                 // HR
                 if (id === 'hr_actions') { populateHRActionEmps(); renderHRActions(); }
                 if (id === 'hr_list') { renderHRList(); }
@@ -6853,6 +7096,164 @@
                 if (id === 'rpt_profits') { renderRptProfits(); }
             } catch (e) { console.error('Sub-module render error:', e); }
         };
+
+        // --- Journal Module Functions ---
+        function renderJournal() {
+            const tbody = document.getElementById('journal-history-body');
+            if (!tbody) return;
+            const filterDate = document.getElementById('journal-filter-date').value;
+            const search = document.getElementById('journal-search').value.toLowerCase();
+
+            let filtered = [...db.journal].reverse();
+            if (filterDate) filtered = filtered.filter(e => e.date === filterDate);
+            if (search) filtered = filtered.filter(e => e.desc.toLowerCase().includes(search));
+
+            tbody.innerHTML = filtered.length ? filtered.map(e => {
+                const lines = e.lines || [];
+                const totalDr = lines.reduce((s, l) => s + (l.dr || 0), 0);
+                const totalCr = lines.reduce((s, l) => s + (l.cr || 0), 0);
+                const typeColor = e.type === 'Adjustment' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+                const typeLabel = e.type === 'Adjustment' ? 'تعديل يدوي' : 'نظام آلي';
+
+                return `<tr class="hover:bg-blue-50/50 transition border-b border-slate-50">
+                    <td class="p-3 text-center font-mono text-slate-400 border-l">${e.id}</td>
+                    <td class="p-3 font-bold text-slate-600 border-l">${e.date}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-slate-800">${e.desc}</div>
+                    </td>
+                    <td class="p-3 text-center border-l">
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${typeColor}">${typeLabel}</span>
+                    </td>
+                    <td class="p-3 text-center font-bold text-emerald-600 border-l">${totalDr.toFixed(2)}</td>
+                    <td class="p-3 text-center font-bold text-red-600 border-l">${totalCr.toFixed(2)}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="viewEntry(${e.id})" class="text-blue-500 hover:text-blue-700 p-2 rounded-lg hover:bg-blue-50 transition">
+                            <i class="fas fa-eye text-sm"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('') : '<tr><td colspan="7" class="p-10 text-center text-slate-400 bg-slate-50/50 italic font-bold">لا توجد عمليات مسجلة تطابق البحث أو السجل فارغ حالياً</td></tr>';
+        }
+
+        let currentEntryId = null;
+        function viewEntry(id) {
+            const entry = db.journal.find(e => e.id == id);
+            if (!entry) return;
+            currentEntryId = id;
+
+            document.getElementById('view-entry-id').textContent = entry.id;
+            document.getElementById('view-entry-date').textContent = entry.date;
+            document.getElementById('view-entry-desc').textContent = entry.desc;
+
+            const tbody = document.getElementById('view-entry-lines');
+            tbody.innerHTML = entry.lines.map(l => {
+                const acc = db.chartOfAccounts.find(a => a.code === l.code);
+                return `<tr>
+                    <td class="p-3">
+                        <div class="font-bold text-slate-800">${acc ? acc.name : 'حساب غير معروف'}</div>
+                        <div class="text-[10px] font-mono text-slate-400 tracking-tighter">${l.code}</div>
+                    </td>
+                    <td class="p-3 text-center font-mono font-bold text-emerald-600 bg-emerald-50/30 border-r">${l.dr ? l.dr.toFixed(2) : '-'}</td>
+                    <td class="p-3 text-center font-mono font-bold text-red-600 bg-red-50/30">${l.cr ? l.cr.toFixed(2) : '-'}</td>
+                </tr>`;
+            }).join('');
+
+            const totalDr = entry.lines.reduce((s, l) => s + (l.dr || 0), 0);
+            const totalCr = entry.lines.reduce((s, l) => s + (l.cr || 0), 0);
+            document.getElementById('view-total-dr').textContent = totalDr.toFixed(2);
+            document.getElementById('view-total-cr').textContent = totalCr.toFixed(2);
+
+            // Update Nav Buttons
+            const sorted = [...db.journal].reverse();
+            const idx = sorted.findIndex(e => e.id === id);
+            document.getElementById('prev-entry-btn').disabled = (idx >= sorted.length - 1);
+            document.getElementById('next-entry-btn').disabled = (idx <= 0);
+            document.getElementById('prev-entry-btn').style.opacity = (idx >= sorted.length - 1) ? '0.3' : '1';
+            document.getElementById('next-entry-btn').style.opacity = (idx <= 0) ? '0.3' : '1';
+
+            openModal('entry-modal');
+        }
+
+        function navigateEntry(direction) {
+            const sorted = [...db.journal].reverse();
+            const idx = sorted.findIndex(e => e.id === currentEntryId);
+            const nextIdx = idx + direction;
+            if (nextIdx >= 0 && nextIdx < sorted.length) {
+                viewEntry(sorted[nextIdx].id);
+            }
+        }
+
+        function printEntry() {
+            if (!currentEntryId) return;
+            const entry = db.journal.find(e => e.id == currentEntryId);
+            if (!entry) return;
+
+            const printArea = document.getElementById('print-area');
+            const totalDr = entry.lines.reduce((s, l) => s + (l.dr || 0), 0);
+            const totalCr = entry.lines.reduce((s, l) => s + (l.cr || 0), 0);
+            const userName = entry.desc.split(' (بواسطة: ')[1]?.replace(')', '') || 'النظام';
+
+            printArea.innerHTML = `
+                <div class="text-center mb-6">
+                    ${db.settings.logo ? `<img src="${db.settings.logo}" style="height: 80px; margin: 0 auto 10px auto; display: block;">` : ''}
+                    <h1 class="text-2xl font-bold">${db.settings.companyName}</h1>
+                    <p class="text-xs text-slate-500">${db.settings.address || ''} - ${db.settings.phone || ''}</p>
+                    <div class="mt-4 inline-block border-2 border-slate-800 px-6 py-1 rounded-lg">
+                        <h2 class="text-xl font-bold">سند قيد محاسبي</h2>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 border-b-2 border-slate-100 pb-4 mb-4 text-sm">
+                    <div class="text-right space-y-1">
+                        <p><strong>رقم القيد:</strong> <span class="font-mono text-blue-600">#${entry.id}</span></p>
+                        <p><strong>تاريخ القيد:</strong> ${entry.date}</p>
+                    </div>
+                    <div class="text-left space-y-1">
+                        <p><strong>نوع القيد:</strong> ${entry.type === 'Adjustment' ? 'تعديل يدوي' : 'نظام آلي'}</p>
+                        <p><strong>بواسطة:</strong> ${userName}</p>
+                    </div>
+                </div>
+                <div class="mb-6 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                    <p class="text-sm"><strong>البيان والوصف:</strong> ${entry.desc}</p>
+                </div>
+                <table class="w-full text-sm mb-8 border-collapse border border-slate-800 text-center">
+                    <thead class="bg-slate-100">
+                        <tr>
+                            <th class="border border-slate-800 p-2 w-24">كود الحساب</th>
+                            <th class="border border-slate-800 p-2 text-right">اسم الحساب</th>
+                            <th class="border border-slate-800 p-2 w-28 bg-emerald-50 text-emerald-700">مدين (DR)</th>
+                            <th class="border border-slate-800 p-2 w-28 bg-red-50 text-red-700">دائن (CR)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${entry.lines.map(l => {
+                const acc = db.chartOfAccounts.find(a => a.code === l.code);
+                return `<tr>
+                                <td class="border border-slate-800 p-2 font-mono text-xs">${l.code}</td>
+                                <td class="border border-slate-800 p-2 text-right font-bold">${acc ? acc.name : 'حساب غير معروف'}</td>
+                                <td class="border border-slate-800 p-2 font-bold text-emerald-600">${l.dr ? l.dr.toFixed(2) : '-'}</td>
+                                <td class="border border-slate-800 p-2 font-bold text-red-600">${l.cr ? l.cr.toFixed(2) : '-'}</td>
+                            </tr>`;
+            }).join('')}
+                    </tbody>
+                    <tfoot class="bg-slate-800 text-white font-bold">
+                        <tr>
+                            <td colspan="2" class="p-2 text-left border border-slate-800">الإجمالي النهائي</td>
+                            <td class="p-2 border border-slate-800 font-mono">${totalDr.toFixed(2)}</td>
+                            <td class="p-2 border border-slate-800 font-mono">${totalCr.toFixed(2)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="grid grid-cols-3 gap-12 mt-16 text-center text-[10px] font-bold uppercase tracking-widest">
+                    <div class="border-t border-slate-400 pt-2 text-slate-500">توقيع المحاسب<br><span class="text-[8px] opacity-40">Accountant Signature</span></div>
+                    <div class="border-t border-slate-400 pt-2 text-slate-500">المدير المالي<br><span class="text-[8px] opacity-40">Financial Manager</span></div>
+                    <div class="border-t border-slate-400 pt-2 text-slate-500">المدير العام<br><span class="text-[8px] opacity-40">General Manager Signature</span></div>
+                </div>
+            `;
+
+            printArea.classList.remove('hidden');
+            window.print();
+            printArea.classList.add('hidden');
+        }
 
         // --- Sales Invoice List (Individual) ---
         function renderSalesInvoices() {
