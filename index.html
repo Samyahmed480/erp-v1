@@ -399,7 +399,7 @@
                 <i class="fas fa-chart-pie w-7 text-center"></i> لوحة القيادة</button>
 
             <!-- نقطة البيع -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-pos">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-calculator w-7 text-center"></i> نقطة البيع</span>
@@ -419,7 +419,7 @@
             </div>
 
             <!-- الفواتير -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-invoices">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-file-invoice w-7 text-center"></i> الفواتير</span>
@@ -448,7 +448,7 @@
             </div>
 
             <!-- المبيعات والعملاء -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-sales">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-shopping-bag w-7 text-center"></i> المبيعات والعملاء</span>
@@ -469,7 +469,7 @@
             </div>
 
             <!-- المشتريات والموردين -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-purchases">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-shopping-cart w-7 text-center"></i> المشتريات والموردين</span>
@@ -491,7 +491,7 @@
             </div>
 
             <!-- الخدمات -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-services">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-tools w-7 text-center"></i> الخدمات</span>
@@ -509,13 +509,13 @@
             </div>
 
             <!-- المخزون -->
-            <button onclick="showSection('inventory')"
+            <button onclick="showSection('inventory')" id="nav-inventory"
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="inventory">
                 <i class="fas fa-boxes w-7 text-center"></i> إدارة المخزون</button>
 
             <!-- التقسيط -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-installments">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-calendar-alt w-7 text-center"></i> التقسيط</span>
@@ -538,7 +538,7 @@
             </div>
 
             <!-- المصروفات -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-expenses">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-money-bill-wave w-7 text-center"></i> المصروفات</span>
@@ -557,7 +557,7 @@
             </div>
 
             <!-- الموارد البشرية -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-hr">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-user-tie w-7 text-center"></i> الموارد البشرية</span>
@@ -588,7 +588,7 @@
             <div class="my-2 border-t border-slate-700"></div>
 
             <!-- المحاسبة -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-accounting">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-book w-7 text-center"></i> المحاسبة</span>
@@ -606,7 +606,7 @@
             </div>
 
             <!-- التقارير -->
-            <div class="sidebar-group">
+            <div class="sidebar-group" id="nav-reports">
                 <button onclick="toggleSubMenu(this)"
                     class="w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300 justify-between">
                     <span><i class="fas fa-chart-bar w-7 text-center"></i> التقارير</span>
@@ -667,15 +667,15 @@
 
             <div class="my-2 border-t border-slate-700"></div>
 
-            <button onclick="showSection('users')"
+            <button onclick="showSection('users')" id="nav-users"
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="users">
                 <i class="fas fa-users-cog w-7 text-center"></i> المستخدمين</button>
-            <button onclick="showSection('settings')"
+            <button onclick="showSection('settings')" id="nav-settings"
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="settings">
                 <i class="fas fa-cogs w-7 text-center"></i> الإعدادات</button>
-            <button onclick="showSection('support')"
+            <button onclick="showSection('support')" id="nav-support"
                 class="nav-btn w-full text-right p-2.5 rounded-lg hover:bg-slate-800 transition flex items-center text-slate-300"
                 data-target="support">
                 <i class="fas fa-headset w-7 text-center"></i> الدعم الفني</button>
@@ -987,9 +987,89 @@
                                     <option value="accountant">محاسب</option>
                                 </select>
                             </div>
+
+                            <!-- Custom Permissions Matrix -->
+                            <div class="border rounded-lg p-3 bg-slate-50">
+                                <h4 class="font-bold text-xs text-slate-700 mb-2 border-b pb-1 flex justify-between">
+                                    <span>صلاحيات النظام (مخصص)</span>
+                                    <button type="button" onclick="selectAllPermissions()"
+                                        class="text-blue-600 hover:text-blue-800 text-[10px]">تحديد الكل</button>
+                                </h4>
+                                <div class="grid grid-cols-2 gap-2" id="permissions-grid">
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-pos" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> نقطة البيع
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-invoices" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> الفواتير
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-sales" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> المبيعات والعملاء
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-purchases" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> المشتريات والموردين
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-services" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> الخدمات
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-inventory" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> إدارة المخزون
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-installments"
+                                            class="w-3 h-3 text-blue-600 rounded" checked> التقسيط
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-expenses" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> المصروفات
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-hr" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> الموارد البشرية
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-accounting"
+                                            class="w-3 h-3 text-blue-600 rounded" checked> المحاسبة (عرض)
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-accounting-add"
+                                            class="w-3 h-3 text-blue-600 rounded" checked> المحاسبة (إضافة)
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-accounting-edit"
+                                            class="w-3 h-3 text-blue-600 rounded" checked> المحاسبة (تعديل/حذف)
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-reports" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> التقارير
+                                    </label>
+                                    <label class="flex items-center gap-2 text-xs text-slate-600">
+                                        <input type="checkbox" id="perm-settings" class="w-3 h-3 text-blue-600 rounded"
+                                            checked> الإعدادات والمستخدمين
+                                    </label>
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-2">*تطبيق فوري للصلاحيات (يتم إخفاء القوائم غير
+                                    المصرح بها).</p>
+                                <script>
+                                    function selectAllPermissions() {
+                                        document.querySelectorAll('#permissions-grid input[type="checkbox"]').forEach(c => c.checked = true);
+                                    }
+                                </script>
+                            </div>
+
                             <div><label class="block text-xs text-slate-500 mb-1">رقم الهاتف</label><input type="text"
                                     id="user-phone"
                                     class="w-full p-2 border rounded focus:border-blue-500 outline-none"></div>
+
+                            <div><label class="block text-xs text-slate-500 mb-1">كلمة المرور</label><input
+                                    type="password" id="user-password" required
+                                    class="w-full p-2 border rounded focus:border-blue-500 outline-none w-full"
+                                    autocomplete="new-password"></div>
                             <div class="flex gap-2">
                                 <button type="submit"
                                     class="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 font-bold shadow">حفظ</button>
@@ -4285,38 +4365,44 @@
                         <div class="bg-slate-50 p-4 rounded-lg">
                             <h4 class="font-bold text-sm mb-2">تفاصيل المصروفات</h4>
                             <div id="rpt-pft-exp-details" class="space-y-1 text-xs"></div>
+                        </div>
                     </div>
-                </div>
             </section>
 
             <!-- الدعم الفني -->
             <section id="support" class="section-content">
                 <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-slate-100">
                     <div class="text-center mb-8">
-                        <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                        <div
+                            class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
                             <i class="fas fa-headset text-4xl"></i>
                         </div>
                         <h2 class="text-2xl font-bold text-slate-800 mb-2">الدعم الفني والمساعدة</h2>
-                        <p class="text-slate-500">نحن هنا لمساعدتك دائماً. يمكنك التواصل مع فريق الدعم أو مبرمج النظام مباشرة عبر الواتساب للأعطال الفنية والاستفسارات.</p>
+                        <p class="text-slate-500">نحن هنا لمساعدتك دائماً. يمكنك التواصل مع فريق الدعم أو مبرمج النظام
+                            مباشرة عبر الواتساب للأعطال الفنية والاستفسارات.</p>
                     </div>
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- الدعم الفني -->
-                        <div class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
+                        <div
+                            class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
                             <i class="fas fa-user-clock text-4xl text-slate-400 mb-4"></i>
                             <h3 class="font-bold text-lg mb-1 text-slate-800">الدعم الفني</h3>
                             <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01279180008</p>
-                            <a href="https://wa.me/201279180008" target="_blank" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
+                            <a href="https://wa.me/201279180008" target="_blank"
+                                class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
                                 <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
                             </a>
                         </div>
-                        
+
                         <!-- المبرمج -->
-                        <div class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
+                        <div
+                            class="p-6 border border-slate-200 rounded-xl bg-slate-50 hover:shadow-md transition text-center">
                             <i class="fas fa-laptop-code text-4xl text-slate-400 mb-4"></i>
                             <h3 class="font-bold text-lg mb-1 text-slate-800">مبرمج النظام</h3>
                             <p class="text-lg font-mono text-slate-600 mb-6 font-bold" dir="ltr">01508090753</p>
-                            <a href="https://wa.me/201508090753" target="_blank" class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
+                            <a href="https://wa.me/201508090753" target="_blank"
+                                class="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 rounded-lg font-bold transition">
                                 <i class="fab fa-whatsapp me-2 text-lg"></i>تواصل واتساب
                             </a>
                         </div>
@@ -4331,13 +4417,17 @@
     <div id="coa-details-modal" class="modal">
         <div class="modal-content" style="max-width:800px; width:95%;" id="print-coa-ledger">
             <div class="flex justify-between items-center mb-4 border-b pb-2 no-print">
-                <h3 class="font-bold text-lg text-slate-800"><i class="fas fa-book me-2"></i>كشف حساب / تفاصيل (<span id="coa-det-code-val"></span>)</h3>
+                <h3 class="font-bold text-lg text-slate-800"><i class="fas fa-book me-2"></i>كشف حساب / تفاصيل (<span
+                        id="coa-det-code-val"></span>)</h3>
                 <div class="flex gap-2">
-                    <button onclick="printSection('print-coa-ledger')" class="text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded transition text-sm flex items-center font-bold"><i class="fas fa-print me-1"></i> طباعة</button>
-                    <button onclick="closeModal('coa-details-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+                    <button onclick="printSection('print-coa-ledger')"
+                        class="text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded transition text-sm flex items-center font-bold"><i
+                            class="fas fa-print me-1"></i> طباعة</button>
+                    <button onclick="closeModal('coa-details-modal')" class="text-slate-400 hover:text-red-500"><i
+                            class="fas fa-times text-xl"></i></button>
                 </div>
             </div>
-            
+
             <!-- معلومات للطباعة فقط كترويسة -->
             <div class="hidden print:block mb-6 text-center border-b pb-4">
                 <h2 class="text-2xl font-bold mb-2">كشف حساب تفصيلي</h2>
@@ -4452,8 +4542,63 @@
             e.preventDefault();
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            if (u === 'admin' && p === '123') {
+
+            // Await DB Load to authenticate properly if it's the first time
+            if (!db.users) {
+                // Initial bypass if DB is not loaded yet (fallback)
+                if (u === 'admin' && p === '123') {
+                    currentUser = { id: 1, name: 'Admin', role: 'admin' };
+                    document.getElementById('login-modal').classList.add('hidden');
+                    init();
+                    return;
+                }
+            }
+
+            // Authenticate against db.users (Check against new password field, fallback to old bypass for legacy users if no pass set)
+            const user = db.users.find(user =>
+                (user.name === u || user.phone === u) &&
+                (user.password ? p === user.password : (p === '123' || user.phone === p))
+            );
+
+            if (user || (u === 'admin' && p === '123')) {
+                currentUser = user || { id: 1, name: 'Admin', role: 'admin' };
                 document.getElementById('login-modal').classList.add('hidden');
+
+                // Enforce Sidebar Permissions Immediately
+                // Enforce Comprehensive Sidebar Permissions
+                const p = currentUser.permissions || {};
+
+                // Helper to safely toggle sidebar groups
+                const toggleNav = (id, permission, defaultState = true) => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        const hasPerm = permission !== undefined ? permission : (currentUser.role === 'admin' ? true : defaultState);
+                        el.style.display = hasPerm ? 'block' : 'none';
+                    }
+                };
+
+                toggleNav('nav-pos', p.pos);
+                toggleNav('nav-invoices', p.invoices);
+                toggleNav('nav-sales', p.sales);
+                toggleNav('nav-purchases', p.purchases);
+                toggleNav('nav-services', p.services);
+                toggleNav('nav-inventory', p.inventory);
+                toggleNav('nav-installments', p.installments);
+                toggleNav('nav-expenses', p.expenses);
+                toggleNav('nav-hr', p.hr);
+                toggleNav('nav-reports', p.reports);
+                toggleNav('nav-users', p.settings);
+                toggleNav('nav-settings', p.settings);
+                toggleNav('nav-support', true); // Support is always visible
+
+                // Account specific logic
+                const navAcc = document.getElementById('nav-accounting');
+                if (navAcc) {
+                    const accPerms = p.accounts || { view: true, add: true, edit: true };
+                    const canViewAccounts = currentUser.role !== 'admin' && !p.accounts ? false : accPerms.view;
+                    navAcc.style.display = canViewAccounts ? 'block' : 'none';
+                }
+
                 init();
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
@@ -4547,13 +4692,40 @@
             const name = document.getElementById('user-name').value;
             const role = document.getElementById('user-role').value;
             const phone = document.getElementById('user-phone').value;
+            const password = document.getElementById('user-password').value;
+
+            // Gather Comprehensive Permissions
+            const permissions = {
+                pos: document.getElementById('perm-pos').checked,
+                invoices: document.getElementById('perm-invoices').checked,
+                sales: document.getElementById('perm-sales').checked,
+                purchases: document.getElementById('perm-purchases').checked,
+                services: document.getElementById('perm-services').checked,
+                inventory: document.getElementById('perm-inventory').checked,
+                installments: document.getElementById('perm-installments').checked,
+                expenses: document.getElementById('perm-expenses').checked,
+                hr: document.getElementById('perm-hr').checked,
+                reports: document.getElementById('perm-reports').checked,
+                settings: document.getElementById('perm-settings').checked,
+                accounts: {
+                    view: document.getElementById('perm-accounting').checked,
+                    add: document.getElementById('perm-accounting-add').checked,
+                    edit: document.getElementById('perm-accounting-edit').checked
+                }
+            };
 
             if (id) { // Edit
                 const user = db.users.find(u => u.id == id);
-                if (user) { user.name = name; user.role = role; user.phone = phone; }
+                if (user) {
+                    user.name = name;
+                    user.role = role;
+                    user.phone = phone;
+                    user.password = password;
+                    user.permissions = permissions;
+                }
                 showToast('تم تعديل المستخدم');
             } else { // New
-                db.users.push({ id: Date.now(), name, role, phone });
+                db.users.push({ id: Date.now(), name, role, phone, password, permissions });
                 showToast('تم إضافة المستخدم');
             }
             save(); renderUsersTable(); populateSelects(); resetUserForm();
@@ -4573,6 +4745,27 @@
                 document.getElementById('user-name').value = user.name;
                 document.getElementById('user-role').value = user.role;
                 document.getElementById('user-phone').value = user.phone || '';
+                document.getElementById('user-password').value = user.password || '';
+
+                // Load Permissions (Default true for old users to prevent lockouts)
+                const p = user.permissions || {};
+                document.getElementById('perm-pos').checked = p.pos !== false;
+                document.getElementById('perm-invoices').checked = p.invoices !== false;
+                document.getElementById('perm-sales').checked = p.sales !== false;
+                document.getElementById('perm-purchases').checked = p.purchases !== false;
+                document.getElementById('perm-services').checked = p.services !== false;
+                document.getElementById('perm-inventory').checked = p.inventory !== false;
+                document.getElementById('perm-installments').checked = p.installments !== false;
+                document.getElementById('perm-expenses').checked = p.expenses !== false;
+                document.getElementById('perm-hr').checked = p.hr !== false;
+                document.getElementById('perm-reports').checked = p.reports !== false;
+                document.getElementById('perm-settings').checked = p.settings !== false;
+
+                const acc = p.accounts || { view: true, add: true, edit: true };
+                document.getElementById('perm-accounting').checked = acc.view;
+                document.getElementById('perm-accounting-add').checked = acc.add;
+                document.getElementById('perm-accounting-edit').checked = acc.edit;
+
                 document.getElementById('user-form-title').innerText = 'تعديل مستخدم';
             }
         }
@@ -4581,6 +4774,8 @@
             document.getElementById('user-id').value = '';
             document.getElementById('user-name').value = '';
             document.getElementById('user-phone').value = '';
+            document.getElementById('user-password').value = '';
+            document.querySelectorAll('#permissions-grid input[type="checkbox"]').forEach(c => c.checked = true);
             document.getElementById('user-form-title').innerText = 'إضافة مستخدم';
         }
 
@@ -5566,9 +5761,76 @@
         }
 
         function loadSettingsToForm() { document.getElementById('set-name').value = db.settings.companyName; document.getElementById('set-vat-rate').value = db.settings.vatRate; document.getElementById('set-currency').value = db.settings.currency; document.getElementById('set-phone').value = db.settings.phone; document.getElementById('set-address').value = db.settings.address; document.getElementById('set-vat-no').value = db.settings.vatNumber; document.getElementById('set-logo-url').value = db.settings.logo || ''; document.getElementById('header-company-name').innerText = db.settings.companyName; document.querySelectorAll('.currency').forEach(el => el.setAttribute('data-curr', db.settings.currency)); document.getElementById('cart-vat-rate').innerText = db.settings.vatRate; renderPaymentMethods(); }
-        function exportData() { const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db)); a.download = "erp_backup.json"; document.body.appendChild(a); a.click(); a.remove(); }
-        function importData(inp) { const f = inp.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { try { db = JSON.parse(e.target.result); save(); location.reload() } catch (x) { alert('خطأ') } }; r.readAsText(f); }
-        function resetData() { if (confirm('تأكيد التصفير؟')) { localStorage.removeItem('erp_pro_v10'); location.reload(); } }
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "WEBMAX_ERP_Backup_" + new Date().toISOString().split('T')[0] + ".json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(inp) {
+            const f = inp.files[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = e => {
+                try {
+                    const importedDb = JSON.parse(e.target.result);
+                    if (importedDb && importedDb.settings) {
+                        db = importedDb;
+                        save();
+                        alert('تم استعادة النسخة الاحتياطية بنجاح! سيتم إعادة تحميل النظام.');
+                        location.reload();
+                    } else {
+                        alert('ملف النسخة الاحتياطية غير صالح!');
+                    }
+                } catch (x) {
+                    alert('خطأ في قراءة ملف النسخة الاحتياطية');
+                }
+            };
+            r.readAsText(f);
+        }
+
+        function resetData() {
+            if (confirm('تحذير خطير: هل أنت متأكد من تصفير النظام؟ سيتم مسح جميع حركات البيع، الشراء، المصروفات والقيود اليومية والرواتب. (سيتم الاحتفاظ بالمستخدمين، الإعدادات، الأصناف، العملاء والدليل المحاسبي الأساسي)')) {
+                // Keep Structural Data
+                const preservedUsers = db.users;
+                const preservedSettings = db.settings;
+                const preservedCoA = db.chartOfAccounts;
+                const preservedProducts = db.products;
+                const preservedCustomers = db.customers;
+                const preservedSuppliers = db.suppliers;
+                const preservedEmployees = db.employees;
+
+                // Reset Transactional Data
+                db = {
+                    users: preservedUsers,
+                    settings: preservedSettings,
+                    chartOfAccounts: preservedCoA,
+                    products: preservedProducts,
+                    customers: preservedCustomers,
+                    suppliers: preservedSuppliers,
+                    employees: preservedEmployees,
+                    sales: [],
+                    purchases: [],
+                    expenses: [],
+                    journal: [],
+                    installments: [],
+                    installmentCustomers: db.installmentCustomers || [], // Usually keep names, but drop invoices (below)
+                    installmentInvoices: [],
+                    installmentCollections: [],
+                    services: [],
+                    hr_actions: [],
+                    hr_payroll: []
+                };
+
+                save();
+                alert('تم تصفير حركات النظام بنجاح وبدء دورة مالية جديدة.');
+                location.reload();
+            }
+        }
 
         function updateLogoView() {
             const logoImg = document.getElementById('sidebar-logo-img');
@@ -5625,21 +5887,39 @@
         function renderCOATable() {
             const tbody = document.getElementById('coa-body');
             if (!tbody) return;
-            // Removed strict sort to allow drag-and-drop manual ordering
+
+            // Current User Permissions Check
+            let canEdit = true;
+            if (currentUser && currentUser.permissions && currentUser.permissions.accounts) {
+                canEdit = currentUser.permissions.accounts.edit;
+            } else if (currentUser && currentUser.role !== 'admin') {
+                canEdit = false; // Fallback for old users without permissions array
+            }
+
             tbody.innerHTML = db.chartOfAccounts.map((a, idx) => {
                 const bal = getAccountBalance(a.code);
                 const balColor = bal < 0 ? '#ef4444' : '#059669';
-                return `<tr dir="rtl" style="border-bottom:1px solid #f1f5f9; cursor:grab;"
-                            draggable="true"
+
+                const dragAttrs = canEdit ? `draggable="true" ondragstart="coaDragStart(event)" ondragover="coaDragOver(event)" ondrop="coaDrop(event)" ondragend="coaDragEnd(event)" cursor:grab;` : `cursor:default;`;
+                const dragIcon = canEdit ? `<i class="fas fa-grip-vertical" style="font-size:10px;"></i>` : ``;
+
+                const editBtn = canEdit ? `
+                    <button onclick="editAccount('${a.code}')" title="تعديل"
+                        style="background:#eff6ff; color:#2563eb; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-edit" style="font-size:10px;"></i>
+                    </button>
+                    <button onclick="deleteAccount('${a.code}')" title="حذف"
+                        style="background:#fef2f2; color:#ef4444; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-trash" style="font-size:10px;"></i>
+                    </button>` : ``;
+
+                return `<tr dir="rtl" style="border-bottom:1px solid #f1f5f9; ${canEdit ? 'cursor:grab;' : ''}"
                             data-code="${a.code}"
-                            ondragstart="coaDragStart(event)"
-                            ondragover="coaDragOver(event)"
-                            ondrop="coaDrop(event)"
-                            ondragend="coaDragEnd(event)"
+                            ${dragAttrs}
                             onmouseover="this.style.background='#eff6ff'"
                             onmouseout="this.style.background=''">
                     <td style="width:30px; padding:5px 4px; text-align:center; color:#cbd5e1; user-select:none;">
-                        <i class="fas fa-grip-vertical" style="font-size:10px;"></i>
+                        ${dragIcon}
                     </td>
                     <td style="width:70px; padding:5px 6px; text-align:right; font-family:monospace; font-size:11px; white-space:nowrap; overflow:hidden;">${a.code}</td>
                     <td style="padding:5px 6px; text-align:right; font-size:11px; font-weight:500; max-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.name}">${a.name}</td>
@@ -5651,14 +5931,7 @@
                                 style="background:#f3f4f6; color:#475569; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
                                 <i class="fas fa-eye" style="font-size:10px;"></i>
                             </button>
-                            <button onclick="editAccount('${a.code}')" title="تعديل"
-                                style="background:#eff6ff; color:#2563eb; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
-                                <i class="fas fa-edit" style="font-size:10px;"></i>
-                            </button>
-                            <button onclick="deleteAccount('${a.code}')" title="حذف"
-                                style="background:#fef2f2; color:#ef4444; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
-                                <i class="fas fa-trash" style="font-size:10px;"></i>
-                            </button>
+                            ${editBtn}
                         </div>
                     </td>
                 </tr>`;
@@ -5709,9 +5982,22 @@
         function exportCoA() {
             let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
             csvContent += "الكود,اسم الحساب,النوع,الرصيد\n";
+
+            const typeMap = {
+                'asset': 'أصول',
+                'liability': 'الالتزامات',
+                'equity': 'حقوق الملكية',
+                'revenue': 'الإيرادات',
+                'expense': 'المصروفات'
+            };
+
             db.chartOfAccounts.forEach(a => {
                 const bal = getAccountBalance(a.code);
-                csvContent += `${a.code},"${a.name}",${a.type},${bal.toFixed(2)}\n`;
+                const translatedType = typeMap[a.type] || a.type;
+                const safeName = a.name ? a.name.replace(/"/g, '""') : '';
+
+                // Use ="code" to force Excel to treat it as string and not drop leading zeros
+                csvContent += `="${a.code}","${safeName}","${translatedType}",${bal.toFixed(2)}\n`;
             });
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
@@ -5724,6 +6010,16 @@
 
         function saveAccount(e) {
             e.preventDefault();
+
+            // Permission Check
+            if (currentUser && currentUser.permissions && currentUser.permissions.accounts) {
+                if (!currentUser.permissions.accounts.add) {
+                    return showToast('عفواً، لا تملك صلاحية إضافة حسابات جديدة', 'error');
+                }
+            } else if (currentUser && currentUser.role !== 'admin') {
+                return showToast('عفواً، لا تملك صلاحية إضافة حسابات', 'error');
+            }
+
             const id = document.getElementById('coa-id').value;
             const name = document.getElementById('coa-name').value;
             let code = document.getElementById('coa-code').value;
@@ -5767,12 +6063,12 @@
         function viewAccount(code) {
             const acc = db.chartOfAccounts.find(a => a.code == code);
             if (!acc) return;
-            
+
             document.getElementById('coa-det-code-val').innerText = acc.code;
-            
+
             // For printing
             const today = new Date();
-            const dateStr = today.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+            const dateStr = today.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             document.getElementById('print-coa-date').innerText = 'تاريخ الطباعة: ' + dateStr;
 
             document.getElementById('coa-det-name').innerText = acc.name;
@@ -5864,6 +6160,15 @@
         }
 
         function deleteAccount(code) {
+            // Permission Check
+            if (currentUser && currentUser.permissions && currentUser.permissions.accounts) {
+                if (!currentUser.permissions.accounts.edit) {
+                    return showToast('عفواً، لا تملك صلاحية التعديل أو الحذف', 'error');
+                }
+            } else if (currentUser && currentUser.role !== 'admin') {
+                return showToast('عفواً، لا تملك صلاحية الحذف', 'error');
+            }
+
             if (confirm('هل أنت متأكد من حذف هذا الحساب؟')) {
                 if (db.chartOfAccounts.some(a => a.parent == code)) return showToast('لا يمكن حذف حساب له حسابات فرعية', 'error');
                 if (db.journal.some(j => j.lines.some(l => l.code == code))) return showToast('لا يمكن حذف حساب له قيود يومية', 'error');
@@ -6030,6 +6335,51 @@
             }
         }
         function showSection(id) {
+            // Comprehensive Permission Enforcement (Routing)
+            if (id !== 'dashboard' && id !== 'login' && currentUser && currentUser.role !== 'admin') {
+                const p = currentUser.permissions || {};
+                let hasAccess = true;
+                let reqPerm = '';
+
+                // Map sections to their required permission key
+                const permMap = {
+                    'pos': p.pos, 'pos_products': p.pos, 'barcode': p.pos,
+                    'invoices': p.invoices, 'inv_sales': p.invoices, 'inv_purchases': p.invoices, 'inv_services': p.invoices, 'inv_installments': p.invoices,
+                    'sales': p.sales, 'customers': p.sales, 'cust_statement': p.sales,
+                    'purchases': p.purchases, 'suppliers': p.purchases, 'supp_statement': p.purchases,
+                    'services': p.services, 'svc_statement': p.services,
+                    'inventory': p.inventory,
+                    'installments': p.installments, 'installment_customers': p.installments, 'inst_collection': p.installments,
+                    'expenses': p.expenses, 'expense_vouchers': p.expenses,
+                    'hr': p.hr, 'hr_actions': p.hr, 'hr_list': p.hr, 'hr_payroll': p.hr, 'hr_emp_statement': p.hr,
+                    'reports': p.reports, 'rpt_pos': p.reports, 'rpt_sales': p.reports, 'rpt_customers': p.reports, 'rpt_purchases': p.reports, 'rpt_suppliers': p.reports, 'rpt_employees': p.reports, 'rpt_inventory': p.reports, 'rpt_services': p.reports, 'rpt_installments': p.reports, 'rpt_inst_customers': p.reports, 'rpt_expenses': p.reports, 'rpt_revenue': p.reports, 'rpt_treasury': p.reports, 'rpt_profits': p.reports,
+                    'users': p.settings, 'settings': p.settings
+                };
+
+                // Accounting has specialized sub-permissions
+                if (id === 'accounts_tree' || id === 'journal') {
+                    const accPerms = p.accounts || { view: false };
+                    hasAccess = accPerms.view;
+                    reqPerm = 'المحاسبة';
+                } else if (permMap[id] !== undefined) {
+                    hasAccess = permMap[id] !== false; // Default true if undefined for legacy users
+                }
+
+                if (!hasAccess) {
+                    showToast(`عفواً، لا تملك صلاحية لفتح هذا القسم`, 'error');
+                    return showSection('dashboard');
+                }
+
+                // Hide Add Form if no permission (Accounting specific)
+                if (id === 'accounts_tree') {
+                    const canAdd = p.accounts ? p.accounts.add : false;
+                    const addFormContainer = document.getElementById('coa-form')?.parentElement;
+                    if (addFormContainer) addFormContainer.style.display = canAdd ? 'block' : 'none';
+                    const addManualJournal = document.getElementById('manual-entry-form');
+                    if (addManualJournal) addManualJournal.style.display = canAdd ? 'block' : 'none';
+                }
+            }
+
             document.querySelectorAll('.section-content').forEach(e => e.classList.remove('active'));
             const section = document.getElementById(id);
             if (!section) { console.error('Section not found:', id); return; }
