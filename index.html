@@ -1535,8 +1535,15 @@
                                 <label
                                     class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">اختيار
                                     العميل</label>
-                                <select id="quote-customer"
-                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"></select>
+                                <div class="quote-cust-wrapper" style="position:relative;">
+                                    <input type="text" id="quote-customer" placeholder="ابحث عن عميل أو أضف جديداً..."
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-500/10 outline-none transition-all"
+                                        onfocus="onQuoteCustomerFocus()" oninput="onQuoteCustomerInput(this.value)"
+                                        onkeydown="onQuoteCustomerKeydown(event)">
+                                    <i class="fas fa-user-tag pur-combobox-icon"></i>
+                                    <input type="hidden" id="quote-customer-id" value="">
+                                    <div id="quote-customer-suggestions" class="pur-suggestions"></div>
+                                </div>
                             </div>
                             <div class="space-y-1">
                                 <label
@@ -1553,8 +1560,15 @@
                                 <div class="flex-1 min-w-[200px]">
                                     <label class="text-[10px] font-black text-slate-400 block mb-1">المنتج /
                                         الصنف</label>
-                                    <select id="quote-product"
-                                        class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm"></select>
+                                    <div class="quote-prod-wrapper" style="position:relative;">
+                                        <input type="text" id="quote-product" placeholder="ابحث عن منتج..."
+                                            class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:ring-4 focus:ring-blue-500/10 transition-all shadow-sm"
+                                            onfocus="onQuoteProductFocus()" oninput="onQuoteProductInput(this.value)"
+                                            onkeydown="onQuoteProductKeydown(event)">
+                                        <i class="fas fa-search pur-combobox-icon"></i>
+                                        <input type="hidden" id="quote-product-id" value="">
+                                        <div id="quote-product-suggestions" class="pur-suggestions"></div>
+                                    </div>
                                 </div>
                                 <div class="w-24">
                                     <label class="text-[10px] font-black text-slate-400 block mb-1">الكمية</label>
@@ -2171,8 +2185,15 @@
                                 <label
                                     class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">اختيار
                                     المورد</label>
-                                <select id="po-supplier"
-                                    class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"></select>
+                                <div class="po-supp-wrapper" style="position:relative;">
+                                    <input type="text" id="po-supplier" placeholder="ابحث عن مورد أو أضف جديداً..."
+                                        class="w-full p-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-4 focus:ring-orange-500/10 outline-none transition-all"
+                                        onfocus="onPOSupplierFocus()" oninput="onPOSupplierInput(this.value)"
+                                        onkeydown="onPOSupplierKeydown(event)">
+                                    <i class="fas fa-truck-loading pur-combobox-icon"></i>
+                                    <input type="hidden" id="po-supplier-id" value="">
+                                    <div id="po-supplier-suggestions" class="pur-suggestions"></div>
+                                </div>
                             </div>
                             <div class="space-y-1">
                                 <label class="text-[10px] uppercase tracking-wider text-slate-400 font-black mr-2">تاريخ
@@ -5759,10 +5780,14 @@
             document.getElementById('sale-customer').innerHTML = db.customers.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             document.getElementById('inst-product').innerHTML = '<option value="">اختر منتج...</option>' + db.products.map(p => `<option value="${p.id}">${p.name} (${p.price})</option>`).join('');
             document.getElementById('inst-customer').innerHTML = (db.installmentCustomers || []).map(c => `<option value="${c.id}">${c.name}</option>`).join('');
-            document.getElementById('pur-supplier').innerHTML = db.suppliers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            // pur-product is now a combobox — just reset input
-            document.getElementById('pur-product-input').value = '';
-            document.getElementById('pur-product-id').value = '';
+
+            // Searchable inputs reset
+            ['pur-product-input', 'po-product-input', 'po-supplier', 'quote-customer', 'quote-product'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
+            ['pur-product-id', 'po-product-id', 'po-supplier-id', 'quote-customer-id', 'quote-product-id'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
         }
 
         function addToCart() {
@@ -7603,11 +7628,17 @@
                 const s = document.getElementById('srv-customer-suggestions');
                 if (s) { s.classList.remove('open'); s.innerHTML = ''; }
             }
-            if (!e.target.closest('.pur-combobox-wrapper')) {
+            if (!e.target.closest('.pur-combobox-wrapper') && !e.target.closest('.po-supp-wrapper') && !e.target.closest('.quote-cust-wrapper') && !e.target.closest('.quote-prod-wrapper')) {
                 const s = document.getElementById('pur-suggestions');
                 if (s) { s.classList.remove('open'); s.innerHTML = ''; }
                 const s2 = document.getElementById('po-suggestions');
                 if (s2) { s2.classList.remove('open'); s2.innerHTML = ''; }
+                const s3 = document.getElementById('po-supplier-suggestions');
+                if (s3) { s3.classList.remove('open'); s3.innerHTML = ''; }
+                const s4 = document.getElementById('quote-customer-suggestions');
+                if (s4) { s4.classList.remove('open'); s4.innerHTML = ''; }
+                const s5 = document.getElementById('quote-product-suggestions');
+                if (s5) { s5.classList.remove('open'); s5.innerHTML = ''; }
             }
         });
 
@@ -9953,16 +9984,32 @@
         }
 
         function addToQuoteCart() {
-            const prodId = document.getElementById('quote-product')?.value;
-            const qty = parseFloat(document.getElementById('quote-qty')?.value) || 1;
-            if (!prodId) return showToast('يرجى اختيار صنف', 'error');
-            const product = db.products.find(p => p.id == prodId);
-            if (!product) return;
-            const existing = currentQuoteCart.find(i => i.id == prodId);
-            if (existing) { existing.qty += qty; } else {
-                currentQuoteCart.push({ id: product.id, name: product.name, price: product.price, cost: product.cost, qty: qty });
+            const prodIdVal = document.getElementById('quote-product-id').value;
+            const prodName = document.getElementById('quote-product').value.trim();
+            const qty = parseFloat(document.getElementById('quote-qty').value) || 1;
+
+            if (!prodName) return showToast('يرجى اختيار صنف', 'error');
+
+            let product;
+            if (prodIdVal) {
+                // Check in both products and services
+                product = db.products.find(p => p.id == prodIdVal) || db.services.find(s => s.id == prodIdVal);
             }
+
+            if (!product) {
+                // If not found, it's a one-time product for the quote (don't save to DB yet, or handle as guest product)
+                // For simplicity, if not in DB, we just take the name
+                currentQuoteCart.push({ id: Date.now(), name: prodName, price: 0, cost: 0, qty: qty });
+            } else {
+                const existing = currentQuoteCart.find(i => i.id == product.id);
+                if (existing) { existing.qty += qty; } else {
+                    currentQuoteCart.push({ id: product.id, name: product.name, price: product.price || 0, cost: product.cost || 0, qty: qty });
+                }
+            }
+
             document.getElementById('quote-qty').value = 1;
+            document.getElementById('quote-product').value = '';
+            document.getElementById('quote-product-id').value = '';
             renderQuoteCart();
             showToast('تمت الإضافة لعرض السعر', 'success');
         }
@@ -10000,19 +10047,26 @@
         function postQuotation() {
             if (currentQuoteCart.length === 0) return showToast('عرض السعر فارغ', 'error');
             const editId = document.getElementById('quote-edit-id').value;
-            const custId = document.getElementById('quote-customer')?.value;
-            const customer = db.customers.find(c => c.id == custId) || { name: 'عميل نقدي' };
+            const custId = document.getElementById('quote-customer-id')?.value;
+            let custName = document.getElementById('quote-customer')?.value || 'عميل نقدي';
             const total = parseFloat(document.getElementById('quote-total').innerText) || 0;
             const isCredit = document.getElementById('quote-pay-credit-btn').classList.contains('bg-emerald-600');
             const paid = isCredit ? (parseFloat(document.getElementById('quote-paid').value) || 0) : total;
             const remaining = total - paid;
             const method = document.getElementById('quote-method').value;
 
+            // Handle new customer creation
+            if (custId === '__new__') {
+                const newId = Date.now();
+                db.customers.push({ id: newId, name: custName, phone: '', balance: 0 });
+                // We'll update the variable for saving below
+            }
+
             if (editId) {
                 const q = db.quotations.find(x => x.id == editId);
                 if (q) {
-                    q.customer = customer.name;
-                    q.customerId = custId;
+                    q.customer = custName;
+                    q.customerId = (custId === '__new__' ? db.customers[db.customers.length - 1].id : custId);
                     q.total = total;
                     q.paid = paid;
                     q.remaining = remaining;
@@ -10026,21 +10080,18 @@
                 db.quotations.push({
                     id: Date.now(),
                     date: new Date().toISOString().split('T')[0],
-                    customer: customer.name,
-                    customerId: custId,
+                    customer: custName,
+                    customerId: (custId === '__new__' ? db.customers[db.customers.length - 1].id : custId),
                     total: total,
                     paid: paid,
                     remaining: remaining,
-                    items: [...currentQuoteCart],
-                    status: 'draft',
-                    method: method
+                    method: method,
+                    items: [...currentQuoteCart]
                 });
                 showToast('تم حفظ عرض السعر');
             }
-
             currentQuoteCart = [];
             renderQuoteCart();
-            renderRecentQuotations();
             save();
         }
 
@@ -10072,7 +10123,8 @@
             const q = db.quotations.find(x => x.id == id);
             if (!q) return;
             document.getElementById('quote-edit-id').value = q.id;
-            document.getElementById('quote-customer').value = q.customerId || '';
+            document.getElementById('quote-customer').value = q.customer || '';
+            document.getElementById('quote-customer-id').value = q.customerId || '';
             currentQuoteCart = [...q.items];
             if (q.remaining > 0) setQuotePayType('credit'); else setQuotePayType('cash');
             document.getElementById('quote-paid').value = q.paid;
@@ -10390,11 +10442,122 @@
             if (items[poComboActive]) items[poComboActive].scrollIntoView({ block: 'nearest' });
         }
 
+        // --- PO Supplier Combobox ---
+        let poSuppComboActive = -1;
+        function onPOSupplierFocus() { onPOSupplierInput(document.getElementById('po-supplier').value); }
+        function onPOSupplierInput(query) {
+            const container = document.getElementById('po-supplier-suggestions');
+            if (!db.suppliers) db.suppliers = [];
+            const q = query.trim().toLowerCase();
+            let html = '';
+            poSuppComboActive = -1;
+            const filtered = db.suppliers.filter(s => (s.name || '').toLowerCase().includes(q));
+            if (q === '') {
+                html = db.suppliers.map((s, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectPOSupplier(${s.id})"><span class="item-name">${s.name}</span></div>`).join('');
+            } else {
+                html = filtered.map((s, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectPOSupplier(${s.id})"><span class="item-name">${s.name}</span></div>`).join('');
+                if (!db.suppliers.some(s => s.name.toLowerCase() === q) && q.length > 0) {
+                    html += `<div class="pur-suggestion-item pur-suggestion-new" data-index="${filtered.length}" onclick="selectNewPOSupplier('${query.replace(/'/g, "\\'")}')"><span><i class="fas fa-plus-circle text-orange-500"></i> إضافة مورد جديد: "${query}"</span></div>`;
+                }
+            }
+            container.innerHTML = html; container.classList.toggle('open', html.length > 0);
+        }
+        function selectPOSupplier(id) {
+            const s = db.suppliers.find(x => x.id == id);
+            if (s) { document.getElementById('po-supplier').value = s.name; document.getElementById('po-supplier-id').value = s.id; }
+            document.getElementById('po-supplier-suggestions').classList.remove('open');
+        }
+        function selectNewPOSupplier(name) {
+            document.getElementById('po-supplier').value = name;
+            document.getElementById('po-supplier-id').value = '__new__';
+            document.getElementById('po-supplier-suggestions').classList.remove('open');
+        }
+        function onPOSupplierKeydown(e) {
+            const container = document.getElementById('po-supplier-suggestions'); const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); poSuppComboActive = Math.min(poSuppComboActive + 1, items.length - 1); items.forEach((it, i) => it.classList.toggle('active', i === poSuppComboActive)); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); poSuppComboActive = Math.max(poSuppComboActive - 1, 0); items.forEach((it, i) => it.classList.toggle('active', i === poSuppComboActive)); }
+            else if (e.key === 'Enter') { e.preventDefault(); if (poSuppComboActive >= 0) items[poSuppComboActive].click(); }
+            else if (e.key === 'Escape') { container.classList.remove('open'); }
+        }
+
+        // --- Quote Customer Combobox ---
+        let quoteCustComboActive = -1;
+        function onQuoteCustomerFocus() { onQuoteCustomerInput(document.getElementById('quote-customer').value); }
+        function onQuoteCustomerInput(query) {
+            const container = document.getElementById('quote-customer-suggestions');
+            if (!db.customers) db.customers = [];
+            const q = query.trim().toLowerCase();
+            let html = '';
+            quoteCustComboActive = -1;
+            const filtered = db.customers.filter(c => (c.name || '').toLowerCase().includes(q));
+            if (q === '') {
+                html = db.customers.map((c, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectQuoteCustomer(${c.id})"><span class="item-name">${c.name}</span></div>`).join('');
+            } else {
+                html = filtered.map((c, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectQuoteCustomer(${c.id})"><span class="item-name">${c.name}</span></div>`).join('');
+                if (!db.customers.some(c => c.name.toLowerCase() === q) && q.length > 0) {
+                    html += `<div class="pur-suggestion-item pur-suggestion-new" data-index="${filtered.length}" onclick="selectNewQuoteCustomer('${query.replace(/'/g, "\\'")}')"><span><i class="fas fa-plus-circle text-blue-500"></i> إضافة عميل جديد: "${query}"</span></div>`;
+                }
+            }
+            container.innerHTML = html; container.classList.toggle('open', html.length > 0);
+        }
+        function selectQuoteCustomer(id) {
+            const c = db.customers.find(x => x.id == id);
+            if (c) { document.getElementById('quote-customer').value = c.name; document.getElementById('quote-customer-id').value = c.id; }
+            document.getElementById('quote-customer-suggestions').classList.remove('open');
+        }
+        function selectNewQuoteCustomer(name) {
+            document.getElementById('quote-customer').value = name;
+            document.getElementById('quote-customer-id').value = '__new__';
+            document.getElementById('quote-customer-suggestions').classList.remove('open');
+        }
+        function onQuoteCustomerKeydown(e) {
+            const container = document.getElementById('quote-customer-suggestions'); const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); quoteCustComboActive = Math.min(quoteCustComboActive + 1, items.length - 1); items.forEach((it, i) => it.classList.toggle('active', i === quoteCustComboActive)); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); quoteCustComboActive = Math.max(quoteCustComboActive - 1, 0); items.forEach((it, i) => it.classList.toggle('active', i === quoteCustComboActive)); }
+            else if (e.key === 'Enter') { e.preventDefault(); if (quoteCustComboActive >= 0) items[quoteCustComboActive].click(); }
+            else if (e.key === 'Escape') { container.classList.remove('open'); }
+        }
+
+        // --- Quote Product Combobox ---
+        let quoteProdComboActive = -1;
+        function onQuoteProductFocus() { onQuoteProductInput(document.getElementById('quote-product').value); }
+        function onQuoteProductInput(query) {
+            const container = document.getElementById('quote-product-suggestions');
+            const q = query.trim().toLowerCase();
+            let html = '';
+            quoteProdComboActive = -1;
+            const filteredProducts = db.products.filter(p => p.name.toLowerCase().includes(q));
+            const filteredServices = db.services.filter(s => s.name.toLowerCase().includes(q));
+            if (q === '') {
+                html = db.products.map((p, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectQuoteProductSearch(${p.id})"><span class="item-name"><i class="fas fa-box text-blue-500"></i> ${p.name}</span><span class="item-meta">سعر: ${p.price || 0}</span></div>`).join('');
+                html += db.services.map((s, i) => `<div class="pur-suggestion-item" data-index="${db.products.length + i}" onclick="selectQuoteProductSearch(${s.id}, 'service')"><span class="item-name"><i class="fas fa-concierge-bell text-emerald-500"></i> ${s.name}</span><span class="item-meta">سعر: ${s.price || 0}</span></div>`).join('');
+            } else {
+                html = filteredProducts.map((p, i) => `<div class="pur-suggestion-item" data-index="${i}" onclick="selectQuoteProductSearch(${p.id})"><span class="item-name"><i class="fas fa-box text-blue-500"></i> ${p.name}</span><span class="item-meta">سعر: ${p.price || 0}</span></div>`).join('');
+                html += filteredServices.map((s, i) => `<div class="pur-suggestion-item" data-index="${filteredProducts.length + i}" onclick="selectQuoteProductSearch(${s.id}, 'service')"><span class="item-name"><i class="fas fa-concierge-bell text-emerald-500"></i> ${s.name}</span><span class="item-meta">سعر: ${s.price || 0}</span></div>`).join('');
+            }
+            container.innerHTML = html; container.classList.toggle('open', html.length > 0);
+        }
+        function selectQuoteProductSearch(id, type = 'product') {
+            const p = (type === 'product' ? db.products.find(x => x.id == id) : db.services.find(x => x.id == id));
+            if (p) { document.getElementById('quote-product').value = p.name; document.getElementById('quote-product-id').value = p.id; }
+            document.getElementById('quote-product-suggestions').classList.remove('open');
+        }
+        function onQuoteProductKeydown(e) {
+            const container = document.getElementById('quote-product-suggestions'); const items = container.querySelectorAll('.pur-suggestion-item');
+            if (!items.length) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); quoteProdComboActive = Math.min(quoteProdComboActive + 1, items.length - 1); items.forEach((it, i) => it.classList.toggle('active', i === quoteProdComboActive)); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); quoteProdComboActive = Math.max(quoteProdComboActive - 1, 0); items.forEach((it, i) => it.classList.toggle('active', i === quoteProdComboActive)); }
+            else if (e.key === 'Enter') { e.preventDefault(); if (quoteProdComboActive >= 0) items[quoteProdComboActive].click(); }
+            else if (e.key === 'Escape') { container.classList.remove('open'); }
+        }
+
         function postPurchaseOrder() {
             if (currentPOCart.length === 0) return showToast('أمر الشراء فارغ', 'error');
             const editId = document.getElementById('po-edit-id').value;
-            const suppId = document.getElementById('po-supplier')?.value;
-            const supp = db.suppliers.find(s => s.id == suppId) || { name: 'مورد نقدي' };
+            const suppId = document.getElementById('po-supplier-id')?.value;
+            let suppName = document.getElementById('po-supplier')?.value || 'مورد نقدي';
             const total = parseFloat(document.getElementById('po-total').innerText) || 0;
             const isCredit = document.getElementById('po-pay-credit-btn').classList.contains('bg-orange-600');
             const paid = isCredit ? (parseFloat(document.getElementById('po-paid').value) || 0) : total;
@@ -10402,11 +10565,18 @@
             const date = document.getElementById('po-date').value || new Date().toISOString().split('T')[0];
             const method = document.getElementById('po-method').value || '1101';
 
+            // Handle new supplier creation
+            if (suppId === '__new__') {
+                const newId = Date.now();
+                db.suppliers.push({ id: newId, name: suppName, company: '', phone: '' });
+                // Note: we'll use the push to get the id if needed, but the name is used in PO object
+            }
+
             if (editId) {
                 const po = db.purchaseOrders.find(x => x.id == editId);
                 if (po) {
-                    po.supplier = supp.name;
-                    po.supplierId = suppId;
+                    po.supplier = suppName;
+                    po.supplierId = (suppId === '__new__' ? db.suppliers[db.suppliers.length - 1].id : suppId);
                     po.total = total;
                     po.paid = paid;
                     po.remaining = remaining;
@@ -10421,8 +10591,8 @@
                 db.purchaseOrders.push({
                     id: Date.now(),
                     date: date,
-                    supplier: supp.name,
-                    supplierId: suppId,
+                    supplier: suppName,
+                    supplierId: (suppId === '__new__' ? db.suppliers[db.suppliers.length - 1].id : suppId),
                     total: total,
                     paid: paid,
                     remaining: remaining,
@@ -10465,7 +10635,8 @@
             const po = db.purchaseOrders.find(x => x.id == id);
             if (!po) return;
             document.getElementById('po-edit-id').value = po.id;
-            document.getElementById('po-supplier').value = po.supplierId || '';
+            document.getElementById('po-supplier').value = po.supplier || '';
+            document.getElementById('po-supplier-id').value = po.supplierId || '';
             document.getElementById('po-date').value = po.date;
             currentPOCart = [...po.items];
             if (po.remaining > 0) setPOPayType('credit'); else setPOPayType('cash');
