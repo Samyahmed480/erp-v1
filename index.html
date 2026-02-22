@@ -8510,34 +8510,66 @@
         // --- POS Receipt Printing ---
         function printPOSReceipt(saleData) {
             const receiptSettings = db.settings.receiptSettings || {};
-            const w = window.open('', 'receipt', 'width=320,height=600');
-            w.document.write(`<html dir="rtl"><head><style>
-                body { font-family: 'Cairo', sans-serif; width: 280px; margin: 0 auto; padding: 10px; font-size: 12px; }
-                .center { text-align: center; } .bold { font-weight: bold; } .line { border-top: 1px dashed #000; margin: 8px 0; }
-                table { width: 100%; border-collapse: collapse; } td { padding: 2px 0; font-size: 11px; } .total { font-size: 16px; font-weight: bold; }
-                @media print { body { margin: 0; } }
-            </style></head><body>
-            ${receiptSettings.showLogo !== false && db.settings.logo ? `<div class="center"><img src="${db.settings.logo}" style="max-height:50px"></div>` : ''}
-            <div class="center bold">${db.settings.companyName || 'نظام ERP'}</div>
-            <div class="center" style="font-size:10px">${db.settings.address || ''}</div>
-            <div class="center" style="font-size:10px">${db.settings.phone || ''}</div>
-            <div class="line"></div>
-            <div>فاتورة رقم: #${saleData.id}</div>
-            <div>التاريخ: ${saleData.date}</div>
-            <div>العميل: ${saleData.customer}</div>
-            <div class="line"></div>
-            <table>${saleData.items.map(i => `<tr><td>${i.name}</td><td>${i.qty}x</td><td style="text-align:left">${(i.total || (i.price * i.qty) || 0).toFixed(2)}</td></tr>`).join('')}</table>
-            <div class="line"></div>
-            ${saleData.subtotal !== undefined ? `<div class="center" style="font-size:11px">المجموع: ${saleData.subtotal.toFixed(2)}</div>` : ''}
-            ${saleData.discount ? `<div class="center" style="font-size:11px;color:red">الخصم: -${saleData.discount.toFixed(2)}</div>` : ''}
-            ${(saleData.vat || 0) > 0 ? `<div class="center" style="font-size:11px">الضريبة: ${saleData.vat.toFixed(2)}</div>` : ''}
-            <div class="total center">الإجمالي: ${saleData.total.toFixed(2)}</div>
-            <div class="center" style="font-size:10px">الدفع: ${saleData.method || 'كاش'}</div>
-            ${receiptSettings.footerMsg ? `<div class="line"></div><div class="center" style="font-size:10px">${receiptSettings.footerMsg}</div>` : ''}
-            <div class="center" style="font-size:9px;margin-top:10px;color:#999">شكراً لزيارتكم</div>
-            </body></html>`);
+
+            // Pre-compute all dynamic HTML parts to avoid nested template literal issues
+            let logoHtml = '';
+            if (receiptSettings.showLogo !== false && db.settings.logo) {
+                logoHtml = '<div class="center"><img src="' + db.settings.logo + '" style="max-height:60px;margin-bottom:5px"></div>';
+            }
+
+            let itemsHtml = '';
+            if (saleData.items && saleData.items.length > 0) {
+                saleData.items.forEach(function (i) {
+                    const lineTotal = (i.total || (i.price * i.qty) || 0).toFixed(2);
+                    itemsHtml += '<tr><td>' + i.name + '</td><td>' + i.qty + 'x</td><td style="text-align:left">' + lineTotal + '</td></tr>';
+                });
+            }
+
+            let totalsHtml = '';
+            if (saleData.subtotal !== undefined) totalsHtml += '<div class="row-line">المجموع: ' + saleData.subtotal.toFixed(2) + '</div>';
+            if (saleData.discount && saleData.discount > 0) totalsHtml += '<div class="row-line" style="color:red">الخصم: -' + saleData.discount.toFixed(2) + '</div>';
+            if ((saleData.vat || 0) > 0) totalsHtml += '<div class="row-line">الضريبة: ' + saleData.vat.toFixed(2) + '</div>';
+            totalsHtml += '<div class="total center">الإجمالي: ' + saleData.total.toFixed(2) + '</div>';
+            totalsHtml += '<div class="row-line">طريقة الدفع: ' + (saleData.method || 'كاش') + '</div>';
+            if (receiptSettings.footerMsg) {
+                totalsHtml += '<div class="line"></div><div class="center" style="font-size:10px">' + receiptSettings.footerMsg + '</div>';
+            }
+
+            const html = '<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">' +
+                '<style>' +
+                'body{font-family:Arial,sans-serif;width:280px;margin:0 auto;padding:10px;font-size:12px;color:#000}' +
+                '.center{text-align:center}.bold{font-weight:bold}.line{border-top:1px dashed #000;margin:8px 0}' +
+                'table{width:100%;border-collapse:collapse}td{padding:3px 0;font-size:11px}' +
+                '.total{font-size:15px;font-weight:bold;margin:4px 0;text-align:center}' +
+                '.row-line{font-size:11px;text-align:center;margin:2px 0}' +
+                '@media print{body{margin:0;padding:5px}}' +
+                '</style></head><body>' +
+                logoHtml +
+                '<div class="center bold" style="font-size:14px">' + (db.settings.companyName || 'ENGAZ') + '</div>' +
+                (db.settings.address ? '<div class="center" style="font-size:10px">' + db.settings.address + '</div>' : '') +
+                (db.settings.phone ? '<div class="center" style="font-size:10px">' + db.settings.phone + '</div>' : '') +
+                '<div class="line"></div>' +
+                '<div><b>فاتورة رقم:</b> #' + saleData.id + '</div>' +
+                '<div><b>التاريخ:</b> ' + saleData.date + '</div>' +
+                '<div><b>العميل:</b> ' + saleData.customer + '</div>' +
+                '<div class="line"></div>' +
+                '<table><thead><tr><th style="text-align:right;border-bottom:1px solid #000">الصنف</th><th style="text-align:right;border-bottom:1px solid #000">الكمية</th><th style="text-align:left;border-bottom:1px solid #000">المبلغ</th></tr></thead><tbody>' +
+                itemsHtml +
+                '</tbody></table>' +
+                '<div class="line"></div>' +
+                totalsHtml +
+                '<div class="center" style="font-size:10px;margin-top:15px">شكراً لزيارتكم</div>' +
+                '<script>window.onload=function(){setTimeout(function(){window.print();window.close();},400);}<\/script>' +
+                '</body></html>';
+
+            const w = window.open('', 'receipt_' + Date.now(), 'width=350,height=650');
+            if (!w) {
+                alert('يرجى السماح بالنوافذ المنبثقة في المتصفح لطباعة الإيصال');
+                return;
+            }
+            w.document.open();
+            w.document.write(html);
             w.document.close();
-            setTimeout(() => { w.print(); w.close(); }, 300);
         }
 
         // --- Barcode Generator ---
