@@ -875,6 +875,9 @@
                                 <span>الضريبة (<span id="pos-vat-rate-display">0</span>%):</span><span
                                     id="pos-vat">0.00</span>
                             </div>
+                            <div class="flex justify-between text-xs text-red-100 mb-1">
+                                <span>الخصم:</span><span id="pos-discount-display">0.00</span>
+                            </div>
                             <div class="flex justify-between text-lg font-bold text-emerald-400">
                                 <span>الإجمالي:</span><span id="pos-total">0.00</span>
                             </div>
@@ -1363,6 +1366,8 @@
                                     id="cart-subtotal">0.00</span></div>
                             <div class="flex justify-between text-xs text-slate-400 mb-1"><span>الضريبة (<span
                                         id="cart-vat-rate">15</span>%):</span><span id="cart-vat">0.00</span></div>
+                            <div class="flex justify-between text-xs text-red-400 mb-1"><span>الخصم:</span><span
+                                    id="cart-discount-val">0.00</span></div>
 
                             <!-- الخصم المسموح به -->
                             <div class="flex items-center gap-2 mb-1 text-xs text-slate-400">
@@ -5897,12 +5902,16 @@
             if (currentCart.length > 0) document.getElementById('cart-empty').classList.add('hidden');
             else document.getElementById('cart-empty').classList.remove('hidden');
 
-            const discount = parseFloat(document.getElementById('sale-discount').value) || 0;
+            const discType = document.getElementById('sale-disc-type').value;
+            const discVal = parseFloat(document.getElementById('sale-discount').value) || 0;
+            const discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
+
             const net = Math.max(0, subtotal - discount);
             const vat = net * (db.settings.vatRate / 100);
             const total = net + vat;
 
             document.getElementById('cart-subtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('cart-discount-val').innerText = discount.toFixed(2);
             document.getElementById('cart-vat').innerText = vat.toFixed(2);
             document.getElementById('cart-total').innerText = total.toFixed(2);
 
@@ -5980,7 +5989,7 @@
                 if (addJournalEntry(date, `فاتورة - ${customer.name}`, lines)) {
                     currentCart.forEach(i => { const p = db.products.find(x => x.id == i.id); if (p) p.stock -= i.qty; });
                     const saleId = 'INV-' + String(db.sales.length + 1).padStart(4, '0');
-                    db.sales.push({ id: Date.now(), invoiceNo: saleId, date, customer: customer.name, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart], payType: salePayType });
+                    db.sales.push({ id: Date.now(), invoiceNo: saleId, date, customer: customer.name, subtotal: totalSale, vat: vatAmount, total: grandTotal, paid, discount, remaining, method, by: db.currentUser, items: [...currentCart], payType: salePayType });
                     showToast('تم حفظ الفاتورة بنجاح ✅');
                     renderSalesInvoices();
                 }
@@ -6068,7 +6077,7 @@
                             }
                         }
                     });
-                    db.purchases.push({ id: Date.now(), date, supplier: supplier.name, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart], payType: purPayType });
+                    db.purchases.push({ id: Date.now(), date, supplier: supplier.name, subtotal, vat: vat, total: grandTotal, paid, discount, remaining, method, items: [...currentPurCart], payType: purPayType });
                     showToast('تم حفظ المشتريات');
                     renderRecentPurchases();
                 }
@@ -8238,8 +8247,9 @@
             const final = net + vat;
 
             document.getElementById('pos-subtotal').innerText = sub.toFixed(2);
-            document.getElementById('pos-vat').innerText = vat.toFixed(2);
+            document.getElementById('pos-discount-display').innerText = disc.toFixed(2);
             document.getElementById('pos-vat-rate-display').innerText = vatRate;
+            document.getElementById('pos-vat').innerText = vat.toFixed(2);
             document.getElementById('pos-total').innerText = final.toFixed(2);
         }
 
@@ -8996,55 +9006,6 @@
             });
         }
 
-        // View individual invoice
-        function viewSaleInvoice(saleId) {
-            const sale = db.sales.find(s => s.id == saleId);
-            if (!sale) return showToast('فاتورة غير موجودة', 'error');
-            const invNo = sale.invoiceNo || 'INV-' + String(sale.id).slice(-4);
-            const w = window.open('', 'invoice', 'width=700,height=800');
-            w.document.write(`<html dir="rtl"><head><style>
-                body { font-family: 'Cairo', sans-serif; max-width: 650px; margin: 20px auto; padding: 20px; font-size: 13px; }
-                .header { text-align: center; margin-bottom: 20px; }
-                .header h1 { font-size: 18px; margin: 0; } .header p { color: #666; font-size: 11px; margin: 2px 0; }
-                .info { display: flex; justify-content: space-between; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px; }
-                .info div { font-size: 12px; }
-                table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-                th { background: #1e293b; color: white; padding: 8px; text-align: right; font-size: 12px; }
-                td { padding: 8px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 12px; }
-                .totals { background: #f1f5f9; padding: 12px; border-radius: 8px; }
-                .totals .row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
-                .totals .grand { font-size: 16px; font-weight: bold; color: #059669; border-top: 2px solid #1e293b; padding-top: 8px; margin-top: 8px; }
-                .no-print { margin-top: 20px; text-align: center; }
-                @media print { .no-print { display: none; } }
-            </style></head><body>
-            <div class="header">
-                ${db.settings.logo ? `<img src="${db.settings.logo}" style="max-height:60px;margin-bottom:5px">` : ''}
-                <h1>${db.settings.companyName || 'نظام ERP'}</h1>
-                <p>${db.settings.address || ''} ${db.settings.phone ? '| ' + db.settings.phone : ''}</p>
-            </div>
-            <div class="info">
-                <div><strong>فاتورة رقم:</strong> ${invNo}</div>
-                <div><strong>التاريخ:</strong> ${sale.date}</div>
-                <div><strong>العميل:</strong> ${sale.customer}</div>
-            </div>
-            <table>
-                <thead><tr><th>#</th><th>الصنف</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
-                <tbody>${(sale.items || []).map((it, i) => `<tr><td>${i + 1}</td><td>${it.name}</td><td>${it.qty}</td><td>${(it.price || 0).toFixed(2)}</td><td>${(it.total || 0).toFixed(2)}</td></tr>`).join('')}</tbody>
-            </table>
-            <div class="totals">
-                ${sale.discount > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${sale.discount.toFixed(2)}</span></div>` : ''}
-                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(sale.paid || 0).toFixed(2)}</span></div>
-                ${(sale.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${sale.remaining.toFixed(2)}</span></div>` : ''}
-                <div class="row grand"><span>الإجمالي:</span><span>${(sale.total || 0).toFixed(2)}</span></div>
-            </div>
-            <div class="no-print">
-                <button onclick="window.print()" style="padding:10px 30px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">طباعة</button>
-                <button onclick="window.close()" style="padding:10px 30px;background:#64748b;color:white;border:none;border-radius:8px;cursor:pointer;font-size:14px;margin:5px">إغلاق</button>
-            </div>
-            </body></html>`);
-            w.document.close();
-        }
-
         // Print last invoice
         function printLastSaleInvoice() {
             if (db.sales.length === 0) return showToast('لا توجد فواتير للطباعة', 'error');
@@ -9356,15 +9317,40 @@
         function viewSaleInvoice(id) {
             const s = (db.sales || []).find(x => x.id == id); if (!s) return;
             const invNo = s.invoiceNo || 'INV-' + String(s.id).slice(-6);
-            const items = (s.items || []).map(it => ({ name: it.name, qty: it.qty || 1, price: it.price || 0, total: (it.total || it.price || 0) }));
-            openInvoiceWindow(s.type === 'pos' ? 'إيصال نقطة بيع' : 'فاتورة مبيعات', invNo, s.date, { label: 'العميل', name: s.customer }, items,
-                `${(s.discount || 0) > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+            const items = (s.items || []).map(it => ({ name: it.name, qty: it.qty || 1, price: it.price || 0, total: (it.total || (it.price * it.qty) || 0) }));
+
+            // Fallback for missing subtotal/vat in historical data
+            const sub = s.subtotal || items.reduce((a, b) => a + b.total, 0);
+            const vat = s.vat || (s.total - (sub - (s.discount || 0)));
+
+            const totalsHTML = `
+                <div class="row"><span>المجموع:</span><span>${sub.toFixed(2)}</span></div>
+                ${(s.discount || 0) > 0 ? `<div class="row" style="color:#dc2626"><span>الخصم:</span><span>-${s.discount.toFixed(2)}</span></div>` : ''}
+                ${(vat || 0) > 0.01 ? `<div class="row"><span>الضريبة:</span><span>${vat.toFixed(2)}</span></div>` : ''}
+                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
+                ${(s.remaining || 0) > 0.01 ? `<div class="row" style="color:#dc2626"><span>المتبقي:</span><span>${s.remaining.toFixed(2)}</span></div>` : ''}
+                <div class="row grand"><span>صافي الفاتورة:</span><span>${(s.total || 0).toFixed(2)}</span></div>
+            `;
+            openInvoiceWindow(s.type === 'pos' ? 'إيصال نقطة بيع' : 'فاتورة مبيعات', invNo, s.date, { label: 'العميل', name: s.customer }, items, totalsHTML);
         }
+
         function viewPurchaseInvoice(id) {
             const s = (db.purchases || []).find(x => x.id == id); if (!s) return;
             const invNo = s.invoiceNo || 'PUR-' + String(s.id).slice(-6);
-            openInvoiceWindow('فاتورة مشتريات', invNo, s.date, { label: 'المورد', name: s.supplier }, s.items || [],
-                `${(s.discount || 0) > 0 ? `<div class="row"><span>الخصم:</span><span style="color:#dc2626">-${s.discount.toFixed(2)}</span></div>` : ''}<div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>${(s.remaining || 0) > 0 ? `<div class="row"><span>المتبقي:</span><span style="color:#dc2626">${s.remaining.toFixed(2)}</span></div>` : ''}<div class="row grand"><span>الإجمالي:</span><span>${(s.total || 0).toFixed(2)}</span></div>`);
+            const items = (s.items || []).map(it => ({ name: it.name, qty: it.qty || 1, price: it.cost || 0, total: (it.total || (it.cost * it.qty) || 0) }));
+
+            const sub = s.subtotal || items.reduce((a, b) => a + b.total, 0);
+            const vat = s.vat || (s.total - (sub - (s.discount || 0)));
+
+            const totalsHTML = `
+                <div class="row"><span>المجموع:</span><span>${sub.toFixed(2)}</span></div>
+                ${(s.discount || 0) > 0 ? `<div class="row" style="color:#dc2626"><span>الخصم:</span><span>-${s.discount.toFixed(2)}</span></div>` : ''}
+                ${(vat || 0) > 0.01 ? `<div class="row"><span>الضريبة:</span><span>${vat.toFixed(2)}</span></div>` : ''}
+                <div class="row"><span>المدفوع:</span><span style="color:#059669">${(s.paid || 0).toFixed(2)}</span></div>
+                ${(s.remaining || 0) > 0.01 ? `<div class="row" style="color:#dc2626"><span>المتبقي:</span><span>${s.remaining.toFixed(2)}</span></div>` : ''}
+                <div class="row grand"><span>صافي الفاتورة:</span><span>${(s.total || 0).toFixed(2)}</span></div>
+            `;
+            openInvoiceWindow('فاتورة مشتريات', invNo, s.date, { label: 'المورد', name: s.supplier }, items, totalsHTML);
         }
 
         function viewInstInvoice(id) {
