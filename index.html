@@ -867,10 +867,13 @@
                                 class="w-20 p-1 border rounded text-center text-xs" onchange="renderPOSCart()">
                         </div>
 
-                        <!-- Totals -->
                         <div class="bg-slate-900 text-white p-3 rounded-lg mb-3">
                             <div class="flex justify-between text-xs text-slate-400 mb-1">
                                 <span>المجموع:</span><span id="pos-subtotal">0.00</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>الضريبة (<span id="pos-vat-rate-display">0</span>%):</span><span
+                                    id="pos-vat">0.00</span>
                             </div>
                             <div class="flex justify-between text-lg font-bold text-emerald-400">
                                 <span>الإجمالي:</span><span id="pos-total">0.00</span>
@@ -2828,8 +2831,8 @@
                     <div class="bg-white p-6 rounded-xl shadow-sm h-fit">
                         <h3 class="font-bold text-lg text-slate-800 mb-4 border-b pb-2">إنشاء فاتورة تقسيط</h3>
                         <div class="space-y-4">
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">العميل</label><select
-                                    id="inst-customer"
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">العميل</label>
+                                <select id="inst-customer"
                                     class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
                             </div>
                             <div>
@@ -2838,34 +2841,82 @@
                                     class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"
                                     onchange="updateInstPrice(this)"></select>
                             </div>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">سعر الكاش</label>
+                                    <input type="number" id="inst-cash-price"
+                                        class="w-full p-2 border rounded-lg outline-none" onkeyup="calcInst()">
+                                </div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">الربح (%)</label>
+                                    <input type="number" id="inst-profit-rate"
+                                        class="w-full p-2 border rounded-lg outline-none" value="20"
+                                        onkeyup="calcInst()">
+                                </div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">الضريبة (%)</label>
+                                    <input type="number" id="inst-vat-rate"
+                                        class="w-full p-2 border rounded-lg outline-none" value="15"
+                                        onkeyup="calcInst()">
+                                </div>
+                            </div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">سعر البيع (يتضمن
-                                        الفائدة)</label><input type="number" id="inst-price"
-                                        class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()"></div>
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الدفعة
-                                        المقدمة</label><input type="number" id="inst-down"
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">سعر البيع
+                                        الإجمالي</label>
+                                    <input type="number" id="inst-price"
+                                        class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none"
+                                        onkeyup="calcInstByTotal()">
+                                </div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">الدفعة المقدمة</label>
+                                    <input type="number" id="inst-down"
                                         class="w-full p-2.5 border rounded-lg outline-none" onkeyup="calcInst()"
-                                        placeholder="0"></div>
+                                        placeholder="0">
+                                </div>
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div><label class="block text-xs font-bold text-slate-500 mb-1">عدد الأقساط
-                                        (شهر)</label><input type="number" id="inst-count"
+                                        (شهر)</label>
+                                    <input type="number" id="inst-count"
                                         class="w-full p-2.5 border rounded-lg outline-none" value="12"
                                         onkeyup="calcInst()">
                                 </div>
-                                <div><label class="block text-xs font-bold text-slate-500 mb-1">قيمة القسط
-                                        الشهري</label><input type="number" id="inst-monthly"
-                                        class="w-full p-2.5 border rounded-lg bg-slate-100 font-bold text-blue-600 outline-none"
-                                        readonly></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">تاريخ أول قسط</label>
+                                    <input type="date" id="inst-start-date"
+                                        class="w-full p-2.5 border rounded-lg outline-none" onchange="calcInst()">
+                                </div>
+                            </div>
+                            <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-blue-700">قيمة القسط الشهري:</span>
+                                    <div class="text-xl font-black text-blue-800" id="inst-monthly-display">0.00</div>
+                                    <input type="hidden" id="inst-monthly">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1">طريقة دفع المقدم</label>
                                 <select id="inst-method"
                                     class="w-full p-2.5 border rounded-lg bg-slate-50 outline-none focus:bg-white"></select>
                             </div>
+
+                            <!-- Preview Area -->
+                            <div id="inst-preview-area"
+                                class="mt-4 border rounded-xl overflow-hidden bg-slate-50 hidden">
+                                <div class="bg-slate-200 p-2 text-xs font-bold text-slate-700">معاينة جدول الأقساط</div>
+                                <div class="max-h-40 overflow-y-auto">
+                                    <table class="w-full text-[10px] text-right">
+                                        <thead class="bg-slate-100">
+                                            <tr>
+                                                <th class="p-1">قسط #</th>
+                                                <th class="p-1 text-center">التاريخ</th>
+                                                <th class="p-1 text-left">المبلغ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="inst-preview-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <button onclick="createInstallmentPlan()"
-                                class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 shadow-lg mt-2 transition transform active:scale-95">إنشاء
-                                فاتورة التقسيط</button>
+                                class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 shadow-lg mt-2 transition transform active:scale-95">
+                                <i class="fas fa-check-circle me-1"></i> حفظ فاتورة التقسيط
+                            </button>
                         </div>
                     </div>
 
@@ -5263,35 +5314,40 @@
                 { code: '1104', name: 'المخزون', type: 'asset', level: 3, parent: '11', balance: 0 },
                 { code: '1105', name: 'أقساط مستحقة (مدينو تقسيط)', type: 'asset', level: 3, parent: '11', balance: 0 },
                 { code: '1106', name: 'سلف وعُهد موظفين', type: 'asset', level: 3, parent: '11', balance: 0 },
-                { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 1, balance: 0, isGroup: true },
+                { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 2, parent: '1', balance: 0, isGroup: true },
                 { code: '1201', name: 'أثاث ومعدات مكتبية', type: 'asset', level: 3, parent: '12', balance: 0 },
                 { code: '1202', name: 'أجهزة إلكترونية وحاسب', type: 'asset', level: 3, parent: '12', balance: 0 },
                 { code: '2', name: 'الالتزامات', type: 'liability', level: 1, balance: 0, isGroup: true },
-                { code: '2101', name: 'الموردين (الدائنون)', type: 'liability', level: 3, parent: '2', balance: 0 },
-                { code: '2102', name: 'ضريبة القيمة المضافة', type: 'liability', level: 3, parent: '2', balance: 0 },
-                { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '2', balance: 0 },
-                { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
-                { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                { code: '21', name: 'التزامات متداولة', type: 'liability', level: 2, parent: '2', balance: 0, isGroup: true },
+                { code: '2101', name: 'الموردين (الدائنون)', type: 'liability', level: 3, parent: '21', balance: 0 },
+                { code: '2102', name: 'ضريبة القيمة المضافة', type: 'liability', level: 3, parent: '21', balance: 0 },
+                { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '21', balance: 0 },
+                { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '21', balance: 0 },
+                { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '21', balance: 0 },
                 { code: '3', name: 'حقوق الملكية', type: 'equity', level: 1, balance: 0, isGroup: true },
-                { code: '3101', name: 'رأس المال', type: 'equity', level: 3, parent: '3', balance: 0 },
+                { code: '31', name: 'رأس المال والاحتياطيات', type: 'equity', level: 2, parent: '3', balance: 0, isGroup: true },
+                { code: '3101', name: 'رأس المال', type: 'equity', level: 3, parent: '31', balance: 0 },
                 { code: '3201', name: 'مسحوبات الشركاء', type: 'equity', level: 3, parent: '3', balance: 0 },
                 { code: '4', name: 'الإيرادات', type: 'revenue', level: 1, balance: 0, isGroup: true },
-                { code: '4101', name: 'إيرادات المبيعات', type: 'revenue', level: 3, parent: '4', balance: 0 },
-                { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '4', balance: 0 },
-                { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '4', balance: 0 },
+                { code: '41', name: 'إيرادات النشاط', type: 'revenue', level: 2, parent: '4', balance: 0, isGroup: true },
+                { code: '4101', name: 'إيرادات المبيعات', type: 'revenue', level: 3, parent: '41', balance: 0 },
+                { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '41', balance: 0 },
+                { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '41', balance: 0 },
                 { code: '4201', name: 'إيرادات خصومات وجزاءات', type: 'revenue', level: 3, parent: '4', balance: 0 },
                 { code: '5', name: 'المصروفات', type: 'expense', level: 1, balance: 0, isGroup: true },
-                { code: '5101', name: 'تكلفة المبيعات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5201', name: 'مصروفات تشغيلية عامة', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '5', balance: 0 },
-                { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '5', balance: 0 }
+                { code: '51', name: 'تكلفة الإيرادات', type: 'expense', level: 2, parent: '5', balance: 0, isGroup: true },
+                { code: '5101', name: 'تكلفة المبيعات', type: 'expense', level: 3, parent: '51', balance: 0 },
+                { code: '52', name: 'المصروفات التشغيلية والعمومية', type: 'expense', level: 2, parent: '5', balance: 0, isGroup: true },
+                { code: '5201', name: 'مصروفات تشغيلية عامة', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5202', name: 'مصروفات نثرية', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5204', name: 'مصروف رواتب وأجور', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '52', balance: 0 },
+                { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '52', balance: 0 }
             ],
             journal: [],
             products: [{ id: 1, name: 'منتج تجريبي', price: 100, cost: 80, stock: 10 }],
@@ -5415,22 +5471,26 @@
                         const defaultAccs = [
                             { code: '1105', name: 'أقساط مستحقة (مدينو تقسيط)', type: 'asset', level: 3, parent: '11', balance: 0 },
                             { code: '1106', name: 'سلف وعُهد موظفين', type: 'asset', level: 3, parent: '11', balance: 0 },
-                            { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 1, balance: 0, isGroup: true },
+                            { code: '12', name: 'الأصول الثابتة', type: 'asset', level: 2, parent: '1', balance: 0, isGroup: true },
                             { code: '1201', name: 'أثاث ومعدات مكتبية', type: 'asset', level: 3, parent: '12', balance: 0 },
                             { code: '1202', name: 'أجهزة إلكترونية وحاسب', type: 'asset', level: 3, parent: '12', balance: 0 },
-                            { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '2', balance: 0 },
-                            { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
-                            { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '2', balance: 0 },
+                            { code: '21', name: 'التزامات متداولة', type: 'liability', level: 2, parent: '2', balance: 0, isGroup: true },
+                            { code: '2103', name: 'إيرادات تقسيط مؤجلة', type: 'liability', level: 3, parent: '21', balance: 0 },
+                            { code: '2104', name: 'رواتب وأجور مستحقة', type: 'liability', level: 3, parent: '21', balance: 0 },
+                            { code: '2105', name: 'مصاريف أخرى مستحقة', type: 'liability', level: 3, parent: '21', balance: 0 },
                             { code: '3201', name: 'مسحوبات الشركاء', type: 'equity', level: 3, parent: '3', balance: 0 },
-                            { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '4', balance: 0 },
-                            { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '4', balance: 0 },
-                            { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '5', balance: 0 },
-                            { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '5', balance: 0 }
+                            { code: '41', name: 'إيرادات النشاط', type: 'revenue', level: 2, parent: '4', balance: 0, isGroup: true },
+                            { code: '4102', name: 'إيرادات فوائد تقسيط', type: 'revenue', level: 3, parent: '41', balance: 0 },
+                            { code: '4103', name: 'مرتجعات مبيعات (مدين)', type: 'revenue', level: 3, parent: '41', balance: 0 },
+                            { code: '51', name: 'تكلفة الإيرادات', type: 'expense', level: 2, parent: '5', balance: 0, isGroup: true },
+                            { code: '52', name: 'المصروفات التشغيلية والعمومية', type: 'expense', level: 2, parent: '5', balance: 0, isGroup: true },
+                            { code: '5203', name: 'إيجارات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5205', name: 'كهرباء، مياه وإنترنت', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5206', name: 'تسويق وإعلانات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5207', name: 'صيانة وإصلاحات', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5208', name: 'خصم مسموح به', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5209', name: 'مصاريف حكومية ورخص', type: 'expense', level: 3, parent: '52', balance: 0 },
+                            { code: '5210', name: 'مصاريف بنكية وعمولات', type: 'expense', level: 3, parent: '52', balance: 0 }
                         ];
 
                         defaultAccs.forEach(newAcc => {
@@ -5438,6 +5498,25 @@
                                 db.chartOfAccounts.push(newAcc);
                             }
                         });
+
+                        // One-time migration for Accuracy (Fixing Running Balance -> Opening Balance)
+                        if (!db.fixedAccuracy) {
+                            db.chartOfAccounts.forEach(a => {
+                                if (!a.isGroup) {
+                                    let jSum = 0;
+                                    (db.journal || []).forEach(e => {
+                                        e.lines.forEach(l => {
+                                            if (l.code === a.code) {
+                                                if (['asset', 'expense'].includes(a.type)) jSum += ((l.dr || 0) - (l.cr || 0));
+                                                else jSum += ((l.cr || 0) - (l.dr || 0));
+                                            }
+                                        });
+                                    });
+                                    a.balance = (a.balance || 0) - jSum;
+                                }
+                            });
+                            db.fixedAccuracy = true;
+                        }
                     }
 
                     showToast('تم تحميل البيانات بنجاح');
@@ -5726,9 +5805,19 @@
         function getAccountBalance(code) {
             const acc = db.chartOfAccounts.find(a => a.code === code);
             if (!acc) return 0;
-            if (!acc.isGroup) return acc.balance;
-            const children = db.chartOfAccounts.filter(a => a.parent === code);
-            return children.reduce((sum, child) => sum + getAccountBalance(child.code), 0);
+            if (acc.isGroup) {
+                return (db.chartOfAccounts || []).filter(a => a.parent === code).reduce((sum, child) => sum + getAccountBalance(child.code), 0);
+            }
+            let bal = parseFloat(acc.balance || 0); // Opening Balance
+            (db.journal || []).forEach(e => {
+                e.lines.forEach(l => {
+                    if (l.code === code) {
+                        if (['asset', 'expense'].includes(acc.type)) bal += ((l.dr || 0) - (l.cr || 0));
+                        else bal += ((l.cr || 0) - (l.dr || 0));
+                    }
+                });
+            });
+            return bal;
         }
 
         function addJournalEntry(date, desc, lines, type = 'System') {
@@ -5744,15 +5833,6 @@
             const userName = db.users.find(u => u.id == db.currentUser)?.name || 'System';
 
             db.journal.push({ id: entryId, date, desc: desc + ` (بواسطة: ${userName})`, lines, type });
-
-            lines.forEach(line => {
-                const acc = db.chartOfAccounts.find(a => a.code === line.code);
-                if (acc && !acc.isGroup) {
-                    if (acc.type === 'asset' || acc.type === 'expense') acc.balance += ((line.dr || 0) - (line.cr || 0));
-                    else acc.balance += ((line.cr || 0) - (line.dr || 0));
-                }
-            });
-
             save();
             return true;
         }
@@ -5927,7 +6007,8 @@
             let totalCost = 0;
             currentPurCart.forEach(i => totalCost += i.total);
             const netCost = totalCost - discount;
-            const vatAmount = netCost * 0.15;
+            const vatRate = db.settings.vatRate || 15;
+            const vatAmount = netCost * (vatRate / 100);
             const grandTotal = netCost + vatAmount;
 
             // Robust check for paid amount based on payment type
@@ -6244,8 +6325,12 @@
             });
             const discount = parseFloat(document.getElementById('pur-discount').value) || 0;
             const net = Math.max(0, subtotal - discount);
-            const vat = net * 0.15;
+            const vatRate = db.settings.vatRate || 15;
+            const vat = net * (vatRate / 100);
             const total = net + vat;
+
+            if (document.getElementById('pur-vat-rate-display'))
+                document.getElementById('pur-vat-rate-display').innerText = vatRate;
 
             document.getElementById('pur-subtotal').innerText = subtotal.toFixed(2);
             document.getElementById('pur-vat').innerText = vat.toFixed(2);
@@ -6674,7 +6759,9 @@
                         <i class="fas fa-trash" style="font-size:10px;"></i>
                     </button>` : ``;
 
-                return `<tr dir="rtl" style="border-bottom:1px solid #f1f5f9; ${canEdit ? 'cursor:grab;' : ''}"
+                const levelClass = `level-${a.level || 1}`;
+
+                return `<tr dir="rtl" class="${levelClass}" style="border-bottom:1px solid #f1f5f9; ${canEdit ? 'cursor:grab;' : ''}"
                             data-code="${a.code}"
                             ${dragAttrs}
                             onmouseover="this.style.background='#eff6ff'"
@@ -6683,7 +6770,7 @@
                         ${dragIcon}
                     </td>
                     <td style="width:70px; padding:5px 6px; text-align:right; font-family:monospace; font-size:11px; white-space:nowrap; overflow:hidden;">${a.code}</td>
-                    <td style="padding:5px 6px; text-align:right; font-size:11px; font-weight:500; max-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.name}">${a.name}</td>
+                    <td class="${levelClass}" style="padding:5px 6px; text-align:right; font-size:11px; font-weight:500; max-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${a.name}">${a.name}</td>
                     <td style="width:70px; padding:5px 6px; text-align:right; font-size:9px; color:#94a3b8; white-space:nowrap; overflow:hidden;">${a.type}</td>
                     <td style="width:90px; padding:5px 6px; text-align:center; font-weight:bold; font-size:11px; color:${balColor}; white-space:nowrap; overflow:hidden;">${bal.toFixed(2)}</td>
                     <td style="width:100px; padding:5px 4px; text-align:center;">
@@ -6999,10 +7086,11 @@
             // TB (Cumulative always)
             let tbDr = 0, tbCr = 0;
             document.getElementById('trial-balance-body').innerHTML = db.chartOfAccounts.filter(a => !a.isGroup).map(a => {
-                if (a.balance == 0) return '';
+                const bal = getAccountBalance(a.code);
+                if (bal == 0) return '';
                 let dr = 0, cr = 0;
-                if (['asset', 'expense'].includes(a.type)) { if (a.balance > 0) dr = a.balance; else cr = -a.balance; }
-                else { if (a.balance > 0) cr = a.balance; else dr = -a.balance; }
+                if (['asset', 'expense'].includes(a.type)) { if (bal > 0) dr = bal; else cr = -bal; }
+                else { if (bal > 0) cr = bal; else dr = -bal; }
                 tbDr += dr; tbCr += cr;
                 return `<tr><td class="p-2 border-b">${a.name}</td><td class="p-2 border-b text-emerald-600">${dr ? dr.toFixed(2) : '-'}</td><td class="p-2 border-b text-red-600">${cr ? cr.toFixed(2) : '-'}</td></tr>`;
             }).join('');
@@ -7010,25 +7098,7 @@
             document.getElementById('tb-total-cr').innerText = tbCr.toFixed(2);
         }
 
-
-        function getAccountBalance(code) {
-            const acc = db.chartOfAccounts.find(a => a.code === code);
-            if (!acc) return 0;
-            if (acc.isGroup) {
-                return db.chartOfAccounts.filter(a => a.parent === code).reduce((sum, child) => sum + getAccountBalance(child.code), 0);
-            }
-            // Calc from Journal
-            let bal = 0;
-            db.journal.forEach(e => {
-                e.lines.forEach(l => {
-                    if (l.code === code) {
-                        if (acc.type === 'asset' || acc.type === 'expense') bal += ((l.dr || 0) - (l.cr || 0));
-                        else bal += ((l.cr || 0) - (l.dr || 0));
-                    }
-                });
-            });
-            return bal;
-        }
+        // Removed duplicate getAccountBalance
 
         function renderAll() {
             // Dashboard Counters
@@ -7200,72 +7270,129 @@
         }
 
         // --- 11. Installment Module Logic ---
+        // --- 11. Installment Module Logic ---
         function updateInstPrice(sel) {
             const opt = sel.options[sel.selectedIndex];
             if (opt) {
                 const prod = db.products.find(p => p.id == sel.value);
                 if (prod) {
-                    document.getElementById('inst-price').value = prod.price;
+                    document.getElementById('inst-cash-price').value = prod.price;
                     calcInst();
                 }
             }
         }
 
         function calcInst() {
-            const price = parseFloat(document.getElementById('inst-price').value) || 0;
+            const cashPrice = parseFloat(document.getElementById('inst-cash-price').value) || 0;
+            const profitRate = parseFloat(document.getElementById('inst-profit-rate').value) || 0;
+            const vatRate = parseFloat(document.getElementById('inst-vat-rate').value) || 0;
             const down = parseFloat(document.getElementById('inst-down').value) || 0;
             const count = parseInt(document.getElementById('inst-count').value) || 1;
 
-            const remaining = Math.max(0, price - down);
+            const totalWithoutVat = cashPrice * (1 + profitRate / 100);
+            const vat = totalWithoutVat * (vatRate / 100);
+            const totalPrice = totalWithoutVat + vat;
+
+            document.getElementById('inst-price').value = totalPrice.toFixed(2);
+
+            const remaining = Math.max(0, totalPrice - down);
             const monthly = count > 0 ? remaining / count : 0;
 
             document.getElementById('inst-monthly').value = monthly.toFixed(2);
+            document.getElementById('inst-monthly-display').innerText = monthly.toLocaleString('ar-EG', { minimumFractionDigits: 2 });
+
+            renderInstallmentPreview();
+        }
+
+        function calcInstByTotal() {
+            const totalPrice = parseFloat(document.getElementById('inst-price').value) || 0;
+            const down = parseFloat(document.getElementById('inst-down').value) || 0;
+            const count = parseInt(document.getElementById('inst-count').value) || 1;
+
+            const remaining = Math.max(0, totalPrice - down);
+            const monthly = count > 0 ? remaining / count : 0;
+
+            document.getElementById('inst-monthly').value = monthly.toFixed(2);
+            document.getElementById('inst-monthly-display').innerText = monthly.toLocaleString('ar-EG', { minimumFractionDigits: 2 });
+
+            renderInstallmentPreview();
+        }
+
+        function renderInstallmentPreview() {
+            const area = document.getElementById('inst-preview-area');
+            const tbody = document.getElementById('inst-preview-body');
+            const monthly = parseFloat(document.getElementById('inst-monthly').value) || 0;
+            const count = parseInt(document.getElementById('inst-count').value) || 0;
+            const startDateStr = document.getElementById('inst-start-date').value;
+
+            if (!monthly || !count || !startDateStr) {
+                area.classList.add('hidden');
+                return;
+            }
+
+            area.classList.remove('hidden');
+            let html = '';
+            let startDate = new Date(startDateStr);
+
+            for (let i = 0; i < count; i++) {
+                let d = new Date(startDate);
+                let originalDay = startDate.getDate();
+                d.setMonth(d.getMonth() + i);
+                // Fix for end-of-month rollover (e.g. Jan 31 -> Feb 28)
+                if (d.getDate() != originalDay) d.setDate(0);
+
+                html += `<tr class="border-b">
+                    <td class="p-1">${i + 1}</td>
+                    <td class="p-1 text-center font-mono">${d.toISOString().split('T')[0]}</td>
+                    <td class="p-1 text-left font-bold">${monthly.toFixed(2)}</td>
+                </tr>`;
+            }
+            tbody.innerHTML = html;
         }
 
         function createInstallmentPlan() {
             const custId = document.getElementById('inst-customer').value;
             const prodId = document.getElementById('inst-product').value;
-            const price = parseFloat(document.getElementById('inst-price').value) || 0;
+            const totalPrice = parseFloat(document.getElementById('inst-price').value) || 0;
             const down = parseFloat(document.getElementById('inst-down').value) || 0;
             const count = parseInt(document.getElementById('inst-count').value) || 12;
             const method = document.getElementById('inst-method').value;
+            const startDateStr = document.getElementById('inst-start-date').value;
 
-            if (!custId || !prodId || !price) return showToast('بيانات ناقصة', 'error');
+            if (!custId || !prodId || !totalPrice || !startDateStr) return showToast('بيانات ناقصة', 'error');
 
             const customer = (db.installmentCustomers || []).find(c => c.id == custId);
             const product = db.products.find(p => p.id == prodId);
             const monthly = parseFloat(document.getElementById('inst-monthly').value);
             const date = new Date().toISOString().split('T')[0];
-            const remaining = price - down;
+            const remaining = totalPrice - down;
 
-            // Sequential invoice number
             if (!db.installmentInvoices) db.installmentInvoices = [];
             const nextNum = db.installmentInvoices.length + 1;
             const invoiceNo = 'INST-' + String(nextNum).padStart(4, '0');
 
             const lines = [];
-            // Down payment is Revenue + Cash/Bank
             if (down > 0) {
                 lines.push({ code: getMethodAccount(method), dr: down, cr: 0 });
                 lines.push({ code: '4101', dr: 0, cr: down });
             }
-            // The remaining amount is Receivable (1103) vs Deferred/Stock cleanup
-            // For simplicity in this ERP, we'll track the balance in 1103
             if (remaining > 0) {
-                lines.push({ code: '1103', dr: remaining, cr: 0 }); // DR Receivable
-                lines.push({ code: '2103', dr: 0, cr: remaining }); // CR Deferred Revenue
+                lines.push({ code: '1103', dr: remaining, cr: 0 });
+                lines.push({ code: '2103', dr: 0, cr: remaining });
             }
 
-            // Stock reduction logic
-            lines.push({ code: '5101', dr: product.cost, cr: 0 }); // COGS
-            lines.push({ code: '1104', dr: 0, cr: product.cost }); // Inventory
+            lines.push({ code: '5101', dr: product.cost, cr: 0 });
+            lines.push({ code: '1104', dr: 0, cr: product.cost });
 
             if (addJournalEntry(date, `فاتورة تقسيط ${invoiceNo} - ${customer.name} (${product.name})`, lines)) {
-                // Generate Installments
                 const schedule = [];
+                let startDate = new Date(startDateStr);
                 for (let i = 0; i < count; i++) {
-                    const d = new Date();
-                    d.setMonth(d.getMonth() + i + 1);
+                    let d = new Date(startDate);
+                    let originalDay = startDate.getDate();
+                    d.setMonth(d.getMonth() + i);
+                    if (d.getDate() != originalDay) d.setDate(0);
+
                     schedule.push({
                         num: i + 1,
                         dueDate: d.toISOString().split('T')[0],
@@ -7281,13 +7408,13 @@
                     customerId: custId,
                     customer: customer.name,
                     phone: customer.phone || '-',
-                    total: price,
+                    total: totalPrice,
                     down,
                     remaining,
                     paid: down,
                     count,
                     schedule,
-                    items: [{ ...product, qty: 1, price: price, total: price }]
+                    items: [{ ...product, qty: 1, price: totalPrice, total: totalPrice }]
                 };
                 db.installmentInvoices.push(invObj);
 
@@ -7296,8 +7423,14 @@
 
                 showToast(`تم إنشاء فاتورة التقسيط ${invoiceNo} ✅`);
                 save(); renderInstallments(); renderAll();
-                document.getElementById('inst-price').value = '';
-                document.getElementById('inst-down').value = '';
+
+                // Reset Form
+                ['inst-cash-price', 'inst-profit-rate', 'inst-price', 'inst-down', 'inst-count', 'inst-start-date', 'inst-monthly', 'inst-method'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = (id === 'inst-count' ? '12' : (id === 'inst-profit-rate' ? '20' : ''));
+                });
+                document.getElementById('inst-monthly-display').innerText = '0.00';
+                document.getElementById('inst-preview-area').classList.add('hidden');
             }
         }
 
@@ -7311,18 +7444,18 @@
                 const nextDue = nextInst ? nextInst.dueDate : '-';
 
                 return `<tr class="hover:bg-slate-50 border-b">
-                    <td class="p-3 font-bold">${inv.customer}</td>
-                    <td class="p-3">${inv.phone || '-'}</td>
-                    <td class="p-3 font-mono text-indigo-600">${inv.invoiceNo}</td>
-                    <td class="p-3 font-bold">${inv.total.toFixed(2)}</td>
-                    <td class="p-3">${inv.count}</td>
-                    <td class="p-3 text-emerald-600 font-bold">${(inv.paid || 0).toFixed(2)}</td>
-                    <td class="p-3 text-red-600 font-bold">${(inv.remaining || 0).toFixed(2)}</td>
-                    <td class="p-3 ${nextInst && new Date(nextDue) < new Date() ? 'text-red-600 font-bold' : ''}">${nextDue}</td>
-                    <td class="p-3 text-center">
-                        <button onclick="viewInstDetails('${inv.invoiceNo}')" class="bg-indigo-600 text-white px-3 py-1 rounded text-xs hover:bg-indigo-700 shadow">عرض \u0631\u0624\u064a\u0629</button>
-                    </td>
-                </tr>`;
+                <td class="p-3 font-bold">${inv.customer}</td>
+                <td class="p-3">${inv.phone || '-'}</td>
+                <td class="p-3 font-mono text-indigo-600">${inv.invoiceNo}</td>
+                <td class="p-3 font-bold">${inv.total.toFixed(2)}</td>
+                <td class="p-3">${inv.count}</td>
+                <td class="p-3 text-emerald-600 font-bold">${(inv.paid || 0).toFixed(2)}</td>
+                <td class="p-3 text-red-600 font-bold">${(inv.remaining || 0).toFixed(2)}</td>
+                <td class="p-3 ${nextInst && new Date(nextDue) < new Date() ? 'text-red-600 font-bold' : ''}">${nextDue}</td>
+                <td class="p-3 text-center">
+                    <button onclick="viewInstDetails('${inv.invoiceNo}')" class="bg-indigo-600 text-white px-3 py-1 rounded text-xs hover:bg-indigo-700 shadow">عرض</button>
+                </td>
+            </tr>`;
             }).join('') || '<tr><td colspan="9" class="p-4 text-center text-slate-400">لا توجد فواتير تقسيط</td></tr>';
 
             // Update summary counters
@@ -7731,7 +7864,6 @@
         function calcSrvRemaining() {
             const subtotal = currentSrvCart.reduce((sum, item) => sum + item.price * item.qty, 0);
             const vatRate = db.settings.vatRate || 15;
-            const vat = subtotal * (vatRate / 100);
             let discount = 0;
             const discToggle = document.getElementById('srv-disc-toggle');
             if (discToggle && discToggle.checked) {
@@ -7739,20 +7871,25 @@
                 const discVal = parseFloat(document.getElementById('srv-discount').value) || 0;
                 discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
             }
-            const grandTotal = subtotal + vat - discount;
+            const netBeforeVat = Math.max(0, subtotal - discount);
+            const vat = netBeforeVat * (vatRate / 100);
+            const grandTotal = netBeforeVat + vat;
+
             const paid = parseFloat(document.getElementById('srv-paid')?.value) || 0;
             const rem = grandTotal - paid;
             const remEl = document.getElementById('srv-remaining');
             if (remEl) remEl.innerText = rem.toFixed(2);
+
+            if (document.getElementById('srv-vat')) document.getElementById('srv-vat').innerText = vat.toFixed(2);
+            if (document.getElementById('srv-total')) document.getElementById('srv-total').innerText = grandTotal.toFixed(2);
+            if (document.getElementById('srv-vat-rate')) document.getElementById('srv-vat-rate').innerText = vatRate;
         }
 
         function postServiceBill() {
-            if (currentSrvCart.length === 0) return showToast('\u0627\u0644\u0641\u0627\u062a\u0648\u0631\u0629 \u0641\u0627\u0631\u063a\u0629', 'error');
+            if (currentSrvCart.length === 0) return showToast('الفاتورة فارغة', 'error');
             const subtotal = currentSrvCart.reduce((sum, item) => sum + item.price * item.qty, 0);
             const vatRate = db.settings.vatRate || 15;
-            const vat = subtotal * (vatRate / 100);
 
-            // Discount
             let discount = 0;
             const discToggle = document.getElementById('srv-disc-toggle');
             if (discToggle && discToggle.checked) {
@@ -7760,11 +7897,12 @@
                 const discVal = parseFloat(document.getElementById('srv-discount').value) || 0;
                 discount = discType === 'percent' ? (subtotal * discVal / 100) : discVal;
             }
-
-            const grandTotal = subtotal + vat - discount;
+            const netBeforeVat = Math.max(0, subtotal - discount);
+            const vat = netBeforeVat * (vatRate / 100);
+            const grandTotal = netBeforeVat + vat;
             const method = document.getElementById('srv-method')?.value || 'Cash';
             const custId = document.getElementById('srv-customer-id')?.value;
-            let custName = document.getElementById('srv-customer')?.value || '\u0639\u0645\u064a\u0644 \u062e\u062f\u0645\u0627\u062a';
+            let custName = document.getElementById('srv-customer')?.value || 'عميل خدمات';
             const date = document.getElementById('srv-date')?.value || new Date().toISOString().split('T')[0];
             let paid, remaining;
 
@@ -8094,8 +8232,14 @@
             `).join('');
 
             const disc = parseFloat(document.getElementById('pos-discount').value) || 0;
-            const final = Math.max(0, sub - disc);
+            const net = Math.max(0, sub - disc);
+            const vatRate = db.settings.vatRate || 15;
+            const vat = net * (vatRate / 100);
+            const final = net + vat;
+
             document.getElementById('pos-subtotal').innerText = sub.toFixed(2);
+            document.getElementById('pos-vat').innerText = vat.toFixed(2);
+            document.getElementById('pos-vat-rate-display').innerText = vatRate;
             document.getElementById('pos-total').innerText = final.toFixed(2);
         }
 
@@ -8117,10 +8261,7 @@
             const custId = document.getElementById('pos-customer').value;
             const custName = isWalkIn ? 'عميل نقدي (كاشير)' : (db.customers.find(c => c.id == custId)?.name || 'غير معروف');
 
-            const total = parseFloat(document.getElementById('pos-total').innerText);
             const subtotal = parseFloat(document.getElementById('pos-subtotal').innerText);
-            const discount = parseFloat(document.getElementById('pos-discount').value) || 0;
-
             // Logic similar to Sale
             const date = new Date().toISOString().split('T')[0];
             const saleId = Date.now();
@@ -8129,8 +8270,12 @@
             // Dr Cash/Bank, Dr COGS
             // Cr Sales Rev, Cr VAT, Cr Inventory, Dr Discount Exp
 
-            const vat = total * (db.settings.vatRate / (100 + db.settings.vatRate)); // Inclusive VAT
-            const netSale = total - vat;
+            const discount = parseFloat(document.getElementById('pos-discount').value) || 0;
+            const netSale = subtotal - discount;
+            const vatRate = db.settings.vatRate || 15;
+            const vat = netSale * (vatRate / 100);
+            const total = netSale + vat;
+
             let totalCost = 0;
             posCart.forEach(i => { const p = db.products.find(x => x.id == i.id); totalCost += (p?.cost || 0) * i.qty; });
 
@@ -8141,10 +8286,6 @@
                 { code: '1104', dr: 0, cr: totalCost }, // Inventory Down
                 { code: '2102', dr: 0, cr: vat } // VAT Liab
             ];
-            // Discount? If separate line needed: 
-            // Currently NetSale is reduced by discount. If we want to track Discount Expense:
-            // Dr Cash (Total), Dr Sales Discount (Disc), Cr Sales Revenue (Subtotal - VAT)...
-            // For simplicity, sticking to Net methodology.
 
             if (addJournalEntry(date, `بيع كاشير - ${custName}`, lines)) {
                 // Stock Update
@@ -8379,7 +8520,7 @@
             <div class="line"></div>
             ${saleData.subtotal !== undefined ? `<div class="center" style="font-size:11px">المجموع: ${saleData.subtotal.toFixed(2)}</div>` : ''}
             ${saleData.discount ? `<div class="center" style="font-size:11px;color:red">الخصم: -${saleData.discount.toFixed(2)}</div>` : ''}
-            ${saleData.vat !== undefined ? `<div class="center" style="font-size:11px">الضريبة (شامل): ${saleData.vat.toFixed(2)}</div>` : ''}
+            ${(saleData.vat || 0) > 0 ? `<div class="center" style="font-size:11px">الضريبة: ${saleData.vat.toFixed(2)}</div>` : ''}
             <div class="total center">الإجمالي: ${saleData.total.toFixed(2)}</div>
             <div class="center" style="font-size:10px">الدفع: ${saleData.method || 'كاش'}</div>
             ${receiptSettings.footerMsg ? `<div class="line"></div><div class="center" style="font-size:10px">${receiptSettings.footerMsg}</div>` : ''}
@@ -9050,31 +9191,7 @@
         // ===== Render Invoice Sub-Modules =====
         function renderInvPOS() { showSection('inv_sales'); } // Redirect
 
-        // -- POS Receipt Print --
-        function printPOSReceipt(sale) {
-            const w = window.open('', 'receipt', 'width=350,height=600');
-            const itemsHTML = (sale.items || []).map(it => `<tr><td style="padding:3px">${it.name}</td><td style="padding:3px;text-align:center">${it.qty}</td><td style="padding:3px;text-align:left">${(it.total || it.price || 0).toFixed(2)}</td></tr>`).join('');
-            w.document.write(`<html dir="rtl"><head><style>body{font-family:monospace,Arial;width:280px;margin:0 auto;padding:10px;font-size:12px}h2{text-align:center;margin:5px 0;font-size:14px}.logo{text-align:center;} p{text-align:center;margin:2px 0;font-size:10px;color:#666}.line{border-top:1px dashed #000;margin:5px 0}table{width:100%;border-collapse:collapse}th{border-bottom:1px solid #000;padding:3px;font-size:11px;text-align:right}td{font-size:11px}.total{font-weight:bold;font-size:14px;text-align:center;margin:5px 0}.footer{text-align:center;font-size:10px;color:#666;margin-top:10px}@media print{.no-print{display:none}}</style></head><body>
-            <div class="logo">${db.settings.logo ? `<img src="${db.settings.logo}" style="max-height:50px; margin-bottom:5px;">` : ''}</div>
-            <h2>${db.settings.companyName || 'نظام ERP'}</h2>
-            <p>${db.settings.address || ''}</p><p>${db.settings.phone || ''}</p>
-            <div class="line"></div>
-            <p style="text-align:right"><strong>رقم:</strong> ${sale.invoiceNo || sale.id} | <strong>التاريخ:</strong> ${sale.date} ${sale.time || ''}</p>
-            <p style="text-align:right"><strong>العميل:</strong> ${sale.customer}</p>
-            <div class="line"></div>
-            <table><thead><tr><th>الصنف</th><th style="text-align:center">الكمية</th><th style="text-align:left">المبلغ</th></tr></thead><tbody>${itemsHTML}</tbody></table>
-            <div class="line"></div>
-            ${sale.subtotal !== undefined ? `<p style="text-align:center; font-size:11px; margin:2px 0;">المجموع: ${sale.subtotal.toFixed(2)}</p>` : ''}
-            ${sale.discount ? `<p style="text-align:center; font-size:11px; color:red; margin:2px 0;">الخصم: -${sale.discount.toFixed(2)}</p>` : ''}
-            ${sale.vat !== undefined ? `<p style="text-align:center; font-size:11px; margin:2px 0;">الضريبة (شامل): ${sale.vat.toFixed(2)}</p>` : ''}
-            <div class="total">الإجمالي: ${(sale.total || 0).toFixed(2)}</div>
-            <div class="line"></div>
-            <div class="footer">شكراً لزيارتكم ❤️</div>
-            <div class="no-print" style="text-align:center;margin-top:15px"><button onclick="window.print()" style="padding:8px 25px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer">طباعة</button></div>
-            </body></html>`);
-            w.document.close();
-            setTimeout(() => { try { w.print(); } catch (e) { } }, 300);
-        }
+        // Removed duplicate printPOSReceipt
 
         // -- Sales Invoices (includes POS) with date filter + stats + actions --
         function renderInvSales() {
